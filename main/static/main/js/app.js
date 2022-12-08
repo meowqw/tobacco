@@ -57,7 +57,7 @@ Vue.component('app-products', {
                                     <div class="product product--main accordion" id="product-1">
                                         <div class="product__items">
                                             <div class="product__left">
-                                                <img src="{{item.img}}" alt="product"
+                                                <img src={{item.img}} alt="product"
                                                     class="image product__img minimized">
                                                 <h3 class="product__title">{{ item.name }}</h3>
                                                 <div class="product__icon">
