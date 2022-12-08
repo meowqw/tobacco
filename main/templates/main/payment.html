@@ -1,0 +1,102 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+{% block content %}
+  <main class="main">
+    <div class="payment__container container">
+      <h1 class="payment__title">Оформление заказа G11-3NSTBM на сумму 29 200 ₽</h1>
+      <form action="#" class="payment-form payment__form form">
+        <ul class="list-reset payment-form__list form__list">
+          <li class="payment-form__item form__item">
+            <h2 class="payment-form__item-title">Способ получения заказа</h2>
+            <form class="payment-form__item-form">
+              <label class="custom-checkbox payment-form__checkbox">
+                Доставка
+                <input type="radio"
+                       name="radio"
+                       class="custom-checkbox__field"
+                       checked="checked">
+                <span class="custom-checkbox__content"></span>
+              </label>
+              <label class="custom-checkbox payment-form__checkbox">
+                Самовывоз
+                <input type="radio" name="radio" class="custom-checkbox__field">
+                <span class="custom-checkbox__content"></span>
+              </label>
+            </form>
+          </li>
+          <li class="payment-form__item form__item">
+            <h2 class="payment-form__item-title">Точка доставки заказа</h2>
+            <form class="payment-form__item-form payment-form__item-form--column">
+              <label class="custom-checkbox payment-form__checkbox--column">
+                Косарево 7 / 153025, Россия, Иваново / Марракеш Ясень
+                <input type="radio"
+                       name="radio"
+                       class="custom-checkbox__field"
+                       checked="checked">
+                <span class="custom-checkbox__content"></span>
+              </label>
+              <label class="custom-checkbox payment-form__checkbox--column">
+                Якова Гарелина 2А / 145010, Россия, Иваново / Марракеш Ясень
+                <input type="radio" name="radio" class="custom-checkbox__field">
+                <span class="custom-checkbox__content"></span>
+              </label>
+            </form>
+          </li>
+          <li class="payment-form__item form__item">
+            <h2 class="payment-form__item-title">Способ оплаты</h2>
+            <form class="payment-form__item-form">
+              <label class="custom-checkbox payment-form__checkbox">
+                Наличными
+                <input type="radio"
+                       name="radio"
+                       class="custom-checkbox__field"
+                       checked="checked">
+                <span class="custom-checkbox__content"></span>
+              </label>
+              <label class="custom-checkbox payment-form__checkbox">
+                Расчетный
+                <input type="radio" name="radio" class="custom-checkbox__field">
+                <span class="custom-checkbox__content"></span>
+              </label>
+            </form>
+          </li>
+          <li class="payment-form__item form__item">
+            <h2 class="payment-form__item-title">Комментарий к заказу</h2>
+            <form class="payment-form__item-form">
+              <textarea class="payment-form__textarea"
+                        placeholder="Введите комментарии"
+                        name="comment"></textarea>
+            </form>
+          </li>
+        </ul>
+        <div class="payment-form__bottom">
+          <button class="btn-reset form__btn btn payment-form__btn" data-btn-popup>Оформить заказ</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <div class="popup-payment" data-main-popup>
+    <div class="graph-modal__container popup-payment__container"
+         role="dialog"
+         aria-modal="true">
+      <button class="btn-reset js-modal-close graph-modal__close"
+              aria-label="Закрыть модальное окно"
+              data-close-popup>
+      </button>
+      <div class="graph-modal__content popup-payment__content">
+        <div class="popup-payment__img">
+          <img loading="lazy"
+               src="{% static 'main/img/popup-img.svg' %}"
+               class="image"
+               width="64"
+               height="64"
+               alt="success">
+        </div>
+        <h2 class="popup-payment__title">Заказ G11-3NSTBM оформлен</h2>
+        <p class="popup-payment__descr">В ближайшее время с Вами свяжется менеджер для подтверждения заказа</p>
+        <button class="btn-reset btn popup-payment__btn" data-close-popup-btn>Закрыть</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

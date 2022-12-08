@@ -1,0 +1,99 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+{% block content %}
+  <main class="main">
+    <div class="main__container container">
+      {% include "main/menu.html" %}
+      <div class="main__content">
+        <section class="filtr">
+          <h2 class="filtr__title">Фильтр</h2>
+          <div class="filtr__content">
+            <div class="filtr__dropdown">
+              <div class="custom-select">
+                <select>
+                  <option value="0" @click="getFilter(0)">
+                    Наличие
+                  </option>
+                  <option value="1" @click="getFilter(1)">
+                    Все
+                  </option>
+                  <option value="2" @click="getFilter(2)">
+                    В наличии
+                  </option>
+                  <option value="3" @click="getFilter(3)">
+                    Удаленный склад
+                  </option>
+                  <option value="4" @click="getFilter(4)">
+                    В пути
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="filtr__dropdown">
+              <div class="custom-select">
+                <select>
+                  <option value="0">
+                    Вес
+                  </option>
+                  <option value="1">
+                    10
+                  </option>
+                  <option value="2">
+                    100
+                  </option>
+                  <option value="3">
+                    1000
+                  </option>
+                  <option value="4">
+                    10000
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="filtr__btns">
+              <label class="btn-reset checkbox-btn filtr__btn">
+                <input type="checkbox" checked>
+                <span class="filtr__span filtr__span--orange">
+                  <svg class="filtr__svg filtr__svg--top">
+                    <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
+                  </svg>
+                </span>
+              </label>
+              <label class="btn-reset checkbox-btn filtr__btn">
+                <input type="checkbox">
+                <span class="filtr__span filtr__span--green">
+                  <svg class="filtr__svg filtr__svg--new">
+                    <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
+                  </svg>
+                </span>
+              </label>
+              <label class="btn-reset checkbox-btn filtr__btn">
+                <input type="checkbox">
+                <span class="filtr__span filtr__span--red">
+                  <svg class="filtr__svg filtr__svg--sale">
+                    <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>
+                  </svg>
+                </span>
+              </label>
+            </div>
+          </div>
+        </section>
+        <section class="main-content">
+          <h2 class="visually-hidden title">Каталог</h2>
+          <div class="main-content__head main-head">
+            <ul class="list-reset main-head__list">
+              <li class="main-head__item">Наименование</li>
+              <li class="main-head__item">Выбор склада</li>
+              <li class="main-head__item">Остаток</li>
+              <li class="main-head__item">Цена шт.</li>
+              <li class="main-head__item">Цена итого</li>
+            </ul>
+          </div>
+          <app-products :products="products"></app-products>
+        </section>
+      </div>
+    </div>
+  </main>
+ 
+{% endblock %}

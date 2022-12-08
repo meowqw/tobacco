@@ -1,0 +1,31 @@
+{% load static %}
+<div class="sidebar" data-sidebar>
+    <ul class="list-reset sidebar__list accordion">
+
+        {% for category in categories %}
+      <li class="sidebar__item accordion-item">
+        <button class="btn-reset sidebar__btn sidebar__accordion accordion-header">
+          {{category.name}}
+        </button>
+        <div class="sidebar__panel">
+          <ul class="list-reset sidebar__sublist">
+            {% for subcategory in subcategories %}
+                {% if subcategory.parent_category_id == category.id %}
+                <li class="sidebar__subitem">
+                <button class="btn-reset sidebar__btn sidebar__btn--sub" @click="getContent({{subcategory.id}})">
+                    <img loading="lazy"
+                        src="/media/{{subcategory.img}}"
+                        class="image"
+                        width="47"
+                        height="27"
+                        alt="{{subcategory.name}}">
+                </button>
+                </li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
