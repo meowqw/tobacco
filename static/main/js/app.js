@@ -6,26 +6,31 @@ Vue.component('app-products', {
 
     data: function () {
         return {
-            order: {}
+            order: {},
         }
     },
     methods: {
         countPlus(id, price) {
-            this.order[id] = {'total': this.order[id].total+price, 'count': this.order[id].count+1}
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            this.order[id] = { 'total': this.order[id].total + price, 'count': this.order[id].count + 1 }
 
-            document.getElementById('total').innerHTML = this.order[id].total + ' ₽'
-            localStorage.total = this.order[id].total
+            document.getElementById('total').innerHTML =  (current + price) + ' ₽'
+            
+            localStorage.total = localStorage.total + this.order[id].total
+            localStorage.setItem("order", JSON.stringify(this.order))
         },
         countMinus(id, price) {
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id].count > 0) {
-                this.order[id] = {'total': this.order[id].total-price, 'count': this.order[id].count-1}
+                this.order[id] = { 'total': this.order[id].total - price, 'count': this.order[id].count - 1}
             }
-            document.getElementById('total').innerHTML = this.order[id].total + ' ₽'
-            localStorage.total = this.order[id].total
+            document.getElementById('total').innerHTML =  (current - price) + ' ₽'
+            localStorage.total = localStorage.total - this.order[id].total
+            localStorage.setItem("order", JSON.stringify(this.order))
         }
     },
     watch: {
-        products: function() {
+        products: function () {
             this.order = this.products[0].order;
         }
     },
@@ -57,17 +62,29 @@ Vue.component('app-products', {
                                     <div class="product product--main accordion" id="product-1">
                                         <div class="product__items">
                                             <div class="product__left">
-                                                <img src="" alt="product"
+                                            
+                                                <img v-bind:src="item.img" alt="product"
                                                     class="image product__img minimized">
                                                 <h3 class="product__title">{{ item.name }}</h3>
-                                                <div class="product__icon">
+                                                <div class="product__icon" v-if="item.product_status.name=='top'">
+                                                    
                                                     <img loading="lazy" src="/static/main/img/top.svg" class="image" width="23"
                                                         height="27" alt="top">
+                                                </div>
+                                                <div class="product__icon" v-else-if="item.product_status.name=='new'">
+                                                    
+                                                    <img loading="lazy" src="/static/main/img/new.svg" class="image" width="23"
+                                                        height="27" alt="new">
+                                                </div>
+                                                <div class="product__icon" v-else-if="item.product_status.name=='sale'">
+                                                    
+                                                    <img loading="lazy" src="/static/main/img/sale.svg" class="image" width="23"
+                                                        height="27" alt="sale">
                                                 </div>
                                             </div>
                                             <ul class="list-reset product__right-list">
                                                 <li class="product__right-item product__right-item--main ">
-                                                    <button class="btn-reset product__presence">3123123</button>
+                                                    <button class="btn-reset product__presence">{{ item.availability.name }}</button>
                                                     <div class="product__residue">{{ item.rest }}</div>
                                                     <div class="product__calc product-calc">
                                                     
@@ -159,11 +176,14 @@ new Vue({
     delimiters: ['{*', '*}'],
     el: '#app',
     data: {
-        products: [{}],
+        products: [{'category': 'Нет'}],
         total: 0,
         totalOne: 0,
         totalTwo: 0,
-        totalThree: 0
+        totalThree: 0,
+        availability: 'Все',
+        weight: 'Вес',
+        status: []
     },
     methods: {
         getContent(id) {
@@ -177,26 +197,99 @@ new Vue({
             if (content.length > 0) {
                 var order = {};
                 for (i = 0; i < content.length; i++) {
-                    order[content[i].id] = {'total': 0, 'count': 0}
+                    order[content[i].id] = { 'total': 0, 'count': 0 }
                 }
 
                 categoryName = content[0]['category']['name'];
-                products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total});
+                products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total });
                 this.products = products;
             }
         },
-        getFilter(availability) {
-            console.log(availability);
+        filterAvailability(id) {
+            console.log(id)
+            console.log(this.availability);
+        },
+        getCookie(name) {
+            let cookie = {};
+            document.cookie.split(";").forEach(function (el) {
+              let [k, v] = el.split("=");
+              cookie[k.trim()] = v;
+            });
+            console.log(cookie[name])
+            return cookie[name];
+          },
+
+        createOrder: function (event) {
+            console.log(localStorage.order)
+            // console.log(document.getElementsByName('csrfmiddlewaretoken')[0].value)
+            token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            const response = fetch("/api/v1/order/", {
+                headers: {
+                  "Content-type": "application/json",
+                  "X-CSRFTOKEN": token,
+                },
+                method: "POST",
+                body: JSON.stringify({'order': localStorage.order, 'status': true, 'total': localStorage.total}),
+              });
+
+            location.href = '/basket'
+        },
+        minusCount: function (id, price, catId){
+            console.log(id)
+            currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
+            console.log(currentCount)
+            document.getElementById(`count_${id}`).innerHTML = currentCount - 1
+
+            currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
+            document.getElementById(`total_${id}`).innerHTML = (currentPrice - price) + ' ₽'
+
+            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+
+            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
+            document.getElementById(`total`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+        },
+        plusCount: function (id, price, catId){
+            console.log(id)
+            currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
+            console.log(currentCount)
+            document.getElementById(`count_${id}`).innerHTML = currentCount + 1
+
+            currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
+            document.getElementById(`total_${id}`).innerHTML = (currentPrice + price) + ' ₽'
+
+            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal + price) + " ₽"
+
+            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
+            document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal + price) + " ₽"
+            
+        },
+
+        delItem: function(id, catId) {
+
+            current = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
+
+            document.getElementById(`item_${id}`).remove()
+
+            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - current) + " ₽"
+
+            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
+            document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal - current) + " ₽"
         }
 
     },
     mounted() {
-        this.total = localStorage.total;
+        // this.total = localStorage.total;
+        localStorage.order = {}
     },
     watch: {
         total(newName) {
-            localStorage.total = this.total;
+            // localStorage.total = this.total;
         }
-      }
+    }
 });
+
+
 
