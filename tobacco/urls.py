@@ -15,7 +15,13 @@ urlpatterns = [
 
     path('api/v1/subcategory/', SubcategoryAPIList.as_view()),
 
+    path('api/v1/order/', OrderAPIList.as_view()),
+
     path('api/v1/productbycat/<int:cat>/', ProductByCategoryAPIView.as_view()),
+
+
+    path('api/v1/order/<int:pk>/', OrderAPIUpdate.as_view()),
+    path('api/v1/orderdel/<int:pk>/', OrderAPIDestroy.as_view()),
 
     
 ]

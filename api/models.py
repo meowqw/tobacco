@@ -66,10 +66,17 @@ class Account(models.Model):
     agents = models.CharField('Контрагенты', max_length=300)
     address = models.CharField('Адреса', max_length=300)
 
-    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)  # наличие
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.name
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+    order = models.JSONField("Ордер лист", null=True, blank=True)
+    status = models.BooleanField("Status", default=False)
+    # time_create = models.DateTimeField(auto_now_add=True)
 
 
 

@@ -11,7 +11,7 @@ from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 # from .permissions import IsAdminReadOnly, IsOwnerOrReadOnly
 from .models import *
-from .serializers import ProductSerializer, SubcategorySerializer
+from .serializers import *
 
 
 # Create your views here.
@@ -56,3 +56,43 @@ class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
     serializer_class = ProductSerializer
     # permission_classes = (IsAuthenticated,)  # only auth user
     # authentication_classes = (TokenAuthentication, )  # access only token
+
+
+class OrderAPIList(APIView):
+    """
+    GET and POST request
+    """
+    def get(self, request, *args, **kwargs):
+        order = Order.objects.filter(user=request.user).all()
+        return Response({'orders': OrderSerializer(order, many=True).data})
+
+    def post(self, request):
+        Order.objects.filter(user=request.user).delete()
+
+
+
+        request.data['user'] = request.user.id
+        data = request.data
+        serializer = OrderSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'post': serializer.data})
+
+
+class OrderAPIUpdate(generics.RetrieveUpdateAPIView):
+    """
+    UPDATE request
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    # permission_classes = (IsAuthenticated,)  # only auth user
+    # authentication_classes = (TokenAuthentication, )  # access only token
+
+class OrderAPIDestroy(generics.RetrieveDestroyAPIView):
+    """
+    DELETE request
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    # permission_classes = (IsAdminReadOnly,)

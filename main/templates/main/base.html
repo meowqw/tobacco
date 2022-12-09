@@ -43,7 +43,7 @@
       <header class="header">
         <div class="container header__container">
           <div class="header__left">
-            <div class="header__logo">
+            <div class="header__logo" onclick="location.href='/banners'">
               <img loading="lazy"
                    src="{% static 'main/img/tobacco.svg' %}"
                    class="image"
@@ -74,6 +74,8 @@
             </button>
             <button class="btn-reset btn btn--gray header__user" onclick="location.href='/account'"></button>
           </div>
+
+          {% if request.path != '/basket/' and request.path != '/payment/' %}
           <div class="header__right">
             <ul class="list-reset header__list">
               <li class="header__item">
@@ -119,7 +121,8 @@
                 </div>
               </li>
             </ul>
-            <button class="btn-reset btn header__btn header__btn--path" onclick="location.href='/basket'"> 
+            {% csrf_token %}
+            <button class="btn-reset btn header__btn header__btn--path" v-on:click="createOrder()"> 
               <img loading="lazy"
                    src="{% static 'main/img/path.svg' %}"
                    class="image"
@@ -132,6 +135,7 @@
               </div>
             </button>
           </div>
+          {% endif %}
         </div>
       </header>
       {% block content %}{% endblock %}
@@ -229,6 +233,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     <script src="{% static 'main/js/app.js' %}"></script>
+   
   </body>
   
 </html>

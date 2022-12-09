@@ -11,20 +11,20 @@
           <div class="filtr__content">
             <div class="filtr__dropdown">
               <div class="custom-select">
-                <select>
-                  <option value="0" @click="getFilter(0)">
+                <select v-model="availability" @change="filterAvailability(1)">
+                  <option>
                     Наличие
                   </option>
-                  <option value="1" @click="getFilter(1)">
+                  <option>
                     Все
                   </option>
-                  <option value="2" @click="getFilter(2)">
+                  <option>
                     В наличии
                   </option>
-                  <option value="3" @click="getFilter(3)">
+                  <option>
                     Удаленный склад
                   </option>
-                  <option value="4" @click="getFilter(4)">
+                  <option>
                     В пути
                   </option>
                 </select>
@@ -32,20 +32,20 @@
             </div>
             <div class="filtr__dropdown">
               <div class="custom-select">
-                <select>
-                  <option value="0">
+                <select v-model="weight">
+                  <option>
                     Вес
                   </option>
-                  <option value="1">
+                  <option>
                     10
                   </option>
-                  <option value="2">
+                  <option>
                     100
                   </option>
-                  <option value="3">
+                  <option>
                     1000
                   </option>
-                  <option value="4">
+                  <option>
                     10000
                   </option>
                 </select>
@@ -53,26 +53,29 @@
             </div>
             <div class="filtr__btns">
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" checked>
+                <input type="checkbox" checked v-model="status" value='top'>
                 <span class="filtr__span filtr__span--orange">
                   <svg class="filtr__svg filtr__svg--top">
                     <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
+                    <img style='margin-right: 33%;' src="{% static 'main/img/top.svg' %}"/>
                   </svg>
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox">
+                <input type="checkbox" v-model="status" value='new'>
                 <span class="filtr__span filtr__span--green">
                   <svg class="filtr__svg filtr__svg--new">
                     <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
+                    <img style='margin-right: 33%;' src="{% static 'main/img/new.svg' %}"/>
                   </svg>
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox">
+                <input type="checkbox" v-model="status" value='sale'>
                 <span class="filtr__span filtr__span--red">
                   <svg class="filtr__svg filtr__svg--sale">
                     <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>
+                    <img style='margin-right: 33%;' src="{% static 'main/img/sale.svg' %}"/>
                   </svg>
                 </span>
               </label>
