@@ -248,6 +248,7 @@ new Vue({
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
             document.getElementById(`total`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+
         },
         plusCount: function (id, price, catId){
             console.log(id)
@@ -267,7 +268,7 @@ new Vue({
         },
 
         delItem: function(id, catId) {
-
+            
             current = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
 
             document.getElementById(`item_${id}`).remove()
@@ -277,6 +278,37 @@ new Vue({
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
             document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal - current) + " ₽"
+        },
+
+        busketNext: function(event) {
+             
+            
+            allItemCount = document.getElementsByClassName("product-calc__value")
+            allItemPrice = document.getElementsByClassName("product__size-all product__size-all--ordering")
+
+            for (var i = 0; i <= allItemCount; i++) {
+                console.log(allItemPrice[i], allItemCount[i])
+            }
+            
+            
+            // token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            // const response = fetch("/api/v1/order/", {
+            //     headers: {
+            //       "Content-type": "application/json",
+            //       "X-CSRFTOKEN": token,
+            //     },
+            //     method: "POST",
+            //     body: JSON.stringify({'order': localStorage.order, 'status': true, 'total': localStorage.total}),
+            //   });
+
+            // location.href = '/payment'
+        },
+
+        busketClear: function() {
+            allCategory = document.getElementsByClassName("ordering__item ordering-item")
+            for (var i = 0; i < allCategory.length; i++) {
+                allCategory[i].remove()
+            }
         }
 
     },

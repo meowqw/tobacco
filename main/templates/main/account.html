@@ -71,24 +71,15 @@
                          alt="calendar">
                   </div>
                   <div class="account-filtr__item account-filtr__item--type filtr__dropdown">
-                    <span class="notice">3</span>
+                    <span class="notice">{{deliveryAddresses|length}}</span>
                     <div class="custom-select">
+                      
                       <select>
+                        {% for address in deliveryAddresses %}
                         <option value="0">
-                          Марракеш Ясень
+                          {{address.address}}
                         </option>
-                        <option value="1">
-                          Марракеш Шиша
-                        </option>
-                        <option value="2">
-                          Марракеш 2
-                        </option>
-                        <option value="3">
-                          Марракеш 3
-                        </option>
-                        <option value="4">
-                          Марракеш 4
-                        </option>
+                        {% endfor %}
                       </select>
                     </div>
                   </div>
@@ -125,33 +116,34 @@
                   </thead>
                   <tbody class="table__tbody">
                     <!-- item -->
+                    {% for order in orders %}
                     <tr class="table__tr">
                       <td class="table__td">
-                        <div class="my-orders__number">G11-3NSTBM</div>
+                        <div class="my-orders__number">{{order.number}}</div>
                       </td>
                       <td class="table__td">
                         <div class="my-orders__data">
-                          17.08.2022
-                          <span>12:57:28</span>
+                          {{order.time_create}}
+                          {% comment %} <span>12:57:28</span> {% endcomment %}
                         </div>
                       </td>
                       <td class="table__td">
-                        <div class="my-orders__point">Марракеш Ясень</div>
+                        <div class="my-orders__point">{{order.address}}</div>
                       </td>
                       <td class="table__td">
-                        <div class="my-orders__sum">29 200 ₽</div>
+                        <div class="my-orders__sum">{{order.total}} ₽</div>
                       </td>
                       <td class="table__td">
                         <div class="my-orders__pay-state">
                           <button class="btn-reset my-orders__btn my-orders__btn--red">
-                            Не оплачен
+                            {{order.order_status}}
                           </button>
                         </div>
                       </td>
                       <td class="table__td">
                         <div class="my-orders__order-state">
                           <button class="btn-reset my-orders__btn my-orders__btn--pink">
-                            В обработке
+                            {{order.pay_status}}
                           </button>
                         </div>
                       </td>
@@ -162,8 +154,9 @@
                         </div>
                       </td>
                     </tr>
+                    {% endfor %}
                     <!-- item -->
-                    <tr class="table__tr">
+                    {% comment %} <tr class="table__tr">
                       <td class="table__td">
                         <div class="my-orders__number">
                           G11-3NSTBM
@@ -294,13 +287,13 @@
                           </button>
                         </div>
                       </td>
-                    </tr>
+                    </tr> {% endcomment %}
                   </tbody>
                 </table>
               </div>
               <div class="my-orders__footer">
                 <div class="my-orders__footer-content">
-                  Общая задолжность: 29 200 ₽
+                  Общая задолжность: 0 ₽
                 </div>
               </div>
             </section>

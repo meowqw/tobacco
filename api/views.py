@@ -69,8 +69,6 @@ class OrderAPIList(APIView):
     def post(self, request):
         Order.objects.filter(user=request.user).delete()
 
-
-
         request.data['user'] = request.user.id
         data = request.data
         serializer = OrderSerializer(data=data)

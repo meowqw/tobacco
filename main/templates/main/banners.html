@@ -6,18 +6,12 @@
     <div class="main__content">
       <section class="banners">
         <ul class="list-reset banners__list">
+          {% for banner in banners%}
           <li class="banners__item">
-            <div class="banner"></div>
-          </li>
-          <li class="banners__item">
-            <div class="banner"></div>
-          </li>
-          <li class="banners__item">
-            <div class="banner"></div>
-          </li>
-          <li class="banners__item">
-            <div class="banner"></div>
-          </li>
+            <div class="banner">
+              <img src="/media/{{banner.img}}">
+            </div>
+          {% endfor %}
         </ul>
       </section>
     </div>

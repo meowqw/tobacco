@@ -74,7 +74,7 @@
             </button>
             <button class="btn-reset btn btn--gray header__user" onclick="location.href='/account'"></button>
           </div>
-
+          {% csrf_token %}
           {% if request.path != '/basket/' and request.path != '/payment/' %}
           <div class="header__right">
             <ul class="list-reset header__list">
@@ -121,7 +121,7 @@
                 </div>
               </li>
             </ul>
-            {% csrf_token %}
+            {% comment %} {% csrf_token %} {% endcomment %}
             <button class="btn-reset btn header__btn header__btn--path" v-on:click="createOrder()"> 
               <img loading="lazy"
                    src="{% static 'main/img/path.svg' %}"

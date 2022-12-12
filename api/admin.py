@@ -9,3 +9,8 @@ admin.site.register(Availability)
 admin.site.register(Subcategory)
 admin.site.register(Account)
 admin.site.register(Order)
+admin.site.register(Banners)
+admin.site.register(UserOrder)
+admin.site.register(DeliveryAddresses)
+
+

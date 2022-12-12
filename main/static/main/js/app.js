@@ -183,6 +183,8 @@ new Vue({
         totalThree: 0,
         availability: 'Все',
         weight: 'Вес',
+
+        currentOrderId: '',
         status: []
     },
     methods: {
@@ -190,6 +192,13 @@ new Vue({
             axios
                 .get(`/api/v1/productbycat/${id}`)
                 .then(response => (this.contentController(response.data.products)));
+        },
+
+        getOrderId() {
+            req = axios.get(`/api/v1/order/`)
+            resData = req.then((response) => response.data.orders[0].id);
+            return resData;
+                
         },
 
         contentController(content) {
@@ -219,44 +228,58 @@ new Vue({
             return cookie[name];
           },
 
-        createOrder: function (event) {
-            console.log(localStorage.order)
-            // console.log(document.getElementsByName('csrfmiddlewaretoken')[0].value)
+        createOrder: async function (event) {
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
-            const response = fetch("/api/v1/order/", {
-                headers: {
-                  "Content-type": "application/json",
-                  "X-CSRFTOKEN": token,
-                },
-                method: "POST",
-                body: JSON.stringify({'order': localStorage.order, 'status': true, 'total': localStorage.total}),
-              });
+            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', ''))
 
-            location.href = '/basket'
+            if (total > 0) {
+                order = {}
+                for (var key in JSON.parse(localStorage.order)){
+                    if (JSON.parse(localStorage.order)[key].count != 0) {
+                        order[key] = JSON.parse(localStorage.order)[key]
+                    }
+                  }
+
+                const response =  await fetch("/api/v1/order/", {
+                    headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFTOKEN": token,
+                    },
+                    method: "POST",
+                    body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': localStorage.total}),
+                });
+
+                location.href = '/basket'
+            }
         },
         minusCount: function (id, price, catId){
             console.log(id)
             currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
             console.log(currentCount)
             document.getElementById(`count_${id}`).innerHTML = currentCount - 1
+            document.getElementById(`count_${id}`).setAttribute('value', currentCount - 1)
 
             currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
             document.getElementById(`total_${id}`).innerHTML = (currentPrice - price) + ' ₽'
+            document.getElementById(`total_${id}`).setAttribute('value', currentPrice - price)
 
             currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
             document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
             document.getElementById(`total`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+
         },
         plusCount: function (id, price, catId){
             console.log(id)
             currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
             console.log(currentCount)
             document.getElementById(`count_${id}`).innerHTML = currentCount + 1
+            document.getElementById(`count_${id}`).setAttribute('value', currentCount + 1)
 
             currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
             document.getElementById(`total_${id}`).innerHTML = (currentPrice + price) + ' ₽'
+            document.getElementById(`total_${id}`).setAttribute('value', currentPrice + price)
 
             currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
             document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal + price) + " ₽"
@@ -267,7 +290,7 @@ new Vue({
         },
 
         delItem: function(id, catId) {
-
+            
             current = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
 
             document.getElementById(`item_${id}`).remove()
@@ -277,6 +300,73 @@ new Vue({
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
             document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal - current) + " ₽"
+        },
+
+        busketNext: async function(event) {
+            
+            var orderId = await this.getOrderId();
+            console.log(orderId)
+
+            allItemCount = document.getElementsByClassName("product-calc__value")
+            allItemPrice = document.getElementsByClassName("product__size-all product__size-all--ordering")
+            allTotal = document.getElementById("total").getAttribute('value')
+            order = {}
+
+            for (var i = 0; i < allItemCount.length; i++) {
+                var total = allItemPrice[i].getAttribute('value')
+                var count = allItemCount[i].getAttribute('value')
+                var item_id = allItemCount[i].getAttribute('id').replace('count_', '')
+                order[item_id] = {'total': Number(total), 'count': Number(count)}
+            }
+            console.log(order)
+            console.log(allTotal)
+           
+            token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            const response = await fetch(`/api/v1/order/${orderId}/`, {
+                headers: {
+                  "Content-type": "application/json",
+                  "X-CSRFTOKEN": token,
+                },
+                method: "PUT",
+                body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': allTotal}),
+              });
+            
+
+            location.href = '/payment'
+        },
+
+        busketClear: async function() {
+            var orderId = await this.getOrderId();
+            allCategory = document.getElementsByClassName("ordering__item ordering-item")
+            for (var i = 0; i < allCategory.length; i++) {
+                allCategory[i].remove()
+            }
+
+            token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            const response = await fetch(`/api/v1/order/${orderId}/`, {
+                headers: {
+                  "Content-type": "application/json",
+                  "X-CSRFTOKEN": token,
+                },
+                method: "PUT",
+                body: JSON.stringify({'order': JSON.stringify({}), 'status': false, 'total': 0}),
+              });
+
+
+            document.getElementById(`total`).innerHTML = "Всего: " + 0 + " ₽"
+        },
+
+        sendOrder: async function(){
+            var form = document.getElementById('form');
+            var params = new FormData(form); 
+            token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            const response =  await fetch("/payment/", {
+                headers: {
+                "X-CSRFTOKEN": token,
+                },
+                method: "POST",
+                body: params,
+            });
         }
 
     },

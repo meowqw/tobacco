@@ -30,13 +30,13 @@
                     <div class="product__residue">{{product.product.rest}}</div>
                     <div class="product__calc product-calc">
                       <button class="btn-reset product-calc__btn product-calc__btn--minus" v-on:click="minusCount({{product.product.id}}, {{product.product.price}}, {{products.cat_id}})"></button>
-                      <div class="product-calc__value" id="count_{{product.product.id}}">
+                      <div class="product-calc__value" value="{{product.count}}" id="count_{{product.product.id}}">
                         {{product.count}}
                       </div>
                       <button class="btn-reset product-calc__btn product-calc__btn--plus" v-on:click="plusCount({{product.product.id}}, {{product.product.price}}, {{products.cat_id}})"></button>
                     </div>
                     <div class="product__size">{{product.product.price}} ₽</div>
-                    <div class="product__size-all product__size-all--ordering" id="total_{{product.product.id}}">{{product.total}} ₽</div>
+                    <div class="product__size-all product__size-all--ordering" value="{{product.total}}" id="total_{{product.product.id}}">{{product.total}} ₽</div>
                     <button class="btn-reset product__btn product__btn--close" v-on:click="delItem({{product.product.id}}, {{products.cat_id}})"></button>
                   </li>
                 </ul>
@@ -181,15 +181,15 @@
               </div>
             </li>
           </ul>
-          <div class="ordering__total" id="total">
+          <div class="ordering__total" value="{{ total }}" id="total">
             Всего: {{ total }} ₽
           </div>
         </div>
         <div class="ordering-footer__item">
-          <button class="btn-reset btn-red btn-red--clear">
+          <button class="btn-reset btn-red btn-red--clear" v-on:click="busketClear()">
             Очистить корзину
           </button>
-          <button class="btn-reset btn ordering-footer__btn" onclick="location.href='/payment'">
+          <button class="btn-reset btn ordering-footer__btn" v-on:click="busketNext()">
             Далее
           </button>
         </div>

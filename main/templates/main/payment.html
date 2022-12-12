@@ -2,78 +2,87 @@
 
 {% load static %}
 {% block content %}
-  <main class="main">
+  <main class="main" id='app'>
     <div class="payment__container container">
       <h1 class="payment__title">Оформление заказа {{order_id}} на сумму {{total}} ₽</h1>
-      <form action="#" class="payment-form payment__form form">
+      <form action="#" id='form' class="payment-form payment__form form">
         <ul class="list-reset payment-form__list form__list">
           <li class="payment-form__item form__item">
+            {% csrf_token %}
             <h2 class="payment-form__item-title">Способ получения заказа</h2>
-            <form class="payment-form__item-form">
+            <div class="payment-form__item-form">
               <label class="custom-checkbox payment-form__checkbox">
                 Доставка
                 <input type="radio"
-                       name="radio"
+                       name="radiodelivery"
+                       value="Доставка"
                        class="custom-checkbox__field"
                        checked="checked">
                 <span class="custom-checkbox__content"></span>
               </label>
               <label class="custom-checkbox payment-form__checkbox">
                 Самовывоз
-                <input type="radio" name="radio" class="custom-checkbox__field">
+                <input type="radio" value="Самовывоз" name="radiodelivery" class="custom-checkbox__field">
                 <span class="custom-checkbox__content"></span>
               </label>
-            </form>
+            </div>
           </li>
           <li class="payment-form__item form__item">
             <h2 class="payment-form__item-title">Точка доставки заказа</h2>
-            <form class="payment-form__item-form payment-form__item-form--column">
+            <div class="payment-form__item-form payment-form__item-form--column">
+              {% for address in deliveryAddresses %}
               <label class="custom-checkbox payment-form__checkbox--column">
-                {{account.address}}
+                {{address.address}}
                 <input type="radio"
-                       name="radio"
+                       name="radioaddress"
+                       value="{{address.id}}"
                        class="custom-checkbox__field"
                        checked="checked">
                 <span class="custom-checkbox__content"></span>
               </label>
+              {% endfor %}
               {% comment %} <label class="custom-checkbox payment-form__checkbox--column">
                 Якова Гарелина 2А / 145010, Россия, Иваново / Марракеш Ясень
                 <input type="radio" name="radio" class="custom-checkbox__field">
                 <span class="custom-checkbox__content"></span>
               </label> {% endcomment %}
-            </form>
+            </div>
           </li>
           <li class="payment-form__item form__item">
             <h2 class="payment-form__item-title">Способ оплаты</h2>
-            <form class="payment-form__item-form">
+            <div class="payment-form__item-form">
               <label class="custom-checkbox payment-form__checkbox">
                 Наличными
                 <input type="radio"
-                       name="radio"
+                       name="radiopay"
+                       value="Наличными"
                        class="custom-checkbox__field"
                        checked="checked">
                 <span class="custom-checkbox__content"></span>
               </label>
               <label class="custom-checkbox payment-form__checkbox">
                 Расчетный
-                <input type="radio" name="radio" class="custom-checkbox__field">
+                <input type="radio" name="radiopay" value="Расчетный" class="custom-checkbox__field">
                 <span class="custom-checkbox__content"></span>
               </label>
-            </form>
+            </div>
           </li>
           <li class="payment-form__item form__item">
             <h2 class="payment-form__item-title">Комментарий к заказу</h2>
-            <form class="payment-form__item-form">
+            <div class="payment-form__item-form">
               <textarea class="payment-form__textarea"
                         placeholder="Введите комментарии"
                         name="comment"></textarea>
-            </form>
+            </div>
+            
           </li>
+          
         </ul>
-        <div class="payment-form__bottom">
-          <button class="btn-reset form__btn btn payment-form__btn" data-btn-popup>Оформить заказ</button>
-        </div>
+        
       </form>
+      <div class="payment-form__bottom">
+        <button class="btn-reset form__btn btn payment-form__btn" @click="sendOrder()" data-btn-popup>Оформить заказ</button>
+      </div>
     </div>
   </main>
   <div class="popup-payment" data-main-popup>
