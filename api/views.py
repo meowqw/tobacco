@@ -17,7 +17,7 @@ from .serializers import *
 # Create your views here.
 class ProductAPIList(generics.ListCreateAPIView):
     """
-    GET and POST request
+    GET and POST request PRODUCT LIST
     """
     
 
@@ -29,7 +29,7 @@ class ProductAPIList(generics.ListCreateAPIView):
 
 class SubcategoryAPIList(generics.ListCreateAPIView):
     """
-    GET and POST request
+    GET and POST request SUBCATEGORY LIST
     """
     
 
@@ -41,6 +41,9 @@ class SubcategoryAPIList(generics.ListCreateAPIView):
 
 
 class ProductByCategoryAPIView(APIView):
+    """
+    GET ProductByCategory
+    """
     def get(self, request, *args, **kwargs):
         cat = kwargs.get("cat", None)
         product = Product.objects.filter(category=cat).all()
@@ -50,7 +53,7 @@ class ProductByCategoryAPIView(APIView):
 
 class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
     """
-    UPDATE request
+    UPDATE request PRODUCT LIST
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -60,7 +63,7 @@ class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
 
 class OrderAPIList(APIView):
     """
-    GET and POST request
+    GET and POST request ORDER
     """
     def get(self, request, *args, **kwargs):
         order = Order.objects.filter(user=request.user).all()
@@ -80,7 +83,7 @@ class OrderAPIList(APIView):
 
 class OrderAPIUpdate(generics.RetrieveUpdateAPIView):
     """
-    UPDATE request
+    UPDATE request ORDER
     """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -89,7 +92,7 @@ class OrderAPIUpdate(generics.RetrieveUpdateAPIView):
 
 class OrderAPIDestroy(generics.RetrieveDestroyAPIView):
     """
-    DELETE request
+    DELETE request ORDER
     """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

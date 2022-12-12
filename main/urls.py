@@ -13,9 +13,6 @@ urlpatterns = [
     path('payment/', payment, name='payment'),
     path('basket/', basket, name='basket'),
     path('logout/', logout_, name='logout'),
-
-
-    path('categories/<int:itemid>/', categories)
 ]
 
 

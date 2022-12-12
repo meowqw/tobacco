@@ -1,3 +1,4 @@
+// Display product list on catalog page
 Vue.component('app-products', {
     props: {
         products: [],
@@ -11,6 +12,7 @@ Vue.component('app-products', {
     },
     methods: {
         countPlus(id, price) {
+            // + count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             this.order[id] = { 'total': this.order[id].total + price, 'count': this.order[id].count + 1 }
 
@@ -20,6 +22,7 @@ Vue.component('app-products', {
             localStorage.setItem("order", JSON.stringify(this.order))
         },
         countMinus(id, price) {
+            // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id].count > 0) {
                 this.order[id] = { 'total': this.order[id].total - price, 'count': this.order[id].count - 1}
@@ -31,6 +34,7 @@ Vue.component('app-products', {
     },
     watch: {
         products: function () {
+            // + get current order from base app
             this.order = this.products[0].order;
         }
     },
@@ -177,30 +181,39 @@ new Vue({
     el: '#app',
     data: {
         products: [{'category': 'Нет'}],
+
+        // totals 
         total: 0,
         totalOne: 0,
         totalTwo: 0,
         totalThree: 0,
+
         availability: 'Все',
         weight: 'Вес',
 
+        // current order list
         currentOrderId: '',
         status: []
     },
     methods: {
+        // get product list by category
         getContent(id) {
+            // GET REQUEST to /api/v1/productbycat/{id}
             axios
                 .get(`/api/v1/productbycat/${id}`)
                 .then(response => (this.contentController(response.data.products)));
         },
 
+        // get order id by user id (user id from backend)
         getOrderId() {
+            // GET REQUEST to /api/v1/order/
             req = axios.get(`/api/v1/order/`)
             resData = req.then((response) => response.data.orders[0].id);
             return resData;
                 
         },
 
+        // adding products to the list for later display in app-products
         contentController(content) {
             var products = [];
             if (content.length > 0) {
@@ -214,20 +227,13 @@ new Vue({
                 this.products = products;
             }
         },
+        // now working
         filterAvailability(id) {
             console.log(id)
             console.log(this.availability);
         },
-        getCookie(name) {
-            let cookie = {};
-            document.cookie.split(";").forEach(function (el) {
-              let [k, v] = el.split("=");
-              cookie[k.trim()] = v;
-            });
-            console.log(cookie[name])
-            return cookie[name];
-          },
-
+        
+        // request on create order (Intermediate) and redirect to basket
         createOrder: async function (event) {
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', ''))
@@ -239,7 +245,7 @@ new Vue({
                         order[key] = JSON.parse(localStorage.order)[key]
                     }
                   }
-
+                // POST REQUEST to /api/v1/order/
                 const response =  await fetch("/api/v1/order/", {
                     headers: {
                     "Content-type": "application/json",
@@ -252,8 +258,9 @@ new Vue({
                 location.href = '/basket'
             }
         },
+        // - quantity of goods on BASKET PAGE (changing variables on the page by id)
+        // needs optimization !!
         minusCount: function (id, price, catId){
-            console.log(id)
             currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
             console.log(currentCount)
             document.getElementById(`count_${id}`).innerHTML = currentCount - 1
@@ -270,8 +277,9 @@ new Vue({
             document.getElementById(`total`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
 
         },
+        // + quantity of goods on BASKET PAGE (changing variables on the page by id)
+        // needs optimization !!
         plusCount: function (id, price, catId){
-            console.log(id)
             currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
             console.log(currentCount)
             document.getElementById(`count_${id}`).innerHTML = currentCount + 1
@@ -289,6 +297,7 @@ new Vue({
             
         },
 
+        // del product item on BASKET PAGE
         delItem: function(id, catId) {
             
             current = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
@@ -302,6 +311,7 @@ new Vue({
             document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal - current) + " ₽"
         },
 
+        // save the current state of the order and redirect to the payment page
         busketNext: async function(event) {
             
             var orderId = await this.getOrderId();
@@ -321,6 +331,7 @@ new Vue({
             console.log(order)
             console.log(allTotal)
            
+            // PUT REQUEST to /api/v1/order/{id}
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             const response = await fetch(`/api/v1/order/${orderId}/`, {
                 headers: {
@@ -335,6 +346,7 @@ new Vue({
             location.href = '/payment'
         },
 
+        // clear busket (delete all products)
         busketClear: async function() {
             var orderId = await this.getOrderId();
             allCategory = document.getElementsByClassName("ordering__item ordering-item")
@@ -342,6 +354,7 @@ new Vue({
                 allCategory[i].remove()
             }
 
+            // PUT REQUEST to /api/v1/order/{id}
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             const response = await fetch(`/api/v1/order/${orderId}/`, {
                 headers: {
@@ -356,6 +369,7 @@ new Vue({
             document.getElementById(`total`).innerHTML = "Всего: " + 0 + " ₽"
         },
 
+        // request to create USER ORDER 
         sendOrder: async function(){
             var form = document.getElementById('form');
             var params = new FormData(form); 

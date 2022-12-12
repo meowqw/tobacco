@@ -7,7 +7,6 @@ from django.contrib.auth.hashers import check_password
 
 class UserBackend(ModelBackend):
     '''Custom authentication backend'''
-
     def authenticate(self, request, email=None, password=None):
         try:
             user = User.objects.get(username=email)

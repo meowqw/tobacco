@@ -10,7 +10,7 @@ import json
 
 @login_required
 def main(request):
-
+    """Main page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
     categories = Category.objects.all()
 
@@ -18,7 +18,7 @@ def main(request):
 
 
 def auth(request):
-
+    """Authentication"""
     if request.method == 'POST':
 
         email = request.POST['email']
@@ -37,7 +37,7 @@ def auth(request):
 
 @login_required
 def banners(request):
-
+    """Banners page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
     categories = Category.objects.all()
     banners = Banners.objects.all()
@@ -47,16 +47,19 @@ def banners(request):
 
 @login_required
 def payment(request):
+    """Payment page"""
     orders = Order.objects.filter(user=request.user).first()
     account = Account.objects.filter(user=request.user.id).first()
     deliveryAddresses = DeliveryAddresses.objects.all()
     total = 0
 
+    # get current order
     for item in json.loads(orders.order):
         item_data = json.loads(orders.order)[item]
         cat_total = item_data['total']
         total += cat_total
 
+    # Create USER ORDER
     if request.method == 'POST':
         comment = request.POST.get('comment')
         delivery = request.POST.get('radiodelivery')
@@ -81,16 +84,18 @@ def payment(request):
 
 @login_required
 def basket(request):
+    """Basket page"""
+
     order = {}
     orders = Order.objects.filter(user=request.user).first()
     total = 0
-    # print(json.loads(orders))
+
+    # get current state of order
     for item in json.loads(orders.order):
         item_id = Product.objects.get(id=item)
         item_data = json.loads(orders.order)[item]
         cat_total = item_data['total']
         total += cat_total
-        # category_total += total
         category = item_id.category.parent_category.name
         if category not in order:
             order[category] = {'total': cat_total, 'cat_id': item_id.category.parent_category.id,
@@ -105,7 +110,7 @@ def basket(request):
 
 @login_required
 def account(request):
-
+    """Account page"""
     account = Account.objects.filter(user=request.user.id).first()
     deliveryAddresses = DeliveryAddresses.objects.all()
     orders = UserOrder.objects.filter(user=request.user).all()
@@ -114,16 +119,8 @@ def account(request):
     return render(request, 'main/account.html', {'account': account, 'deliveryAddresses': deliveryAddresses, "orders": orders})
 
 
-@login_required
-def categories(request, itemid):
-
-    if itemid > 10:
-        return redirect('main', permanent=True)
-
-    return HttpResponse(f'categories {itemid}')
-
-
 def pageNotFound(request, exception):
+    """404"""
     return redirect('auth')
 
 
