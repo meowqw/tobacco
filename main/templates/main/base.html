@@ -150,18 +150,12 @@
             <ul class="list-reset menu__list">
               <li class="menu__item">
                 <h2 class="menu__title">Аксессуары для кальяна</h2>
-                <a href="#" class="menu__link">Жидкости для чистки кальяна</a>
-                <a href="#" class="menu__link">Кадило</a>
-                <a href="#" class="menu__link">Калауд</a>
-                <a href="#" class="menu__link">Колбы</a>
-                <a href="#" class="menu__link">Колпаки</a>
-                <a href="#" class="menu__link">Комплектующие для кальяна</a>
-                <a href="#" class="menu__link">Мелассоуловители</a>
-                <a href="#" class="menu__link">Мундштуки</a>
-                <a href="#" class="menu__link">Плиты</a>
-                <a href="#" class="menu__link">Чаши</a>
-                <a href="#" class="menu__link">Шланги</a>
-                <a href="#" class="menu__link">Щипцы</a>
+                {% for subcategory in subcategories %}
+                  {% if subcategory.parent_category == "Аксессуары для кальяна"%}
+                  <a href="#" class="menu__link">{{subcategory.name}}</a>
+                  
+                  {% endif %}
+                {% endfor %}
               </li>
               <li class="menu__item">
                 <a href="#" class="menu__link menu__link--btn">Кальяны</a>
@@ -172,7 +166,7 @@
                 <h2 class="menu__title">
                   Табак для кальяна
                 </h2>
-                <a href="#" class="menu__link">Absolute T</a>
+                <a class="menu__link" @click="getContent(1)">Core</a>
                 <a href="#" class="menu__link">B3</a>
                 <a href="#" class="menu__link">BlackBurn</a>
                 <a href="#" class="menu__link">Brusko БКС</a>
