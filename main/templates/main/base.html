@@ -151,9 +151,8 @@
               <li class="menu__item">
                 <h2 class="menu__title">Аксессуары для кальяна</h2>
                 {% for subcategory in subcategories %}
-                  {% if subcategory.parent_category == "Аксессуары для кальяна"%}
-                  <a href="#" class="menu__link">{{subcategory.name}}</a>
-                  
+                  {% if subcategory.parent_category.name == "Аксессуары для кальяна" %}
+                  <a href="#" class="menu__link">{{ subcategory.name }}</a>
                   {% endif %}
                 {% endfor %}
               </li>
@@ -166,23 +165,11 @@
                 <h2 class="menu__title">
                   Табак для кальяна
                 </h2>
-                <a class="menu__link" @click="getContent(1)">Core</a>
-                <a href="#" class="menu__link">B3</a>
-                <a href="#" class="menu__link">BlackBurn</a>
-                <a href="#" class="menu__link">Brusko БКС</a>
-                <a href="#" class="menu__link">Brusko Табак</a>
-                <a href="#" class="menu__link">Chabacco</a>
-                <a href="#" class="menu__link">D-TOBACCO</a>
-                <a href="#" class="menu__link">Daly</a>
-                <a href="#" class="menu__link">Duft</a>
-                <a href="#" class="menu__link">Element</a>
-                <a href="#" class="menu__link">Endorphin</a>
-                <a href="#" class="menu__link">Frigate</a>
-                <a href="#" class="menu__link">Must Have</a>
-                <a href="#" class="menu__link">NАШ</a>
-                <a href="#" class="menu__link">Plazma</a>
-                <a href="#" class="menu__link">Sebero</a>
-                <a href="#" class="menu__link">Spectrum</a>
+                {% for subcategory in subcategories %}
+                  {% if subcategory.parent_category.name == "Табак для кальяна" %}
+                    <a class="menu__link js-modal-close" @click="getContent(1)">{{ subcategory.name }}</a>
+                  {% endif %}
+                {% endfor %}
               </li>
               <div class="menu__debug">
                 <a href="#" class="menu__link menu__link--debug">Уголь</a>
@@ -190,30 +177,22 @@
                   <h2 class="menu__title">
                     Pod-системы
                   </h2>
-                  <a href="#" class="menu__link">BRUSKO Pod</a>
-                  <a href="#" class="menu__link">Element Pod</a>
-                  <a href="#" class="menu__link">Geek Vape Aegis</a>
-                  <a href="#" class="menu__link">HQD</a>
-                  <a href="#" class="menu__link">JUUL</a>
-                  <a href="#" class="menu__link">SMOANT</a>
-                  <a href="#" class="menu__link">Картриджи</a>
+                  {% for subcategory in subcategories %}
+                  {% if subcategory.parent_category.name == "Pod-системы" %}
+                    <a class="menu__link" @click="getContent(1)">{{ subcategory.name }}</a>
+                  {% endif %}
+                {% endfor %}
                 </li>
               </div>
               <li class="menu__item">
                 <h2 class="menu__title">
                   Жидкости
                 </h2>
-                <a href="#" class="menu__link">BOSHKI</a>
-                <a href="#" class="menu__link">BRUSKO Salt</a>
-                <a href="#" class="menu__link">DABBLER</a>
-                <a href="#" class="menu__link">HQD</a>
-                <a href="#" class="menu__link">HUSKY</a>
-                <a href="#" class="menu__link">IZI</a>
-                <a href="#" class="menu__link">MISHKA</a>
-                <a href="#" class="menu__link">MONSTERVAPOR</a>
-                <a href="#" class="menu__link">MORS</a>
-                <a href="#" class="menu__link">SKALA</a>
-                <a href="#" class="menu__link">HOTSPOT</a>
+                {% for subcategory in subcategories %}
+                  {% if subcategory.parent_category.name == "Жидкости" %}
+                    <a class="menu__link" @click="getContent(1)">{{ subcategory.name }}</a>
+                  {% endif %}
+                {% endfor %}
               </li>
             </ul>
           </div>
@@ -222,12 +201,13 @@
     </div>
     <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
+   
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     <script src="{% static 'main/js/app.js' %}"></script>
-   
+    
   </body>
   
 </html>

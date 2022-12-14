@@ -48,6 +48,8 @@ def banners(request):
 @login_required
 def payment(request):
     """Payment page"""
+    subcategories = Subcategory.objects.all().order_by('parent_category_id')
+
     orders = Order.objects.filter(user=request.user).first()
     account = Account.objects.filter(user=request.user.id).first()
     deliveryAddresses = DeliveryAddresses.objects.all()
@@ -79,12 +81,13 @@ def payment(request):
                                  )
         
 
-    return render(request, 'main/payment.html', {'total': total, 'order_id': orders.id, 'account': account, 'deliveryAddresses': deliveryAddresses})
+    return render(request, 'main/payment.html', {'total': total, 'order_id': orders.id, 'account': account, 'deliveryAddresses': deliveryAddresses, 'subcategories': subcategories})
 
 
 @login_required
 def basket(request):
     """Basket page"""
+    subcategories = Subcategory.objects.all().order_by('parent_category_id')
 
     order = {}
     orders = Order.objects.filter(user=request.user).first()
@@ -105,18 +108,20 @@ def basket(request):
                 {'product': item_id, 'count': item_data['count'], 'total': item_data['total']})
             order[category]['total'] += cat_total
 
-    return render(request, 'main/basket.html', {'order': order, 'total': total})
+    return render(request, 'main/basket.html', {'order': order, 'total': total, 'subcategories': subcategories})
 
 
 @login_required
 def account(request):
     """Account page"""
+    subcategories = Subcategory.objects.all().order_by('parent_category_id')
+
     account = Account.objects.filter(user=request.user.id).first()
     deliveryAddresses = DeliveryAddresses.objects.all()
     orders = UserOrder.objects.filter(user=request.user).all()
 
 
-    return render(request, 'main/account.html', {'account': account, 'deliveryAddresses': deliveryAddresses, "orders": orders})
+    return render(request, 'main/account.html', {'account': account, 'deliveryAddresses': deliveryAddresses, "orders": orders, 'subcategories': subcategories})
 
 
 def pageNotFound(request, exception):

@@ -1,3 +1,4 @@
+
 // Display product list on catalog page
 Vue.component('app-products', {
     props: {
@@ -20,34 +21,92 @@ Vue.component('app-products', {
             
             localStorage.total = localStorage.total + this.order[id].total
             localStorage.setItem("order", JSON.stringify(this.order))
+            console.log(this.order)
         },
         countMinus(id, price) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id].count > 0) {
                 this.order[id] = { 'total': this.order[id].total - price, 'count': this.order[id].count - 1}
+
+                document.getElementById('total').innerHTML =  (current - price) + ' ₽'
+                localStorage.total = localStorage.total - this.order[id].total
+                localStorage.setItem("order", JSON.stringify(this.order))
+            } else {
+                var calc = document.getElementById('calc_'+id)
+                var add = document.getElementById('add_'+id)
+                calc.style.display = "none"
+                add.style.display = ""
             }
-            document.getElementById('total').innerHTML =  (current - price) + ' ₽'
-            localStorage.total = localStorage.total - this.order[id].total
-            localStorage.setItem("order", JSON.stringify(this.order))
+            
+        },
+        displayProductList(id) {
+            var el = document.getElementById(id)
+            if (el.style.display == "none") {
+                el.style.display = "block"
+            } else {
+                el.style.display = "none"
+            }
+        },
+        displayProducts(id) {
+            console.log('123')
+            var el = document.getElementById(id + "_products")
+            if (el.style.display == "none") {
+                el.style.display = "block"
+            } else {
+                el.style.display = "none"
+            }
+        },
+        displayCalc(id) {
+            var add = document.getElementById('add_'+id)
+            var calc = document.getElementById('calc_'+id)
+            add.style.display = "none"
+            calc.style.display = ""
+            
+
         }
     },
+ 
+
     watch: {
         products: function () {
+            order = {}
+            for (var id in this.products) {
+                for (var i = 0; i < Object.keys(this.products[id].order).length; i++) {
+                    // this.order[]
+                    // if (Object.keys(this.products[id].order)[i] in this.order != true) {
+                        order[Object.keys(this.products[id].order)[i]] = this.products[id].order[Object.keys(this.products[id].order)[i]]
+                    // }
+                    
+                } 
+                
+            }
+            for (var i = 0; i < Object.keys(this.order).length; i++) {
+                order[Object.keys(this.order)[i]] = this.order[Object.keys(this.order)[i]]
+            }
+            this.order = order
+
+            // this.order = this.products[0].order
             // + get current order from base app
-            this.order = this.products[0].order;
+            // console.log(this.products)
+            // for (var i = 0; i < this.products.length; i++) {
+            //     
+            // }
+            // console.log(this.order)
         }
     },
 
 
-    template: `<div class="main-content__body main-body">
-    <ul class="list-reset main-body__list accordion" v-for="product in products">
+    template: `
+    <div class="main-content__body main-body">
+    <ul class="list-reset main-body__list accordion" style="margin-top: 20px;" v-for="product in products">
         <li class="main-body__item accordion-item">
-            <button class="btn-reset btn--accordion main-body__accordion accordion-header">{{ product.category }}</button>
-            <div class="main-body__panel">
-                <ul class="list-reset main-body__sublist accordion accordion-child">
-                    <li class="main-body__subitem accordion-item">
-                        <button class="btn-reset btn--accordion main-body__accordion accordion-header">
+            <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">{{ product.category }}</button>
+            <div class="main-body__panel" >
+            
+                <ul class="list-reset main-body__sublist accordion accordion-child" >
+                    <li class="main-body__subitem accordion-item" :id="product.category"   style="display:none">
+                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(product.category)">
                             Список товаров
                             <div class="tooltip">
                                 <img loading="lazy" src="/static/main/img/tooltip.svg" class="image" width="20" height="20"
@@ -60,9 +119,9 @@ Vue.component('app-products', {
                                 </span>
                             </div>
                         </button>
-                        <div class="main-body__panel">
-                            <ul class="list-reset main-body__sublist" v-for="item in product.content">
-                                <li class="main-body__subitem">
+                        <div class="main-body__panel" :id="product.category + '_products'" style="display:block">
+                            <ul class="list-reset main-body__sublist" v-for="item in product.content" style="margin-top:10px;">
+                                <li class="main-body__subitem" >
                                     <div class="product product--main accordion" id="product-1">
                                         <div class="product__items">
                                             <div class="product__left">
@@ -90,7 +149,13 @@ Vue.component('app-products', {
                                                 <li class="product__right-item product__right-item--main ">
                                                     <button class="btn-reset product__presence">{{ item.availability.name }}</button>
                                                     <div class="product__residue">{{ item.rest }}</div>
-                                                    <div class="product__calc product-calc">
+
+                                                    <button @click="displayCalc(item.id)" :id="'add_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                    <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
+                                                        Добавить
+                                                    </button>
+
+                                                    <div class="product__calc product-calc" :id="'calc_'+item.id" style="display:none">
                                                     
                                                         <button
                                                             class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
@@ -172,7 +237,8 @@ Vue.component('app-products', {
             </div>
         </li>
     </ul>
-</div>`
+</div>
+`
 
 });
 
@@ -180,7 +246,8 @@ new Vue({
     delimiters: ['{*', '*}'],
     el: '#app',
     data: {
-        products: [{'category': 'Нет'}],
+        products: [],
+        openedCategory: [],
 
         // totals 
         total: 0,
@@ -196,8 +263,14 @@ new Vue({
         status: []
     },
     methods: {
+        
         // get product list by category
         getContent(id) {
+            // redirect to main page if current url is not main
+            if (location.href.split('/')[location.href.split('/').length - 2] != 'main') {
+                location.href = '/main/';
+            }
+
             // GET REQUEST to /api/v1/productbycat/{id}
             axios
                 .get(`/api/v1/productbycat/${id}`)
@@ -215,7 +288,7 @@ new Vue({
 
         // adding products to the list for later display in app-products
         contentController(content) {
-            var products = [];
+            var products = this.products;
             if (content.length > 0) {
                 var order = {};
                 for (i = 0; i < content.length; i++) {
@@ -223,8 +296,17 @@ new Vue({
                 }
 
                 categoryName = content[0]['category']['name'];
-                products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total });
-                this.products = products;
+                if (this.openedCategory.includes(categoryName) == false) {
+                    products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total });
+                    this.products = products;
+
+                    // check category is opened
+                    this.openedCategory.push(categoryName);
+                }
+                
+                
+
+                
             }
         },
         // now working
@@ -274,7 +356,7 @@ new Vue({
             document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+            document.getElementById(`total`).innerHTML = "Всего: " + (total - price) + " ₽"
 
         },
         // + quantity of goods on BASKET PAGE (changing variables on the page by id)
@@ -293,7 +375,7 @@ new Vue({
             document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal + price) + " ₽"
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal + price) + " ₽"
+            document.getElementById(`total`).innerHTML = "Всего: " + (total + price) + " ₽"
             
         },
 
@@ -308,7 +390,7 @@ new Vue({
             document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - current) + " ₽"
 
             total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Всего: " + (currentCatTotal - current) + " ₽"
+            document.getElementById(`total`).innerHTML = "Всего: " + (total - current) + " ₽"
         },
 
         // save the current state of the order and redirect to the payment page
