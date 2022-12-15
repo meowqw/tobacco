@@ -57,14 +57,46 @@ Vue.component('app-products', {
                 el.style.display = "none"
             }
         },
-        displayCalc(id) {
-            var add = document.getElementById('add_'+id)
-            var calc = document.getElementById('calc_'+id)
+        displayCalc(id, availability) {
+            if (availability == "stock") {
+                var add = document.getElementById('add_'+id)
+                var calc = document.getElementById('calc_'+id)
+            } else if (availability == "way") {
+                var add = document.getElementById('add_way_'+id)
+                var calc = document.getElementById('calc_way_'+id)
+            } else if (availability == "remote") {
+                var add = document.getElementById('add_remote_'+id)
+                var calc = document.getElementById('calc_remote_'+id)
+            }
+
             add.style.display = "none"
             calc.style.display = ""
-            
+        },
 
+        inputCount(id, price) {
+            // control count, price and total by input
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            input = document.getElementById('input_'+id)
+            
+            this.order[id] = { 'total': Number(input.value)*price, 'count': Number(input.value)}
+
+            var total = 0
+            for (var i in this.order) {
+                total += this.order[i].total
+            }
+
+            document.getElementById('total').innerHTML =  (total) + ' ₽'
+            
+        },
+        displayAvailabilityList(id) {
+            availabilityList = document.getElementById('availabilityList_'+id)
+            if (availabilityList.style.display == 'none') {
+                availabilityList.style.display = ''
+            } else {
+                availabilityList.style.display = 'none'
+            }
         }
+        
     },
  
 
@@ -85,25 +117,18 @@ Vue.component('app-products', {
                 order[Object.keys(this.order)[i]] = this.order[Object.keys(this.order)[i]]
             }
             this.order = order
-
-            // this.order = this.products[0].order
-            // + get current order from base app
-            // console.log(this.products)
-            // for (var i = 0; i < this.products.length; i++) {
-            //     
-            // }
-            // console.log(this.order)
         }
     },
 
 
     template: `
     <div class="main-content__body main-body">
+    <div id="result"></div>
     <ul class="list-reset main-body__list accordion" style="margin-top: 20px;" v-for="product in products">
         <li class="main-body__item accordion-item">
             <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">{{ product.category }}</button>
             <div class="main-body__panel" >
-            
+                
                 <ul class="list-reset main-body__sublist accordion accordion-child" >
                     <li class="main-body__subitem accordion-item" :id="product.category"   style="display:none">
                         <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(product.category)">
@@ -147,25 +172,25 @@ Vue.component('app-products', {
                                             </div>
                                             <ul class="list-reset product__right-list">
                                                 <li class="product__right-item product__right-item--main ">
-                                                    <button class="btn-reset product__presence">{{ item.availability.name }}</button>
-                                                    <div class="product__residue">{{ item.rest }}</div>
+                                                    <button class="btn-reset product__presence" @click="displayAvailabilityList(item.id)">В наличии</button>
+                                                    <div class="product__residue">{{ item.availability.in_stock_rest }}</div>
 
-                                                    <button @click="displayCalc(item.id)" :id="'add_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                    <button @click="displayCalc(item.id, 'stock')" :id="'add_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                     <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
                                                         Добавить
                                                     </button>
 
                                                     <div class="product__calc product-calc" :id="'calc_'+item.id" style="display:none">
                                                     
-                                                        <button
-                                                            class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
-                                                        <div class="product-calc__value">
-                                                            {{ order[item.id].count }} 
-                                                            <span>14 блоков 6 шт</span>
-                                                        </div>
+                                                    <button
+                                                        class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                    <div class="product-calc__value">
+                                                        <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
                                                         
-                                                        <button
-                                                            class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
+                                                    </div>
+                                                    
+                                                    <button
+                                                        class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
                                                     </div>
                                                     <div class="product__size">{{ item.price }} ₽</div>
                                                     <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
@@ -173,61 +198,59 @@ Vue.component('app-products', {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="product-accordion-content">
+                                    <div class="product-accordion-content product-accordion-content--open" :id="'availabilityList_'+item.id" style="display:none">
                                         <ul class="list-reset product__right-list product__right-list--accordion">
                                             <li class="product__right-item">
-                                                <div class="product__presence product__presence--ordering">В наличии
+                                                <div class="product__presence product__presence--blue">В пути
                                                 </div>
-                                                <div class="product__residue">Много</div>
-                                                <div class="product__calc product-calc">
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--minus"></button>
-                                                    <div class="product-calc__value">
-                                                        146
-                                                        <span>14 блоков 6 шт</span>
-                                                    </div>
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--plus"></button>
+                                                <div class="product__residue">{{ item.availability.on_way_rest }}</div>
+                                                <button @click="displayCalc(item.id, 'way')" :id="'add_way_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
+                                                    Добавить
+                                                </button>
+
+                                                <div class="product__calc product-calc" :id="'calc_way_'+item.id" style="display:none">
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                <div class="product-calc__value">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
+                                                    
                                                 </div>
-                                                <div class="product__size">80 ₽</div>
-                                                <div class="product__size-all product__size-all--ordering">4 720 ₽</div>
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
+                                                </div>
+                                                <div class="product__size">{{ item.price }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
                                             </li>
                                             <li class="product__right-item">
-                                                <div class="product__presence product__presence--ordering">В наличии
+                                                <div class="product__presence product__presence--orange">Удаленный склад
                                                 </div>
-                                                <div class="product__residue">Много</div>
-                                                <div class="product__calc product-calc">
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--minus"></button>
-                                                    <div class="product-calc__value">
-                                                        146
-                                                        <span>14 блоков 6 шт</span>
-                                                    </div>
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--plus"></button>
+                                                <div class="product__residue">{{ item.availability.remote_rest }}</div>
+                                                <button @click="displayCalc(item.id, 'remote')" :id="'add_remote_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
+                                                    Добавить
+                                                </button>
+
+                                                <div class="product__calc product-calc" :id="'calc_remote_'+item.id" style="display:none">
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                <div class="product-calc__value">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
+                                                    
                                                 </div>
-                                                <div class="product__size">80 ₽</div>
-                                                <div class="product__size-all product__size-all--ordering">4 720 ₽</div>
-                                            </li>
-                                            <li class="product__right-item">
-                                                <div class="product__presence product__presence--ordering">В наличии
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
                                                 </div>
-                                                <div class="product__residue">Много</div>
-                                                <div class="product__calc product-calc">
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--minus"></button>
-                                                    <div class="product-calc__value">
-                                                        146
-                                                        <span>14 блоков 6 шт</span>
-                                                    </div>
-                                                    <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--plus"></button>
-                                                </div>
-                                                <div class="product__size">80 ₽</div>
-                                                <div class="product__size-all product__size-all--ordering">4 720 ₽</div>
+                                                <div class="product__size">{{ item.price }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
                                             </li>
                                         </ul>
                                     </div>
+                                    
                                 </li>
                                 
                             </ul>

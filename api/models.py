@@ -2,18 +2,37 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 
+
+class Availability(models.Model):
+    """Availability of a product"""
+    in_stock_rest = models.IntegerField('Остаток в наличии', blank=True, null=True)
+    on_way_rest = models.IntegerField('Остаток в пути', blank=True, null=True)
+    remote_rest = models.IntegerField('Остаток в удаленный склад', blank=True, null=True)
+    time_create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"В наличии: {self.in_stock_rest}\nВ пути: {self.on_way_rest}\nУдаленный склад: {self.remote_rest}"
+
+    class Meta:
+        verbose_name = 'Доступность'
+        verbose_name_plural = 'Доступность товаров'
+
+
 # Create your models here.
 class Product(models.Model):
     """Product model"""
     name = models.CharField('Наименование', max_length=40, blank=True)
     img = models.ImageField('Изображение', upload_to="img/%Y/%m/%d", blank=True)
-    rest = models.IntegerField('Остаток', blank=True)
+    # rest = models.IntegerField('Остаток', blank=True)
     price = models.IntegerField('Цена', blank=True)
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
 
-    availability = models.ForeignKey('Availability', on_delete=models.PROTECT, null=True)  # наличие
+    # avalability
+    availability = models.ForeignKey(Availability, on_delete=models.PROTECT) #
+
+
     category = models.ForeignKey('Subcategory', on_delete=models.PROTECT, null=True)
     product_status = models.ForeignKey('ProductStatus', on_delete=models.PROTECT, null=True)  # статус товара(new, sale..)
 
@@ -24,19 +43,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Список товаров'
-
-
-class Availability(models.Model):
-    """Availability of a product"""
-    name = models.CharField('Название', max_length=30)
-    time_create = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Доступность'
-        verbose_name_plural = 'Доступность товаров'
 
 
 class Category(models.Model):
