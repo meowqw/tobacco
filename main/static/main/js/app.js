@@ -12,29 +12,35 @@ Vue.component('app-products', {
         }
     },
     methods: {
-        countPlus(id, price) {
+        countPlus(id, price, availability) {
             // + count product
-            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            this.order[id] = { 'total': this.order[id].total + price, 'count': this.order[id].count + 1 }
 
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1}
+
+            // total in head
             document.getElementById('total').innerHTML =  (current + price) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML =  (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
             
-            localStorage.total = localStorage.total + this.order[id].total
+            // localStorage.total = localStorage.total + this.order[id].total
             localStorage.setItem("order", JSON.stringify(this.order))
             console.log(this.order)
+            
         },
-        countMinus(id, price) {
+        countMinus(id, price, availability) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            if (this.order[id].count > 0) {
-                this.order[id] = { 'total': this.order[id].total - price, 'count': this.order[id].count - 1}
+            if (this.order[id][availability].count > 0) {
+                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1}
 
                 document.getElementById('total').innerHTML =  (current - price) + ' ₽'
-                localStorage.total = localStorage.total - this.order[id].total
+                document.getElementById(`total_${availability}`).innerHTML =  (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
+                
+                // localStorage.total = localStorage.total - this.order[id].total
                 localStorage.setItem("order", JSON.stringify(this.order))
             } else {
-                var calc = document.getElementById('calc_'+id)
-                var add = document.getElementById('add_'+id)
+                var calc = document.getElementById(`calc_${availability}_${id}`)
+                var add = document.getElementById(`add_${availability}_${id}`)
                 calc.style.display = "none"
                 add.style.display = ""
             }
@@ -59,8 +65,8 @@ Vue.component('app-products', {
         },
         displayCalc(id, availability) {
             if (availability == "stock") {
-                var add = document.getElementById('add_'+id)
-                var calc = document.getElementById('calc_'+id)
+                var add = document.getElementById('add_stock_'+id)
+                var calc = document.getElementById('calc_stock_'+id)
             } else if (availability == "way") {
                 var add = document.getElementById('add_way_'+id)
                 var calc = document.getElementById('calc_way_'+id)
@@ -73,19 +79,29 @@ Vue.component('app-products', {
             calc.style.display = ""
         },
 
-        inputCount(id, price) {
+        inputCount(id, price, availability) {
             // control count, price and total by input
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            input = document.getElementById('input_'+id)
+            input = document.getElementById(`input_${availability}_${id}`)
             
-            this.order[id] = { 'total': Number(input.value)*price, 'count': Number(input.value)}
+            this.order[id][availability] = { 'total': Number(input.value)*price, 'count': Number(input.value)}
 
+            // totals in head 
             var total = 0
+            var total_way = 0
+            var total_stock = 0
+            var total_remote = 0
             for (var i in this.order) {
-                total += this.order[i].total
+                total_way += this.order[i]['way'].total
+                total_stock += this.order[i]['stock'].total
+                total_remote += this.order[i]['remote'].total
+                total += this.order[i]['remote'].total + this.order[i]['way'].total + this.order[i]['stock'].total
             }
 
-            document.getElementById('total').innerHTML =  (total) + ' ₽'
+            document.getElementById(`total_way`).innerHTML = (total_way) + ' ₽'
+            document.getElementById(`total_stock`).innerHTML = (total_stock) + ' ₽'
+            document.getElementById(`total_remote`).innerHTML = (total_remote) + ' ₽'
+            document.getElementById('total').innerHTML = (total) + ' ₽'
             
         },
         displayAvailabilityList(id) {
@@ -175,25 +191,25 @@ Vue.component('app-products', {
                                                     <button class="btn-reset product__presence" @click="displayAvailabilityList(item.id)">В наличии</button>
                                                     <div class="product__residue">{{ item.availability.in_stock_rest }}</div>
 
-                                                    <button @click="displayCalc(item.id, 'stock')" :id="'add_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                    <button @click="displayCalc(item.id, 'stock')" :id="'add_stock_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                     <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
                                                         Добавить
                                                     </button>
 
-                                                    <div class="product__calc product-calc" :id="'calc_'+item.id" style="display:none">
+                                                    <div class="product__calc product-calc" :id="'calc_stock_'+item.id" style="display:none">
                                                     
                                                     <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                        class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'stock')"></button>
                                                     <div class="product-calc__value">
-                                                        <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
+                                                        <input type="number" @keyup.enter="inputCount(item.id, item.price, 'stock')" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
                                                         
                                                     </div>
                                                     
                                                     <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
+                                                        class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'stock')"></button>
                                                     </div>
                                                     <div class="product__size">{{ item.price }} ₽</div>
-                                                    <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
+                                                    <div class="product__size-all"> {{ order[item.id]['stock'].total }} ₽</div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -212,17 +228,17 @@ Vue.component('app-products', {
                                                 <div class="product__calc product-calc" :id="'calc_way_'+item.id" style="display:none">
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id]['way'].total }} ₽</div>
                                             </li>
                                             <li class="product__right-item">
                                                 <div class="product__presence product__presence--orange">Удаленный склад
@@ -236,17 +252,17 @@ Vue.component('app-products', {
                                                 <div class="product__calc product-calc" :id="'calc_remote_'+item.id" style="display:none">
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price)"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price)" :id="'input_'+item.id" v-model="order[item.id].count" class="input input--calc">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price)"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id].total }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id]['remote'].total }} ₽</div>
                                             </li>
                                         </ul>
                                     </div>
@@ -315,7 +331,7 @@ new Vue({
             if (content.length > 0) {
                 var order = {};
                 for (i = 0; i < content.length; i++) {
-                    order[content[i].id] = { 'total': 0, 'count': 0 }
+                    order[content[i].id] = { 'stock': {'total': 0, 'count': 0}, 'way': {'total': 0, 'count': 0}, 'remote': {'total': 0, 'count': 0}}
                 }
 
                 categoryName = content[0]['category']['name'];
@@ -363,80 +379,118 @@ new Vue({
                 location.href = '/basket'
             }
         },
+        editHead : function(availability, price, action) {
+            var total = document.getElementById('total')
+            currentTotal = Number(total.innerHTML.replace(' ₽', '').replace('Всего: ', ''))
+            
+            totalAvailability = document.getElementById(`total_${availability}`)
+            currentTotalAvailability = Number(totalAvailability.innerHTML.replace(' ₽', ''))
+
+            switch (action) {
+                case 'minus':
+                    total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
+                    totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
+                    break;
+                case 'plus':
+                    total.innerHTML = 'Всего: ' + (currentTotal + price) + ' ₽'
+                    totalAvailability.innerHTML  = (currentTotalAvailability + price) + ' ₽'
+                    break;
+                case 'del':
+                    total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
+                    totalAvailability.innerHTML  = (currentTotalAvailability - price) + ' ₽'
+                    break;
+            }
+                
+        },
+
         // - quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        minusCount: function (id, price, catId){
-            currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
-            console.log(currentCount)
-            document.getElementById(`count_${id}`).innerHTML = currentCount - 1
-            document.getElementById(`count_${id}`).setAttribute('value', currentCount - 1)
+        minusCount: function (id, availability, price, category){
 
-            currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
-            document.getElementById(`total_${id}`).innerHTML = (currentPrice - price) + ' ₽'
-            document.getElementById(`total_${id}`).setAttribute('value', currentPrice - price)
+            count = document.getElementById(`count_${id}_${availability}`)
+            count.innerHTML = Number(count.innerHTML) - 1
 
-            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - price) + " ₽"
+            total = document.getElementById(`total_${id}_${availability}`)
+            total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) - price) + ' ₽'
 
-            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Всего: " + (total - price) + " ₽"
+            categoryTotal = document.getElementById(`${category}`)
+            curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal - price) + " ₽"
+
+            this.editHead(availability, price, 'minus')
+
+            // all data item
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.innerHTML)}`)
+
 
         },
         // + quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        plusCount: function (id, price, catId){
-            currentCount = Number(document.getElementById(`count_${id}`).innerHTML)
-            console.log(currentCount)
-            document.getElementById(`count_${id}`).innerHTML = currentCount + 1
-            document.getElementById(`count_${id}`).setAttribute('value', currentCount + 1)
+        plusCount: function (id, availability, price, category){
 
-            currentPrice = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
-            document.getElementById(`total_${id}`).innerHTML = (currentPrice + price) + ' ₽'
-            document.getElementById(`total_${id}`).setAttribute('value', currentPrice + price)
+            console.log(id, availability, price)
+            count = document.getElementById(`count_${id}_${availability}`)
+            count.innerHTML = Number(count.innerHTML) + 1
 
-            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal + price) + " ₽"
-
-            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Всего: " + (total + price) + " ₽"
+            total = document.getElementById(`total_${id}_${availability}`)
+            total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) + price) + ' ₽'
             
+            categoryTotal = document.getElementById(`${category}`)
+            console.log(categoryTotal)
+            curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal + price) + " ₽"
+
+            this.editHead(availability, price, 'plus')
+
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.innerHTML)}`)
         },
 
         // del product item on BASKET PAGE
-        delItem: function(id, catId) {
+        del: function(id, availability, price, category) {
             
-            current = Number(document.getElementById(`total_${id}`).innerHTML.replace(' ₽', ''))
+            currentTotalItem = Number(document.getElementById(`total_${id}_${availability}`).innerHTML.replace(' ₽', ''))
 
-            document.getElementById(`item_${id}`).remove()
+            item = document.getElementById(`item_${id}_${availability}`)
+            item.remove();
 
-            currentCatTotal = Number(document.getElementById(`catTotal_${catId}`).innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            document.getElementById(`catTotal_${catId}`).innerHTML = "Итого: " + (currentCatTotal - current) + " ₽"
+            categoryTotal = document.getElementById(`${category}`)
+            currentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            categoryTotal.innerHTML = "Итого: " + (currentCategoryTotal - currentTotalItem) + " ₽"
 
-            total = Number(document.getElementById(`total`).innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            document.getElementById(`total`).innerHTML = "Всего: " + (total - current) + " ₽"
+            console.log(id, availability, price)
+
+            this.editHead(availability, currentTotalItem, 'del')
+
+
         },
 
         // save the current state of the order and redirect to the payment page
         busketNext: async function(event) {
             
             var orderId = await this.getOrderId();
-            console.log(orderId)
 
-            allItemCount = document.getElementsByClassName("product-calc__value")
-            allItemPrice = document.getElementsByClassName("product__size-all product__size-all--ordering")
-            allTotal = document.getElementById("total").getAttribute('value')
+            allItemValues = document.getElementsByClassName("product__size-all product__size-all--ordering")
             order = {}
-
-            for (var i = 0; i < allItemCount.length; i++) {
-                var total = allItemPrice[i].getAttribute('value')
-                var count = allItemCount[i].getAttribute('value')
-                var item_id = allItemCount[i].getAttribute('id').replace('count_', '')
-                order[item_id] = {'total': Number(total), 'count': Number(count)}
+            var allTotal = document.getElementById('total')
+            currentAllTotal = Number(allTotal.innerHTML.replace(' ₽', '').replace('Всего: ', ''))
+            for (var i = 0; i < allItemValues.length; i++) {
+                values = allItemValues[i].getAttribute("value").split("_")
+                id = values[0]
+                var availability = values[1]
+                total = values[2]
+                count = values[3]
+                if (id in order) {
+                    order[id][availability] = {'total': Number(total), 'count': Number(count)}
+                } else {
+                    order[id] = {}
+                    order[id][availability] = {'total': Number(total), 'count': Number(count)}
+                }
+                
             }
-            console.log(order)
-            console.log(allTotal)
+
+            // console.log(order)
            
-            // PUT REQUEST to /api/v1/order/{id}
+            // // PUT REQUEST to /api/v1/order/{id}
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             const response = await fetch(`/api/v1/order/${orderId}/`, {
                 headers: {
@@ -444,7 +498,7 @@ new Vue({
                   "X-CSRFTOKEN": token,
                 },
                 method: "PUT",
-                body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': allTotal}),
+                body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': currentAllTotal}),
               });
             
 
@@ -486,6 +540,15 @@ new Vue({
                 method: "POST",
                 body: params,
             });
+        },
+
+        // catalog filter product status
+        filterByProductStatus: function(status) {
+            this.filterContol()
+        },
+
+        filterContol(){
+            console.log(this.products);
         }
 
     },

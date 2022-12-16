@@ -6,10 +6,10 @@
     <div class="ordering__container container">
       <h1 class="ordering__title">Оформление заказа</h1>
       <div class="ordering__content">
-        {% for item, products in order.items %}
+        {% for cat, products in order.items %}
         <div class="ordering__item ordering-item">
           <div class="ordering-item__head">
-            <h2 class="ordering-item__title">{{item}}</h2>
+            <h2 class="ordering-item__title">{{ cat }}</h2>
             <ul class="list-reset ordering-item__head-list">
               <div class="ordering-item__head-item">Остаток</div>
               <div class="ordering-item__head-item">Цена шт.</div>
@@ -17,35 +17,49 @@
             </ul>
           </div>
           <div class="ordering-item__body">
-            {% for product in products.data %}
-            <div class="product ordering-item__product" id="item_{{product.product.id}}">
-              <div class="product__items product__items--ordering">
-                <div class="product__left">
-                  <img src="/media/{{product.product.img}}" alt="product" class="image product__img">
-                  <h3 class="product__title">{{product.product.name}}</h3>
-                </div>
-                <ul class="list-reset product__right-list">
-                  <li class="product__right-item">
-                    <div class="product__presence product__presence--ordering">{{product.product.availability}}</div>
-                    <div class="product__residue">{{product.product.rest}}</div>
-                    <div class="product__calc product-calc">
-                      <button class="btn-reset product-calc__btn product-calc__btn--minus" v-on:click="minusCount({{product.product.id}}, {{product.product.price}}, {{products.cat_id}})"></button>
-                      <div class="product-calc__value" value="{{product.count}}" id="count_{{product.product.id}}">
-                        {{product.count}}
+            {% for product in products.items %}
+
+            {% comment %} <div class="product ordering-item__product" id="item_{{product.product.id}}"> {% endcomment %}
+
+              <div class="product ordering-item__product">
+                <div class="product__items product__items--ordering">
+                  <div class="product__left">
+                    <img src="/media/{{ product.item.img }}" alt="product" class="image product__img">
+                    <h3 class="product__title">{{ product.item.name }}</h3>
+                  </div>
+                  <ul class="list-reset product__right-list">
+                    {% for availability, item in product.availability.items %}
+                    <li class="product__right-item" id="item_{{ product.item.id }}_{{ availability }}">
+                      {% if availability == 'stock' %}
+                        <div class="product__presence product__presence--ordering">В наличии</div>
+                      {% elif availability == 'way' %}
+                        <div class="product__presence product__presence--blue">В пути</div>
+                      {% elif availability == 'remote' %}
+                        <div class="product__presence product__presence--orange">Удаленный склад</div>
+                      {% endif %}
+                      <div class="product__residue">{{ item.rest }}</div>
+                      <div class="product__calc product-calc">
+                        <button class="btn-reset product-calc__btn product-calc__btn--minus" 
+                          v-on:click="minusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
+                        <div class="product-calc__value" id="count_{{ product.item.id }}_{{ availability }}">
+                          {{ item.count }}
+                        </div>
+                        <button class="btn-reset product-calc__btn product-calc__btn--plus" 
+                          v-on:click="plusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
                       </div>
-                      <button class="btn-reset product-calc__btn product-calc__btn--plus" v-on:click="plusCount({{product.product.id}}, {{product.product.price}}, {{products.cat_id}})"></button>
-                    </div>
-                    <div class="product__size">{{product.product.price}} ₽</div>
-                    <div class="product__size-all product__size-all--ordering" value="{{product.total}}" id="total_{{product.product.id}}">{{product.total}} ₽</div>
-                    <button class="btn-reset product__btn product__btn--close" v-on:click="delItem({{product.product.id}}, {{products.cat_id}})"></button>
-                  </li>
-                </ul>
+                      <div class="product__size">{{ item.price }} ₽</div>
+                      <div class="product__size-all product__size-all--ordering" id="total_{{ product.item.id }}_{{ availability }}"
+                        value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}">{{ item.total }} ₽</div>
+                      <button class="btn-reset product__btn product__btn--close" v-on:click="del({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
-            </div>
             {% endfor %}
           </div>
           <div class="ordering-item__bottom">
-            <div class="ordering-item__total" id="catTotal_{{products.cat_id}}">Итого: {{products.total}} ₽
+            <div class="ordering-item__total" id="{{ cat }}">Итого: {{ products.total }} ₽
             </div>
           </div>
         </div>
@@ -67,8 +81,8 @@
                 <div class="header__crit">
                   В наличии
                 </div>
-                <div class="header__value">
-                  {* totalOne *} ₽
+                <div class="header__value" id="total_stock">
+                  {{ total.stock }} ₽
                 </div>
               </div>
             </li>
@@ -85,8 +99,8 @@
                 <div class="header__crit">
                   Удаленный склад
                 </div>
-                <div class="header__value">
-                  {* totalTwo *} ₽
+                <div class="header__value" id="total_remote">
+                  {{ total.remote }}  ₽
                 </div>
               </div>
             </li>
@@ -103,14 +117,14 @@
                 <div class="header__crit">
                   В пути
                 </div>
-                <div class="header__value">
-                  {* totalThree *} ₽
+                <div class="header__value" id="total_way">
+                  {{ total.way }}  ₽
                 </div>
               </div>
             </li>
           </ul>
           <div class="ordering__total" value="{{ total }}" id="total">
-            Всего: {{ total }} ₽
+            Всего: {{ total.total }} ₽
           </div>
         </div>
         <div class="ordering-footer__item">

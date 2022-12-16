@@ -5,13 +5,13 @@ from django.contrib import admin
 
 class Availability(models.Model):
     """Availability of a product"""
-    in_stock_rest = models.IntegerField('Остаток в наличии', blank=True, null=True)
-    on_way_rest = models.IntegerField('Остаток в пути', blank=True, null=True)
-    remote_rest = models.IntegerField('Остаток в удаленный склад', blank=True, null=True)
+    stock = models.IntegerField('Остаток в наличии', blank=True, null=True)
+    way = models.IntegerField('Остаток в пути', blank=True, null=True)
+    remote = models.IntegerField('Остаток в удаленный склад', blank=True, null=True)
     time_create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"В наличии: {self.in_stock_rest}\nВ пути: {self.on_way_rest}\nУдаленный склад: {self.remote_rest}"
+        return f"В наличии: {self.stock}\nВ пути: {self.way}\nУдаленный склад: {self.remote}"
 
     class Meta:
         verbose_name = 'Доступность'

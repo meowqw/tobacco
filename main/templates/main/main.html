@@ -53,7 +53,7 @@
             </div>
             <div class="filtr__btns">
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" checked v-model="status" value='top'>
+                <input type="checkbox" checked v-model="status" value='top' v-on:click="filterByProductStatus('top')">
                 <span class="filtr__span filtr__span--orange">
                   <svg class="filtr__svg filtr__svg--top">
                     <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
@@ -62,7 +62,7 @@
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='new'>
+                <input type="checkbox" v-model="status" value='new' v-on:click="filterByProductStatus('new')">
                 <span class="filtr__span filtr__span--green">
                   <svg class="filtr__svg filtr__svg--new">
                     <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
@@ -71,7 +71,7 @@
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='sale'>
+                <input type="checkbox" v-model="status" value='sale' v-on:click="filterByProductStatus('sale')">
                 <span class="filtr__span filtr__span--red">
                   <svg class="filtr__svg filtr__svg--sale">
                     <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>
