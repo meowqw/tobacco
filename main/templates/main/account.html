@@ -135,15 +135,15 @@
                       </td>
                       <td class="table__td">
                         <div class="my-orders__pay-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--red">
-                            {{order.order_status}}
+                          <button class="btn-reset my-orders__btn my-orders__btn--{% if order.payment_status.name == 'Не оплачен' %}red{% elif order.payment_status.name == 'Оплачен' %}green{% elif order.payment_status.name == 'Частично' %}orange{% endif %}">
+                            {{order.payment_status.name}}
                           </button>
                         </div>
                       </td>
                       <td class="table__td">
                         <div class="my-orders__order-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--pink">
-                            {{order.pay_status}}
+                          <button class="btn-reset my-orders__btn my-orders__btn--{% if order.order_status.name == 'Доставлен' %}gray{% elif order.order_status.name == 'В процессе отгрузки' %}blue{% elif order.order_status.name == 'В обработке' %}pink{% endif %}">
+                            {{order.order_status.name}}
                           </button>
                         </div>
                       </td>

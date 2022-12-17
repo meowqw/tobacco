@@ -72,8 +72,8 @@ def payment(request):
                                  address=DeliveryAddresses.objects.filter(id=address).first(),
                                  comment=comment,
                                  number=orders.id,
-                                 pay_status='Не оплачен',
-                                 order_status='В обработке',
+                                 payment_status=PaymentStatus.objects.filter(name='Не оплачен').first(),
+                                 order_status=OrderStatus.objects.filter(name='В обработке').first(),
                                  total=total,
                                  items=orders.order,
                                  payment_method=pay,
@@ -122,11 +122,13 @@ def basket(request):
         
         item_ = {'item': item_id, 'availability': clean_json_order}
 
-        if category not in order:
-            order[category] = {'total': category_total, 'items': [item_]}
-        else:
-            order[category]['items'].append(item_)
-            order[category]['total'] += category_total
+        if item_['availability'] != {}:
+            if category not in order:
+                order[category] = {'total': category_total, 'items': [item_]}
+            else:
+                order[category]['items'].append(item_)
+                order[category]['total'] += category_total
+        
 
     print(order)
     return render(request, 'main/basket.html', {'order': order, 'total': total, 'subcategories': subcategories})

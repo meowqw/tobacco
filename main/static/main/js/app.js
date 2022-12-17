@@ -163,7 +163,7 @@ Vue.component('app-products', {
                         <div class="main-body__panel" :id="product.category + '_products'" style="display:block">
                             <ul class="list-reset main-body__sublist" v-for="item in product.content" style="margin-top:10px;">
                                 <li class="main-body__subitem" >
-                                    <div class="product product--main accordion" id="product-1">
+                                    <div class="product product--main accordion" style="display:" :id="'product_'+item.id">
                                         <div class="product__items">
                                             <div class="product__left">
                                             
@@ -186,10 +186,11 @@ Vue.component('app-products', {
                                                         height="27" alt="sale">
                                                 </div>
                                             </div>
-                                            <ul class="list-reset product__right-list">
+
+                                            <ul class="list-reset product__right-list stock" v-if="item.availability.stock != 0">
                                                 <li class="product__right-item product__right-item--main ">
                                                     <button class="btn-reset product__presence" @click="displayAvailabilityList(item.id)">В наличии</button>
-                                                    <div class="product__residue">{{ item.availability.in_stock_rest }}</div>
+                                                    <div class="product__residue">{{ item.availability.stock }}</div>
 
                                                     <button @click="displayCalc(item.id, 'stock')" :id="'add_stock_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                     <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
@@ -212,14 +213,68 @@ Vue.component('app-products', {
                                                     <div class="product__size-all"> {{ order[item.id]['stock'].total }} ₽</div>
                                                 </li>
                                             </ul>
+
+                                            <ul class="list-reset product__right-list way" v-else-if="item.availability.way != 0 && item.availability.stock == 0">
+                                                <li class="product__right-item" v-if="item.availability.way != none && item.availability.way != 0">
+                                                <button class="btn-reset product__presence product__presence--blue" @click="displayAvailabilityList(item.id)">В пути</button>
+                                                <div class="product__residue">{{ item.availability.way }}</div>
+                                                <button @click="displayCalc(item.id, 'way')" :id="'add_way_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
+                                                    Добавить
+                                                </button>
+
+                                                <div class="product__calc product-calc" :id="'calc_way_'+item.id" style="display:none">
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
+                                                <div class="product-calc__value">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
+                                                    
+                                                </div>
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
+                                                </div>
+                                                <div class="product__size">{{ item.price }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id]['way'].total }} ₽</div>
+                                                </li>
+
+                                            </ul>
+
+                                            <ul v-else-if="item.availability.remote != 0 && item.availability.stock == 0" class="list-reset product__right-list remote">
+                                                <li class="product__right-item" v-if="item.availability.remote != none && item.availability.remote != 0">
+                                                <button class="btn-reset product__presence product__presence--orange" @click="displayAvailabilityList(item.id)">Удаленный склад</button>
+                                                <div class="product__residue">{{ item.availability.remote }}</div>
+                                                <button @click="displayCalc(item.id, 'remote')" :id="'add_remote_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
+                                                <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
+                                                    Добавить
+                                                </button>
+
+                                                <div class="product__calc product-calc" :id="'calc_remote_'+item.id" style="display:none">
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
+                                                <div class="product-calc__value">
+                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
+                                                    
+                                                </div>
+                                                
+                                                <button
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
+                                                </div>
+                                                <div class="product__size">{{ item.price }} ₽</div>
+                                                <div class="product__size-all"> {{ order[item.id]['remote'].total }} ₽</div>
+                                                </li>
+                                            </ul>
+
                                         </div>
                                     </div>
                                     <div class="product-accordion-content product-accordion-content--open" :id="'availabilityList_'+item.id" style="display:none">
                                         <ul class="list-reset product__right-list product__right-list--accordion">
-                                            <li class="product__right-item">
+                                            <li class="product__right-item way" v-if="item.availability.way != none && item.availability.way != 0 && item.availability.stock != 0">
                                                 <div class="product__presence product__presence--blue">В пути
                                                 </div>
-                                                <div class="product__residue">{{ item.availability.on_way_rest }}</div>
+                                                <div class="product__residue">{{ item.availability.way }}</div>
                                                 <button @click="displayCalc(item.id, 'way')" :id="'add_way_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                 <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
                                                     Добавить
@@ -240,10 +295,10 @@ Vue.component('app-products', {
                                                 <div class="product__size">{{ item.price }} ₽</div>
                                                 <div class="product__size-all"> {{ order[item.id]['way'].total }} ₽</div>
                                             </li>
-                                            <li class="product__right-item">
+                                            <li class="product__right-item remote" v-if="(item.availability.remote != none && item.availability.remote != 0) && (item.availability.stock != 0 || item.availability.way != 0)">
                                                 <div class="product__presence product__presence--orange">Удаленный склад
                                                 </div>
-                                                <div class="product__residue">{{ item.availability.remote_rest }}</div>
+                                                <div class="product__residue">{{ item.availability.remote }}</div>
                                                 <button @click="displayCalc(item.id, 'remote')" :id="'add_remote_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                 <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
                                                     Добавить
@@ -294,7 +349,7 @@ new Vue({
         totalTwo: 0,
         totalThree: 0,
 
-        availability: 'Все',
+        availability: 'Наличие',
         weight: 'Вес',
 
         // current order list
@@ -543,14 +598,54 @@ new Vue({
         },
 
         // catalog filter product status
-        filterByProductStatus: function(status) {
-            this.filterContol()
-        },
+        filterByProductStatus: function() {
+            var filter_availability = document.getElementsByClassName('select-selected')[0].innerHTML
+            
+            if (filter_availability.includes('В наличии') == true) {
+                var availability_filter = 'stock'
+            } else if (filter_availability.includes('Удаленный склад') == true) {
+                var availability_filter = 'remote'
+            } else if (filter_availability.includes('пути') == true) {
+                var availability_filter = 'way'
+            }
+                   
+            console.log(availability_filter);
 
-        filterContol(){
-            console.log(this.products);
+            for (var i in this.products) {
+                for (content in this.products[i].content) {
+                    var status = this.products[i].content[content].product_status.name;
+                    var availability = this.products[i].content[content].availability[availability_filter];
+                    
+                    if (this.status.length != 0) {
+                        if (this.status.includes(status)) {
+                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
+                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+
+                        } else {
+                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = 'none';
+                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                        } 
+                    } else {
+                        if (availability != undefined) {
+                            if (availability > 0) {
+                                document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
+                                document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                            } else {
+                                document.getElementById(`product_${this.products[i].content[content].id}`).style.display = 'none';
+                                document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                            }
+                        } else {
+                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
+                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                        }
+                    }
+                    
+                }
+            }
+            
+        
         }
-
+            // console.log(this.products);
     },
     mounted() {
         // this.total = localStorage.total;

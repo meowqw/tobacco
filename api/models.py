@@ -3,6 +3,26 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 
 
+class PaymentStatus(models.Model):
+    name = models.CharField('Наименование', max_length=40, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Статус'
+        verbose_name_plural = 'Статусы оплаты'
+
+class OrderStatus(models.Model):
+    name = models.CharField('Наименование', max_length=40, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Статус'
+        verbose_name_plural = 'Статусы заказа'
+
 class Availability(models.Model):
     """Availability of a product"""
     stock = models.IntegerField('Остаток в наличии', blank=True, null=True)
@@ -148,14 +168,15 @@ class UserOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     number = models.CharField('Номер заказа', max_length=300)
     items = models.JSONField("Ордер лист", null=True, blank=True)
-    pay_status = models.CharField('Статус оплаты', max_length=300)
-    order_status = models.CharField('Статус заказа', max_length=300)
+    payment_status = models.ForeignKey(PaymentStatus, on_delete=models.PROTECT, null=True)
+    order_status = models.ForeignKey(OrderStatus, on_delete=models.PROTECT, null=True)
     address = models.ForeignKey(DeliveryAddresses, on_delete=models.PROTECT, null=True)
     comment = models.TextField('Комментарий', null=True, blank=True)
-    time_create = models.DateTimeField(auto_now_add=True)
     total = models.IntegerField('Цена', blank=True)
     payment_method = models.CharField('Способ оплаты', max_length=300)
     way_get = models.CharField('Способ получения', max_length=300)
+    debt = models.IntegerField('Задолжность (если есть)', null=True, blank=True)
+    time_create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.number
@@ -205,3 +226,11 @@ class DeliveryAddressesAdminFields(admin.ModelAdmin):
 class UserOrderAdminFields(admin.ModelAdmin):
     '''Show all fields in admin'''
     list_display = [field.name for field in UserOrder._meta.fields]
+
+class PaymentStatusAdminFields(admin.ModelAdmin):
+    '''Show all fields in admin'''
+    list_display = [field.name for field in PaymentStatus._meta.fields]
+
+class OrderStatusAdminFields(admin.ModelAdmin):
+    '''Show all fields in admin'''
+    list_display = [field.name for field in PaymentStatus._meta.fields]
