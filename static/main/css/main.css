@@ -2635,4 +2635,13 @@ a {
   font-weight: 700;
   color: var(--dark-color);
 }
+
+.input--calc {
+  border-radius: 5px;
+  padding: 2px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+}
 /*# sourceMappingURL=main.css.map */
