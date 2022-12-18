@@ -354,7 +354,7 @@ new Vue({
 
         // current order list
         currentOrderId: '',
-        status: []
+        status: [],
     },
     methods: {
         
@@ -597,7 +597,7 @@ new Vue({
             });
         },
 
-        // catalog filter product status
+        // catalog filter product status and availability
         filterByProductStatus: function() {
             var filter_availability = document.getElementsByClassName('select-selected')[0].innerHTML
             
@@ -644,8 +644,48 @@ new Vue({
             }
             
         
+        },
+        filterAccount: function() {
+            // payment status
+            var payment_status = document.getElementsByClassName('select-selected')[1].innerHTML.trim();
+            console.log(payment_status);
+            // address 
+            var address = document.getElementsByClassName('select-selected')[0].innerHTML.trim();
+            console.log(address);
+
+            // date
+            
+            const items = document.getElementsByClassName('item')
+            for (item in items) {
+                if (items[item].className != undefined) {
+                    
+                    if (['Оплата', 'Все'].includes(payment_status) && ['Адрес', 'Все'].includes(address)) {
+                        items[item].style.display = ''
+                    }else if (['Оплата', 'Все'].includes(payment_status) == false && ['Адрес', 'Все'].includes(address) == false) {
+                        if (items[item].className.includes(address) && items[item].className.includes(payment_status) ) {
+                            items[item].style.display = ''
+                        } else {
+                            items[item].style.display = 'none'
+                        }
+                    } else if (['Оплата', 'Все'].includes(payment_status) == false && ['Адрес', 'Все'].includes(address)) {
+                        if (items[item].className.includes(payment_status)) {
+                            items[item].style.display = ''
+                        } else {
+                            items[item].style.display = 'none'
+                        }
+                    } else if (['Оплата', 'Все'].includes(payment_status) && ['Адрес', 'Все'].includes(address) == false) {
+                        if (items[item].className.includes(address)) {
+                            items[item].style.display = ''
+                        } else {
+                            items[item].style.display = 'none'
+                        }
+                    } 
+                }
+            }
+        },
+        change: function(){
+            console.log(1)
         }
-            // console.log(this.products);
     },
     mounted() {
         // this.total = localStorage.total;
@@ -659,4 +699,6 @@ new Vue({
 });
 
 
-
+function getData() {
+    console.log(1)
+}
