@@ -62,6 +62,9 @@
                            id="input"
                            class="calendar__input datepicker-here calendar"
                            placeholder="Календарь"
+                           to=none
+                           from=none
+                           value=''
                            data-position="right top">
                     <img loading="lazy"
                          src="{% static 'main/img/calendar.svg' %}"
@@ -71,32 +74,37 @@
                          alt="calendar">
                   </div>
                   <div class="account-filtr__item account-filtr__item--type filtr__dropdown">
-                    <span class="notice">{{deliveryAddresses|length}}</span>
-                    <div class="custom-select">
+                    <span class="notice">{{ deliveryAddresses|length }}</span>
+                    <div class="custom-select" @click="filterAccount()">
                       
                       <select>
+                        <option value="0">Адрес</option>
+                        <option value="0">Все</option>
                         {% for address in deliveryAddresses %}
-                        <option value="0">
-                          {{address.address}}
+                        <option>
+                          {{ address.address }}
                         </option>
                         {% endfor %}
                       </select>
                     </div>
                   </div>
                   <div class="account-filtr__item account-filtr__item--payment filtr__dropdown">
-                    <div class="custom-select">
+                    <div class="custom-select" @click="filterAccount()">
                       <select>
                         <option value="0">
                           Оплата
                         </option>
+                        <option value="0">
+                          Все
+                        </option>
                         <option value="1">
-                          Оплата
+                          Оплачен
                         </option>
                         <option value="2">
-                          Оплата
+                          Не оплачен
                         </option>
                         <option value="3">
-                          Оплата
+                          Частично
                         </option>
                       </select>
                     </div>
@@ -117,13 +125,13 @@
                   <tbody class="table__tbody">
                     <!-- item -->
                     {% for order in orders %}
-                    <tr class="table__tr">
+                    <tr class="table__tr item {{order.payment_status.name}} {{order.address}}" date="{{ order.time_create|date:"Y-m-d" }}" style="display:">
                       <td class="table__td">
                         <div class="my-orders__number">{{order.number}}</div>
                       </td>
                       <td class="table__td">
                         <div class="my-orders__data">
-                          {{order.time_create}}
+                          {{ order.time_create|date:"d.m.Y" }}
                           {% comment %} <span>12:57:28</span> {% endcomment %}
                         </div>
                       </td>
@@ -155,139 +163,6 @@
                       </td>
                     </tr>
                     {% endfor %}
-                    <!-- item -->
-                    {% comment %} <tr class="table__tr">
-                      <td class="table__td">
-                        <div class="my-orders__number">
-                          G11-3NSTBM
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__data">
-                          17.08.2022
-                          <span>12:57:28</span>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__point">
-                          Марракеш Ясень
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__sum">
-                          29 200 ₽
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__pay-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--green">
-                            Оплачен
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__order-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--blue">
-                            В процессе отгрузки
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__hide">
-                          <button class="btn-reset btn-hide">
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- item -->
-                    <tr class="table__tr">
-                      <td class="table__td">
-                        <div class="my-orders__number">
-                          G11-3NSTBM
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__data">
-                          17.08.2022
-                          <span>12:57:28</span>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__point">
-                          Марракеш Ясень
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__sum">
-                          29 200 ₽
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__pay-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--green">
-                            Оплачен
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__order-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--gray">
-                            Доставлен
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__hide">
-                          <button class="btn-reset btn-hide">
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- item -->
-                    <tr class="table__tr">
-                      <td class="table__td">
-                        <div class="my-orders__number">
-                          G11-3NSTBM
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__data">
-                          17.08.2022
-                          <span>12:57:28</span>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__point">
-                          Марракеш Ясень
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__sum">
-                          29 200 ₽
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__pay-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--orange">
-                            Частично
-                          </button>
-                          <span>Задолжность 29 200 ₽</span>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__order-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--gray">
-                            Доставлен
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__hide">
-                          <button class="btn-reset btn-hide">
-                          </button>
-                        </div>
-                      </td>
-                    </tr> {% endcomment %}
                   </tbody>
                 </table>
               </div>

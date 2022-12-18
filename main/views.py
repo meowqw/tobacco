@@ -141,7 +141,7 @@ def account(request):
 
     account = Account.objects.filter(user=request.user.id).first()
     deliveryAddresses = DeliveryAddresses.objects.all()
-    orders = UserOrder.objects.filter(user=request.user).all()
+    orders = UserOrder.objects.filter(user=request.user).all().order_by('id')
 
 
     return render(request, 'main/account.html', {'account': account, 'deliveryAddresses': deliveryAddresses, "orders": orders, 'subcategories': subcategories})
