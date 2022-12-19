@@ -152,7 +152,7 @@
                 <h2 class="menu__title">Аксессуары для кальяна</h2>
                 {% for subcategory in subcategories %}
                   {% if subcategory.parent_category.name == "Аксессуары для кальяна" %}
-                  <a href="#" class="menu__link">{{ subcategory.name }}</a>
+                  <a class="menu__link js-modal-close" @click="redirectMenu({{subcategory.id}})">{{ subcategory.name }}</a>
                   {% endif %}
                 {% endfor %}
               </li>
@@ -167,7 +167,7 @@
                 </h2>
                 {% for subcategory in subcategories %}
                   {% if subcategory.parent_category.name == "Табак для кальяна" %}
-                    <a class="menu__link js-modal-close" @click="getContent(1)">{{ subcategory.name }}</a>
+                    <a class="menu__link js-modal-close" @click="redirectMenu({{subcategory.id}})">{{ subcategory.name }}</a>
                   {% endif %}
                 {% endfor %}
               </li>
@@ -179,7 +179,7 @@
                   </h2>
                   {% for subcategory in subcategories %}
                   {% if subcategory.parent_category.name == "Pod-системы" %}
-                    <a class="menu__link" @click="getContent(1)">{{ subcategory.name }}</a>
+                  <a class="menu__link js-modal-close" @click="redirectMenu({{subcategory.id}})">{{ subcategory.name }}</a>
                   {% endif %}
                 {% endfor %}
                 </li>
@@ -190,7 +190,7 @@
                 </h2>
                 {% for subcategory in subcategories %}
                   {% if subcategory.parent_category.name == "Жидкости" %}
-                    <a class="menu__link" @click="getContent(1)">{{ subcategory.name }}</a>
+                  <a class="menu__link js-modal-close" @click="redirectMenu({{subcategory.id}})">{{ subcategory.name }}</a>
                   {% endif %}
                 {% endfor %}
               </li>

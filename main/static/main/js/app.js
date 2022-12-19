@@ -47,19 +47,25 @@ Vue.component('app-products', {
             
         },
         displayProductList(id) {
+            
             var el = document.getElementById(id)
             if (el.style.display == "none") {
-                el.style.display = "block"
+
+                document.getElementById('catTriagle_'+id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+                el.style.display = ""
             } else {
                 el.style.display = "none"
+                document.getElementById('catTriagle_'+id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
             }
         },
         displayProducts(id) {
-            console.log('123')
+            
             var el = document.getElementById(id + "_products")
             if (el.style.display == "none") {
-                el.style.display = "block"
+                document.getElementById('subCatTriagle_'+id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+                el.style.display = ""
             } else {
+                document.getElementById('subCatTriagle_'+id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
                 el.style.display = "none"
             }
         },
@@ -142,12 +148,15 @@ Vue.component('app-products', {
     <div id="result"></div>
     <ul class="list-reset main-body__list accordion" style="margin-top: 20px;" v-for="product in products">
         <li class="main-body__item accordion-item">
-            <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">{{ product.category }}</button>
+            <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">
+            <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'catTriagle_'+product.category"></span>
+            {{ product.category }}</button>
             <div class="main-body__panel" >
                 
                 <ul class="list-reset main-body__sublist accordion accordion-child" >
                     <li class="main-body__subitem accordion-item" :id="product.category"   style="display:none">
                         <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(product.category)">
+                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+product.category"></span>
                             Список товаров
                             <div class="tooltip">
                                 <img loading="lazy" src="/static/main/img/tooltip.svg" class="image" width="20" height="20"
@@ -160,7 +169,7 @@ Vue.component('app-products', {
                                 </span>
                             </div>
                         </button>
-                        <div class="main-body__panel" :id="product.category + '_products'" style="display:block">
+                        <div class="main-body__panel" :id="product.category + '_products'" style="display:none">
                             <ul class="list-reset main-body__sublist" v-for="item in product.content" style="margin-top:10px;">
                                 <li class="main-body__subitem" >
                                     <div class="product product--main accordion" style="display:" :id="'product_'+item.id">
@@ -360,15 +369,16 @@ new Vue({
         
         // get product list by category
         getContent(id) {
-            // redirect to main page if current url is not main
-            if (location.href.split('/')[location.href.split('/').length - 2] != 'main') {
-                location.href = '/main/';
-            }
-
             // GET REQUEST to /api/v1/productbycat/{id}
             axios
                 .get(`/api/v1/productbycat/${id}`)
                 .then(response => (this.contentController(response.data.products)));
+        },
+
+        redirectMenu(id) {
+            console.log(id)
+            localStorage.setItem('redirectItem', id);
+            location.href = '/main/'
         },
 
         // get order id by user id (user id from backend)
@@ -689,7 +699,9 @@ new Vue({
     },
     mounted() {
         // this.total = localStorage.total;
-        localStorage.order = {}
+
+        this.getContent(localStorage.getItem('redirectItem'))
+        localStorage.setItem('redirectItem', '')
     },
     watch: {
         total(newName) {
@@ -697,8 +709,3 @@ new Vue({
         }
     }
 });
-
-
-function getData() {
-    console.log(1)
-}
