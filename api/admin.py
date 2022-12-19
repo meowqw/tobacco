@@ -14,6 +14,8 @@ admin.site.register(UserOrder, UserOrderAdminFields)
 admin.site.register(DeliveryAddresses, DeliveryAddressesAdminFields)
 admin.site.register(OrderStatus, OrderStatusAdminFields)
 admin.site.register(PaymentStatus, PaymentStatusAdminFields)
+admin.site.register(ProductList)
+
 
 
 

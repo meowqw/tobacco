@@ -146,31 +146,29 @@ Vue.component('app-products', {
     template: `
     <div class="main-content__body main-body">
     <div id="result"></div>
-    <ul class="list-reset main-body__list accordion" style="margin-top: 20px;" v-for="product in products">
+    <ul class="list-reset main-body__list accordion" style="margin-top: 15px;" v-for="product in products">
         <li class="main-body__item accordion-item">
             <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">
             <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'catTriagle_'+product.category"></span>
             {{ product.category }}</button>
-            <div class="main-body__panel" >
-                
-                <ul class="list-reset main-body__sublist accordion accordion-child" >
-                    <li class="main-body__subitem accordion-item" :id="product.category"   style="display:none">
-                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(product.category)">
-                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+product.category"></span>
-                            Список товаров
+            <div class="main-body__panel" :id="product.category" style="display:none">
+                <ul class="list-reset main-body__sublist accordion accordion-child" v-for="(content, list) in product.content" style="margin-top: 10px;">
+                    <li class="main-body__subitem accordion-item">
+                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(list)">
+                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+list"></span>
+                            {{list}}
                             <div class="tooltip">
                                 <img loading="lazy" src="/static/main/img/tooltip.svg" class="image" width="20" height="20"
                                     alt="tooltip">
                                 <span class="tooltip__text">
                                     <ul class="list-reset tooltip__list">
-                                        <li class="tooltip__item">Блок 10 шт.</li>
                                         <li class="tooltip__item">РРЦ 100 ₽/шт.</li>
                                     </ul>
                                 </span>
                             </div>
                         </button>
-                        <div class="main-body__panel" :id="product.category + '_products'" style="display:none">
-                            <ul class="list-reset main-body__sublist" v-for="item in product.content" style="margin-top:10px;">
+                        <div class="main-body__panel" :id="list + '_products'" style="display:none">
+                            <ul class="list-reset main-body__sublist" v-for="item in content" style="margin-top:10px;">
                                 <li class="main-body__subitem" >
                                     <div class="product product--main accordion" style="display:" :id="'product_'+item.id">
                                         <div class="product__items">
@@ -395,19 +393,33 @@ new Vue({
             var products = this.products;
             if (content.length > 0) {
                 var order = {};
+
+                var list = {}
                 for (i = 0; i < content.length; i++) {
                     order[content[i].id] = { 'stock': {'total': 0, 'count': 0}, 'way': {'total': 0, 'count': 0}, 'remote': {'total': 0, 'count': 0}}
+
+                    productList = content[i]['list']['name']
+                    if (productList in list) {
+                        list[productList].push(content[i])
+                    } else {
+                        list[productList] = [content[i]]
+                    }
                 }
 
                 categoryName = content[0]['category']['name'];
+                
+                
+                console.log(list)
+
                 if (this.openedCategory.includes(categoryName) == false) {
-                    products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total });
+                    products.push({ 'category': categoryName, 'content': list, 'order': order, 'total': this.total });
                     this.products = products;
 
                     // check category is opened
                     this.openedCategory.push(categoryName);
                 }
                 
+                // console.log(products)
                 
 
                 

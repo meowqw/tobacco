@@ -4,6 +4,12 @@ from rest_framework.parsers import JSONParser
 
 from .models import *
 
+class ProductListSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    
+    class Meta:
+        model = ProductList
+        fields = "__all__"
 
 class CategorySerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -42,6 +48,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category = SubcategorySerializer()
     availability = AvailabilitySerializer()
     product_status = ProductStatusSerializer()
+    list = ProductListSerializer()
     
     
     class Meta:

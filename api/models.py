@@ -54,6 +54,7 @@ class Product(models.Model):
 
 
     category = models.ForeignKey('Subcategory', on_delete=models.PROTECT, null=True)
+    list = models.ForeignKey('ProductList', on_delete=models.PROTECT, null=True)
     product_status = models.ForeignKey('ProductStatus', on_delete=models.PROTECT, null=True)  # статус товара(new, sale..)
 
 
@@ -77,6 +78,14 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Основные категории товаров'
 
+class ProductList(models.Model):
+    name = models.CharField('Название', max_length=30)
+    time_create = models.DateTimeField(auto_now_add=True)
+    info = models.TextField('Информация', blank=True, null=True)
+    parent = models.ForeignKey('Subcategory', on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return f"{self.parent} - {self.name}"
 
 class Subcategory(models.Model):
     """Subcategory of a product"""
