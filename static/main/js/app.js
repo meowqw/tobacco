@@ -16,26 +16,26 @@ Vue.component('app-products', {
             // + count product
 
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1}
+            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1 }
 
             // total in head
-            document.getElementById('total').innerHTML =  (current + price) + ' ₽'
-            document.getElementById(`total_${availability}`).innerHTML =  (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
-            
+            document.getElementById('total').innerHTML = (current + price) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
+
             // localStorage.total = localStorage.total + this.order[id].total
             localStorage.setItem("order", JSON.stringify(this.order))
             console.log(this.order)
-            
+
         },
         countMinus(id, price, availability) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id][availability].count > 0) {
-                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1}
+                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1 }
 
-                document.getElementById('total').innerHTML =  (current - price) + ' ₽'
-                document.getElementById(`total_${availability}`).innerHTML =  (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
-                
+                document.getElementById('total').innerHTML = (current - price) + ' ₽'
+                document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
+
                 // localStorage.total = localStorage.total - this.order[id].total
                 localStorage.setItem("order", JSON.stringify(this.order))
             } else {
@@ -44,35 +44,44 @@ Vue.component('app-products', {
                 calc.style.display = "none"
                 add.style.display = ""
             }
-            
+
         },
         displayProductList(id) {
+
             var el = document.getElementById(id)
             if (el.style.display == "none") {
-                el.style.display = "block"
+                document.getElementById('categoryProduct_' + id).classList.add('ui-accordion-header-active')
+                document.getElementById('catTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+                el.style.display = ""
             } else {
                 el.style.display = "none"
+                document.getElementById('categoryProduct_' + id).classList.remove('ui-accordion-header-active')
+                document.getElementById('catTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
             }
         },
         displayProducts(id) {
-            console.log('123')
+
             var el = document.getElementById(id + "_products")
             if (el.style.display == "none") {
-                el.style.display = "block"
+                document.getElementById('subcategoryProduct_' + id).classList.add('ui-accordion-header-active')
+                document.getElementById('subCatTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+                el.style.display = ""
             } else {
+                document.getElementById('subCatTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
                 el.style.display = "none"
+                document.getElementById('subcategoryProduct_' + id).classList.remove('ui-accordion-header-active')
             }
         },
         displayCalc(id, availability) {
             if (availability == "stock") {
-                var add = document.getElementById('add_stock_'+id)
-                var calc = document.getElementById('calc_stock_'+id)
+                var add = document.getElementById('add_stock_' + id)
+                var calc = document.getElementById('calc_stock_' + id)
             } else if (availability == "way") {
-                var add = document.getElementById('add_way_'+id)
-                var calc = document.getElementById('calc_way_'+id)
+                var add = document.getElementById('add_way_' + id)
+                var calc = document.getElementById('calc_way_' + id)
             } else if (availability == "remote") {
-                var add = document.getElementById('add_remote_'+id)
-                var calc = document.getElementById('calc_remote_'+id)
+                var add = document.getElementById('add_remote_' + id)
+                var calc = document.getElementById('calc_remote_' + id)
             }
 
             add.style.display = "none"
@@ -83,8 +92,8 @@ Vue.component('app-products', {
             // control count, price and total by input
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             input = document.getElementById(`input_${availability}_${id}`)
-            
-            this.order[id][availability] = { 'total': Number(input.value)*price, 'count': Number(input.value)}
+
+            this.order[id][availability] = { 'total': Number(input.value) * price, 'count': Number(input.value) }
 
             // totals in head 
             var total = 0
@@ -102,19 +111,19 @@ Vue.component('app-products', {
             document.getElementById(`total_stock`).innerHTML = (total_stock) + ' ₽'
             document.getElementById(`total_remote`).innerHTML = (total_remote) + ' ₽'
             document.getElementById('total').innerHTML = (total) + ' ₽'
-            
+
         },
         displayAvailabilityList(id) {
-            availabilityList = document.getElementById('availabilityList_'+id)
+            availabilityList = document.getElementById('availabilityList_' + id)
             if (availabilityList.style.display == 'none') {
                 availabilityList.style.display = ''
             } else {
                 availabilityList.style.display = 'none'
             }
         }
-        
+
     },
- 
+
 
     watch: {
         products: function () {
@@ -123,11 +132,11 @@ Vue.component('app-products', {
                 for (var i = 0; i < Object.keys(this.products[id].order).length; i++) {
                     // this.order[]
                     // if (Object.keys(this.products[id].order)[i] in this.order != true) {
-                        order[Object.keys(this.products[id].order)[i]] = this.products[id].order[Object.keys(this.products[id].order)[i]]
+                    order[Object.keys(this.products[id].order)[i]] = this.products[id].order[Object.keys(this.products[id].order)[i]]
                     // }
-                    
-                } 
-                
+
+                }
+
             }
             for (var i = 0; i < Object.keys(this.order).length; i++) {
                 order[Object.keys(this.order)[i]] = this.order[Object.keys(this.order)[i]]
@@ -140,28 +149,29 @@ Vue.component('app-products', {
     template: `
     <div class="main-content__body main-body">
     <div id="result"></div>
-    <ul class="list-reset main-body__list accordion" style="margin-top: 20px;" v-for="product in products">
+    <ul class="list-reset main-body__list accordion" style="margin-top: 15px;" v-for="product in products">
         <li class="main-body__item accordion-item">
-            <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProductList(product.category)">{{ product.category }}</button>
-            <div class="main-body__panel" >
-                
-                <ul class="list-reset main-body__sublist accordion accordion-child" >
-                    <li class="main-body__subitem accordion-item" :id="product.category"   style="display:none">
-                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(product.category)">
-                            Список товаров
+            <button class="btn-reset btn--accordion main-body__accordion accordion-header" :id="'categoryProduct_'+product.category" @click="displayProductList(product.category)">
+            <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'catTriagle_'+product.category"></span>
+            {{ product.category }}</button>
+            <div class="main-body__panel" :id="product.category" style="display:none">
+                <ul class="list-reset main-body__sublist accordion accordion-child" v-for="(content, list) in product.content" style="margin-top: 10px;">
+                    <li class="main-body__subitem accordion-item">
+                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(list)" :id="'subcategoryProduct_'+list">
+                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+list"></span>
+                            {{list}}
                             <div class="tooltip">
                                 <img loading="lazy" src="/static/main/img/tooltip.svg" class="image" width="20" height="20"
                                     alt="tooltip">
                                 <span class="tooltip__text">
                                     <ul class="list-reset tooltip__list">
-                                        <li class="tooltip__item">Блок 10 шт.</li>
                                         <li class="tooltip__item">РРЦ 100 ₽/шт.</li>
                                     </ul>
                                 </span>
                             </div>
                         </button>
-                        <div class="main-body__panel" :id="product.category + '_products'" style="display:block">
-                            <ul class="list-reset main-body__sublist" v-for="item in product.content" style="margin-top:10px;">
+                        <div class="main-body__panel" :id="list + '_products'" style="display:none">
+                            <ul class="list-reset main-body__sublist" v-for="item in content" style="margin-top:10px;">
                                 <li class="main-body__subitem" >
                                     <div class="product product--main accordion" style="display:" :id="'product_'+item.id">
                                         <div class="product__items">
@@ -357,18 +367,19 @@ new Vue({
         status: [],
     },
     methods: {
-        
+
         // get product list by category
         getContent(id) {
-            // redirect to main page if current url is not main
-            if (location.href.split('/')[location.href.split('/').length - 2] != 'main') {
-                location.href = '/main/';
-            }
-
             // GET REQUEST to /api/v1/productbycat/{id}
             axios
                 .get(`/api/v1/productbycat/${id}`)
                 .then(response => (this.contentController(response.data.products)));
+        },
+
+        redirectMenu(id) {
+            console.log(id)
+            localStorage.setItem('redirectItem', id);
+            location.href = '/main/'
         },
 
         // get order id by user id (user id from backend)
@@ -377,7 +388,7 @@ new Vue({
             req = axios.get(`/api/v1/order/`)
             resData = req.then((response) => response.data.orders[0].id);
             return resData;
-                
+
         },
 
         // adding products to the list for later display in app-products
@@ -385,22 +396,36 @@ new Vue({
             var products = this.products;
             if (content.length > 0) {
                 var order = {};
+
+                var list = {}
                 for (i = 0; i < content.length; i++) {
-                    order[content[i].id] = { 'stock': {'total': 0, 'count': 0}, 'way': {'total': 0, 'count': 0}, 'remote': {'total': 0, 'count': 0}}
+                    order[content[i].id] = { 'stock': { 'total': 0, 'count': 0 }, 'way': { 'total': 0, 'count': 0 }, 'remote': { 'total': 0, 'count': 0 } }
+
+                    productList = content[i]['list']['name']
+                    if (productList in list) {
+                        list[productList].push(content[i])
+                    } else {
+                        list[productList] = [content[i]]
+                    }
                 }
 
                 categoryName = content[0]['category']['name'];
+
+
+                console.log(list)
+
                 if (this.openedCategory.includes(categoryName) == false) {
-                    products.push({ 'category': categoryName, 'content': content, 'order': order, 'total': this.total });
+                    products.push({ 'category': categoryName, 'content': list, 'order': order, 'total': this.total });
                     this.products = products;
 
                     // check category is opened
                     this.openedCategory.push(categoryName);
                 }
-                
-                
 
-                
+                // console.log(products)
+
+
+
             }
         },
         // now working
@@ -408,7 +433,7 @@ new Vue({
             console.log(id)
             console.log(this.availability);
         },
-        
+
         // request on create order (Intermediate) and redirect to basket
         createOrder: async function (event) {
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
@@ -416,28 +441,28 @@ new Vue({
 
             if (total > 0) {
                 order = {}
-                for (var key in JSON.parse(localStorage.order)){
+                for (var key in JSON.parse(localStorage.order)) {
                     if (JSON.parse(localStorage.order)[key].count != 0) {
                         order[key] = JSON.parse(localStorage.order)[key]
                     }
-                  }
+                }
                 // POST REQUEST to /api/v1/order/
-                const response =  await fetch("/api/v1/order/", {
+                const response = await fetch("/api/v1/order/", {
                     headers: {
-                    "Content-type": "application/json",
-                    "X-CSRFTOKEN": token,
+                        "Content-type": "application/json",
+                        "X-CSRFTOKEN": token,
                     },
                     method: "POST",
-                    body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': localStorage.total}),
+                    body: JSON.stringify({ 'order': JSON.stringify(order), 'status': true, 'total': localStorage.total }),
                 });
 
                 location.href = '/basket'
             }
         },
-        editHead : function(availability, price, action) {
+        editHead: function (availability, price, action) {
             var total = document.getElementById('total')
             currentTotal = Number(total.innerHTML.replace(' ₽', '').replace('Всего: ', ''))
-            
+
             totalAvailability = document.getElementById(`total_${availability}`)
             currentTotalAvailability = Number(totalAvailability.innerHTML.replace(' ₽', ''))
 
@@ -448,19 +473,19 @@ new Vue({
                     break;
                 case 'plus':
                     total.innerHTML = 'Всего: ' + (currentTotal + price) + ' ₽'
-                    totalAvailability.innerHTML  = (currentTotalAvailability + price) + ' ₽'
+                    totalAvailability.innerHTML = (currentTotalAvailability + price) + ' ₽'
                     break;
                 case 'del':
                     total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
-                    totalAvailability.innerHTML  = (currentTotalAvailability - price) + ' ₽'
+                    totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
                     break;
             }
-                
+
         },
 
         // - quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        minusCount: function (id, availability, price, category){
+        minusCount: function (id, availability, price, category) {
 
             count = document.getElementById(`count_${id}_${availability}`)
             count.innerHTML = Number(count.innerHTML) - 1
@@ -481,7 +506,7 @@ new Vue({
         },
         // + quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        plusCount: function (id, availability, price, category){
+        plusCount: function (id, availability, price, category) {
 
             console.log(id, availability, price)
             count = document.getElementById(`count_${id}_${availability}`)
@@ -489,7 +514,7 @@ new Vue({
 
             total = document.getElementById(`total_${id}_${availability}`)
             total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) + price) + ' ₽'
-            
+
             categoryTotal = document.getElementById(`${category}`)
             console.log(categoryTotal)
             curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
@@ -501,8 +526,8 @@ new Vue({
         },
 
         // del product item on BASKET PAGE
-        del: function(id, availability, price, category) {
-            
+        del: function (id, availability, price, category) {
+
             currentTotalItem = Number(document.getElementById(`total_${id}_${availability}`).innerHTML.replace(' ₽', ''))
 
             item = document.getElementById(`item_${id}_${availability}`)
@@ -520,8 +545,8 @@ new Vue({
         },
 
         // save the current state of the order and redirect to the payment page
-        busketNext: async function(event) {
-            
+        busketNext: async function (event) {
+
             var orderId = await this.getOrderId();
 
             allItemValues = document.getElementsByClassName("product__size-all product__size-all--ordering")
@@ -535,33 +560,33 @@ new Vue({
                 total = values[2]
                 count = values[3]
                 if (id in order) {
-                    order[id][availability] = {'total': Number(total), 'count': Number(count)}
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count) }
                 } else {
                     order[id] = {}
-                    order[id][availability] = {'total': Number(total), 'count': Number(count)}
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count) }
                 }
-                
+
             }
 
             // console.log(order)
-           
+
             // // PUT REQUEST to /api/v1/order/{id}
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             const response = await fetch(`/api/v1/order/${orderId}/`, {
                 headers: {
-                  "Content-type": "application/json",
-                  "X-CSRFTOKEN": token,
+                    "Content-type": "application/json",
+                    "X-CSRFTOKEN": token,
                 },
                 method: "PUT",
-                body: JSON.stringify({'order': JSON.stringify(order), 'status': true, 'total': currentAllTotal}),
-              });
-            
+                body: JSON.stringify({ 'order': JSON.stringify(order), 'status': true, 'total': currentAllTotal }),
+            });
+
 
             location.href = '/payment'
         },
 
         // clear busket (delete all products)
-        busketClear: async function() {
+        busketClear: async function () {
             var orderId = await this.getOrderId();
             allCategory = document.getElementsByClassName("ordering__item ordering-item")
             for (var i = 0; i < allCategory.length; i++) {
@@ -572,25 +597,25 @@ new Vue({
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
             const response = await fetch(`/api/v1/order/${orderId}/`, {
                 headers: {
-                  "Content-type": "application/json",
-                  "X-CSRFTOKEN": token,
+                    "Content-type": "application/json",
+                    "X-CSRFTOKEN": token,
                 },
                 method: "PUT",
-                body: JSON.stringify({'order': JSON.stringify({}), 'status': false, 'total': 0}),
-              });
+                body: JSON.stringify({ 'order': JSON.stringify({}), 'status': false, 'total': 0 }),
+            });
 
 
             document.getElementById(`total`).innerHTML = "Всего: " + 0 + " ₽"
         },
 
         // request to create USER ORDER 
-        sendOrder: async function(){
+        sendOrder: async function () {
             var form = document.getElementById('form');
-            var params = new FormData(form); 
+            var params = new FormData(form);
             token = document.getElementsByName('csrfmiddlewaretoken')[0].value
-            const response =  await fetch("/payment/", {
+            const response = await fetch("/payment/", {
                 headers: {
-                "X-CSRFTOKEN": token,
+                    "X-CSRFTOKEN": token,
                 },
                 method: "POST",
                 body: params,
@@ -598,9 +623,9 @@ new Vue({
         },
 
         // catalog filter product status and availability
-        filterByProductStatus: function() {
+        filterByProductStatus: function () {
             var filter_availability = document.getElementsByClassName('select-selected')[0].innerHTML
-            
+
             if (filter_availability.includes('В наличии') == true) {
                 var availability_filter = 'stock'
             } else if (filter_availability.includes('Удаленный склад') == true) {
@@ -608,44 +633,49 @@ new Vue({
             } else if (filter_availability.includes('пути') == true) {
                 var availability_filter = 'way'
             }
-                   
+
             console.log(availability_filter);
 
             for (var i in this.products) {
-                for (content in this.products[i].content) {
-                    var status = this.products[i].content[content].product_status.name;
-                    var availability = this.products[i].content[content].availability[availability_filter];
-                    
-                    if (this.status.length != 0) {
-                        if (this.status.includes(status)) {
-                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
-                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                console.log()
+                for (content in Object.values(this.products[i].content)) {
 
-                        } else {
-                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = 'none';
-                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
-                        } 
-                    } else {
-                        if (availability != undefined) {
-                            if (availability > 0) {
-                                document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
-                                document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                    for (item in Object.values(this.products[i].content)[content]) {
+                        product = Object.values(this.products[i].content)[content][item]
+                        var status = product.product_status.name;
+                        var availability = product.availability[availability_filter];
+
+                        if (this.status.length != 0) {
+                            if (this.status.includes(status)) {
+                                document.getElementById(`product_${product.id}`).style.display = '';
+                                document.getElementById(`availabilityList_${product.id}`).style.display = 'none';
+
                             } else {
-                                document.getElementById(`product_${this.products[i].content[content].id}`).style.display = 'none';
-                                document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                                document.getElementById(`product_${product.id}`).style.display = 'none';
+                                document.getElementById(`availabilityList_${product.id}`).style.display = 'none';
                             }
                         } else {
-                            document.getElementById(`product_${this.products[i].content[content].id}`).style.display = '';
-                            document.getElementById(`availabilityList_${this.products[i].content[content].id}`).style.display = 'none';
+                            if (availability != undefined) {
+                                if (availability > 0) {
+                                    document.getElementById(`product_${product.id}`).style.display = '';
+                                    document.getElementById(`availabilityList_${product.id}`).style.display = 'none';
+                                } else {
+                                    document.getElementById(`product_${product.id}`).style.display = 'none';
+                                    document.getElementById(`availabilityList_${product.id}`).style.display = 'none';
+                                }
+                            } else {
+                                document.getElementById(`product_${product.id}`).style.display = '';
+                                document.getElementById(`availabilityList_${product.id}`).style.display = 'none';
+                            }
                         }
                     }
-                    
+
                 }
             }
-            
-        
+
+
         },
-        filterAccount: function() {
+        filterAccount: function () {
             // payment status
             var payment_status = document.getElementsByClassName('select-selected')[1].innerHTML.trim();
             console.log(payment_status);
@@ -654,15 +684,15 @@ new Vue({
             console.log(address);
 
             // date
-            
+
             const items = document.getElementsByClassName('item')
             for (item in items) {
                 if (items[item].className != undefined) {
-                    
+
                     if (['Оплата', 'Все'].includes(payment_status) && ['Адрес', 'Все'].includes(address)) {
                         items[item].style.display = ''
-                    }else if (['Оплата', 'Все'].includes(payment_status) == false && ['Адрес', 'Все'].includes(address) == false) {
-                        if (items[item].className.includes(address) && items[item].className.includes(payment_status) ) {
+                    } else if (['Оплата', 'Все'].includes(payment_status) == false && ['Адрес', 'Все'].includes(address) == false) {
+                        if (items[item].className.includes(address) && items[item].className.includes(payment_status)) {
                             items[item].style.display = ''
                         } else {
                             items[item].style.display = 'none'
@@ -679,17 +709,45 @@ new Vue({
                         } else {
                             items[item].style.display = 'none'
                         }
-                    } 
+                    }
                 }
             }
         },
-        change: function(){
-            console.log(1)
+        displayCategory: function (id) {
+            el = document.getElementById('sidebar_'+id)
+            if (!el.classList.contains('activate')) {
+                // el.style.display = ''
+                el.classList.add('activate')
+                el.style.height = 'auto';
+                let height = el.clientHeight + "px";
+                el.style.height = '0px';
+                
+                setTimeout(function () {
+                    el.style.height = height;
+                }, 0);
+
+                document.getElementById('categoryTab_'+id).classList.add('ui-accordion-header-active')
+                document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+            } else {
+                document.getElementById('categoryTab_'+id).classList.remove('ui-accordion-header-active')
+                document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
+                el.style.height = '0px';
+
+                el.addEventListener('transitionend', function () {
+                    el.classList.remove('activate');
+                }, {
+                    once: true
+                });
+                
+
+            }
         }
     },
     mounted() {
         // this.total = localStorage.total;
-        localStorage.order = {}
+
+        this.getContent(localStorage.getItem('redirectItem'))
+        localStorage.setItem('redirectItem', '')
     },
     watch: {
         total(newName) {
@@ -697,8 +755,3 @@ new Vue({
         }
     }
 });
-
-
-function getData() {
-    console.log(1)
-}

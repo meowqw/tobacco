@@ -1,13 +1,14 @@
 {% load static %}
 <div class="sidebar" data-sidebar>
-    <ul class="list-reset sidebar__list accordion">
+    <ul class="list-reset sidebar__list">
 
         {% for category in categories %}
       <li class="sidebar__item accordion-item">
-        <button class="btn-reset sidebar__btn sidebar__accordion accordion-header">
+        <button class="btn-reset sidebar__btn sidebar__accordion accordion-header" :id="'categoryTab_'+{{category.id}}" @click="displayCategory({{category.id}})">
+          <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'categoryTriagle_'+{{category.id}}"></span>
           {{category.name}}
         </button>
-        <div class="sidebar__panel">
+        <div class="sidebar__panel toggleMe" :id="'sidebar_'+{{category.id}}">
           <ul class="list-reset sidebar__sublist">
             {% for subcategory in subcategories %}
                 {% if subcategory.parent_category_id == category.id %}
