@@ -24,7 +24,7 @@
           <li class="sidebar__subitem">
             <button class="btn-reset sidebar__btn sidebar__btn--sub"
               color="{% if category.name == 'Аксессуары для кальяна'%}green{% elif category.name == 'Кальяны'%}orange{% elif category.name == 'Лимонады'%}yellow{% elif category.name == 'Мерч'%}light-pink{% elif category.name == 'Табак для кальяна'%}blue{% elif category.name == 'Уголь'%}purple{% elif category.name == 'Pod-системы'%}red{% elif category.name == 'Жидкости'%}pink{% endif %}"
-              :id=`categoryBtn_{{subcategory.name}}` @click="getContent({{subcategory.id}})">
+              :id=`categoryBtn_{{subcategory.id}}` @click="getContent({{subcategory.id}})">
               {{subcategory.name}}
             </button>
           </li>

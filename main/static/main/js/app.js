@@ -444,24 +444,26 @@ new Vue({
                 }
 
                 categoryName = content[0]['category']['name'];
+                console.log(content[0]['category'])
+                categoryId = content[0]['category']['id'];
 
 
                 console.log(list)
 
-                if (this.openedCategory.includes(categoryName) == false) {
-                    var color = document.getElementById('categoryBtn_' + categoryName).getAttribute('color')
+                if (this.openedCategory.includes(categoryId) == false) {
+                    var color = document.getElementById('categoryBtn_' + categoryId).getAttribute('color')
                     products.push({ 'category': categoryName, 'content': list, 'order': order, 'total': this.total, 'color': color });
                     this.products = products;
 
                     // check category is opened
-                    this.openedCategory.push(categoryName);
-                    var color = document.getElementById('categoryBtn_' + categoryName).getAttribute('color')
-                    document.getElementById('categoryBtn_' + categoryName).className = `btn-reset sidebar__btn sidebar__btn--sub sidebar__btn--active sidebar__btn--active-${color}`
+                    this.openedCategory.push(categoryId);
+                    var color = document.getElementById('categoryBtn_' + categoryId).getAttribute('color')
+                    document.getElementById('categoryBtn_' + categoryId).className = `btn-reset sidebar__btn sidebar__btn--sub sidebar__btn--active sidebar__btn--active-${color}`
 
-                    document.getElementById('catalogCategory_' + categoryName).className = `btn-reset menu__link menu__link--active menu__link--active-${color}`
+                    document.getElementById('catalogCategory_' + categoryId).className = `btn-reset menu__link menu__link--active menu__link--active-${color}`
                     
 
-                    var id = document.getElementById('catalogCategory_' + categoryName).getAttribute('category')
+                    var id = document.getElementById('catalogCategory_' + categoryId).getAttribute('category')
                     
 
                     el = document.getElementById('sidebar_' + id)
@@ -484,7 +486,7 @@ new Vue({
                     }
                 } else {
 
-                    var id = document.getElementById('catalogCategory_' + categoryName).getAttribute('category')
+                    var id = document.getElementById('catalogCategory_' + categoryId).getAttribute('category')
                     el = document.getElementById('sidebar_' + id)
                     
                     var activeCount = 0
@@ -503,11 +505,11 @@ new Vue({
                     for (var i = 0; i < this.products.length; i++) {
                         if (this.products[i].category == categoryName) {
                             this.products.splice(i, 1)
-                            const index = this.openedCategory.indexOf(categoryName);
+                            const index = this.openedCategory.indexOf(categoryId);
                             this.openedCategory.splice(index, 1)
                             console.log(categoryName)
-                            document.getElementById('categoryBtn_' + categoryName).className = "btn-reset sidebar__btn sidebar__btn--sub"
-                            document.getElementById('catalogCategory_' + categoryName).className = "btn-reset menu__link"
+                            document.getElementById('categoryBtn_' + categoryId).className = "btn-reset sidebar__btn sidebar__btn--sub"
+                            document.getElementById('catalogCategory_' + categoryId).className = "btn-reset menu__link"
 
                             
                         }
