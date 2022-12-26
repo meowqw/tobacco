@@ -7,7 +7,14 @@
       <h1 class="ordering__title">Оформление заказа</h1>
       <div class="ordering__content">
         {% for cat, products in order.items %}
-        <div class="ordering__item ordering-item">
+        <div class="ordering__item ordering-item ordering-item--{% if cat == 'Аксессуары для кальяна'%}green
+        {% elif cat == 'Кальяны'%}orange
+        {% elif cat == 'Лимонады'%}yellow
+        {% elif cat == 'Мерч'%}light-pink
+        {% elif cat == 'Табак для кальяна'%}blue
+        {% elif cat == 'Уголь'%}purple
+        {% elif cat == 'Pod-системы'%}red
+        {% elif cat == 'Жидкости'%}pink{% endif %}">
           <div class="ordering-item__head">
             <h2 class="ordering-item__title">{{ cat }}</h2>
             <ul class="list-reset ordering-item__head-list">
@@ -19,15 +26,15 @@
           <div class="ordering-item__body">
             {% for product in products.items %}
 
-            {% comment %} <div class="product ordering-item__product" id="item_{{product.product.id}}"> {% endcomment %}
+            {% comment %} <div class="product ordering-item__product" id="item_{{product.id}}"> {% endcomment %}
 
-              <div class="product ordering-item__product">
+              <div class="product ordering-item__product" id="item_{{product.item.id}}">
                 <div class="product__items product__items--ordering">
                   <div class="product__left">
                     <img src="/media/{{ product.item.img }}" alt="product" class="image product__img">
                     <h3 class="product__title">{{ product.item.name }}</h3>
                   </div>
-                  <ul class="list-reset product__right-list">
+                  <ul class="list-reset product__right-list" id="item_{{product.item.id}}">
                     {% for availability, item in product.availability.items %}
                     <li class="product__right-item" id="item_{{ product.item.id }}_{{ availability }}">
                       {% if availability == 'stock' %}
@@ -41,15 +48,18 @@
                       <div class="product__calc product-calc">
                         <button class="btn-reset product-calc__btn product-calc__btn--minus" 
                           v-on:click="minusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
-                        <div class="product-calc__value" id="count_{{ product.item.id }}_{{ availability }}">
-                          {{ item.count }}
+                        <div class="product-calc__value">
+                          
+                          <input type="number" v-on:input="inputCalc({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')" id="count_{{ product.item.id }}_{{ availability }}" value={{ item.count }} class="input input--calc">
                         </div>
+                        
+
                         <button class="btn-reset product-calc__btn product-calc__btn--plus" 
                           v-on:click="plusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
                       </div>
                       <div class="product__size">{{ item.price }} ₽</div>
                       <div class="product__size-all product__size-all--ordering" id="total_{{ product.item.id }}_{{ availability }}"
-                        value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}">{{ item.total }} ₽</div>
+                        value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}_{{cat}}">{{ item.total }} ₽</div>
                       <button class="btn-reset product__btn product__btn--close" v-on:click="del({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
                     </li>
                     {% endfor %}

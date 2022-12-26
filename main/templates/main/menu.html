@@ -1,32 +1,39 @@
 {% load static %}
 <div class="sidebar" data-sidebar>
-    <ul class="list-reset sidebar__list">
+  <ul class="list-reset sidebar__list">
 
-        {% for category in categories %}
-      <li class="sidebar__item accordion-item">
-        <button class="btn-reset sidebar__btn sidebar__accordion accordion-header" :id="'categoryTab_'+{{category.id}}" @click="displayCategory({{category.id}})">
-          <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'categoryTriagle_'+{{category.id}}"></span>
-          {{category.name}}
-        </button>
-        <div class="sidebar__panel toggleMe" :id="'sidebar_'+{{category.id}}">
-          <ul class="list-reset sidebar__sublist">
-            {% for subcategory in subcategories %}
-                {% if subcategory.parent_category_id == category.id %}
-                <li class="sidebar__subitem">
-                <button class="btn-reset sidebar__btn sidebar__btn--sub" @click="getContent({{subcategory.id}})">
-                    <img loading="lazy"
-                        src="/media/{{subcategory.img}}"
-                        class="image"
-                        width="47"
-                        height="27"
-                        alt="{{subcategory.name}}">
-                </button>
-                </li>
-                {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+    {% for category in categories %}
+    <li class="sidebar__item accordion-item--{% if category.name == 'Аксессуары для кальяна'%}green
+      {% elif category.name == 'Кальяны'%}orange
+      {% elif category.name == 'Лимонады'%}yellow
+      {% elif category.name == 'Мерч'%}light-pink
+      {% elif category.name == 'Табак для кальяна'%}blue
+      {% elif category.name == 'Уголь'%}purple
+      {% elif category.name == 'Pod-системы'%}red
+      {% elif category.name == 'Жидкости'%}pink{% endif %}">
+      <button class="btn-reset sidebar__btn sidebar__accordion accordion-header" :id="'categoryTab_'+{{category.id}}"
+        @click="displayCategory({{category.id}})">
+        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"
+          :id="'categoryTriagle_'+{{category.id}}"></span>
+        {{category.name}}
+      </button>
+      <div class="sidebar__panel toggleMe" :id="'sidebar_'+{{category.id}}">
+        <ul class="list-reset sidebar__sublist">
+          {% for subcategory in subcategories %}
+          {% if subcategory.parent_category_id == category.id %}
+          <li class="sidebar__subitem">
+            <button class="btn-reset sidebar__btn sidebar__btn--sub"
+              color="{% if category.name == 'Аксессуары для кальяна'%}green{% elif category.name == 'Кальяны'%}orange{% elif category.name == 'Лимонады'%}yellow{% elif category.name == 'Мерч'%}light-pink{% elif category.name == 'Табак для кальяна'%}blue{% elif category.name == 'Уголь'%}purple{% elif category.name == 'Pod-системы'%}red{% elif category.name == 'Жидкости'%}pink{% endif %}"
+              :id=`categoryBtn_{{subcategory.name}}` @click="getContent({{subcategory.id}})">
+              <img loading="lazy" src="/media/{{subcategory.img}}" class="image" width="47" height="27"
+                alt="{{subcategory.name}}">
+            </button>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

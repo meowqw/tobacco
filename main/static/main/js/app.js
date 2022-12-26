@@ -112,14 +112,36 @@ Vue.component('app-products', {
             document.getElementById(`total_remote`).innerHTML = (total_remote) + ' ₽'
             document.getElementById('total').innerHTML = (total) + ' ₽'
 
+            localStorage.setItem("order", JSON.stringify(this.order))
+
         },
-        displayAvailabilityList(id) {
-            availabilityList = document.getElementById('availabilityList_' + id)
-            if (availabilityList.style.display == 'none') {
-                availabilityList.style.display = ''
-            } else {
-                availabilityList.style.display = 'none'
+        displayAvailabilityList(id, availability) {
+            console.log(availability)
+            availability_arr = [availability.way, availability.stock, availability.remote]
+            console.log(availability_arr)
+
+            availabilityZero = 0
+            for (var i in availability_arr) {
+                if (availability_arr[i] == 0) {
+                    availabilityZero++;
+                }
             }
+            console.log(availabilityZero);
+            if (availabilityZero != 2) {
+                availabilityList = document.getElementById('availabilityList_' + id)
+                if (availabilityList.style.display == 'none') {
+                    availabilityList.style.display = ''
+
+                    document.getElementById('availabilityListBtn_' + id).classList.add('product__presence--active')
+
+                } else {
+                    availabilityList.style.display = 'none'
+                    document.getElementById('availabilityListBtn_' + id).classList.remove('product__presence--active')
+
+                }
+            }
+
+
         }
 
     },
@@ -150,7 +172,8 @@ Vue.component('app-products', {
     <div class="main-content__body main-body">
     <div id="result"></div>
     <ul class="list-reset main-body__list accordion" style="margin-top: 15px;" v-for="product in products">
-        <li class="main-body__item accordion-item">
+        
+        <li :class="'main-body__item accordion-item--'+product.color">
             <button class="btn-reset btn--accordion main-body__accordion accordion-header" :id="'categoryProduct_'+product.category" @click="displayProductList(product.category)">
             <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'catTriagle_'+product.category"></span>
             {{ product.category }}</button>
@@ -199,7 +222,7 @@ Vue.component('app-products', {
 
                                             <ul class="list-reset product__right-list stock" v-if="item.availability.stock != 0">
                                                 <li class="product__right-item product__right-item--main ">
-                                                    <button class="btn-reset product__presence" @click="displayAvailabilityList(item.id)">В наличии</button>
+                                                    <button :id="'availabilityListBtn_'+item.id" class="btn-reset product__presence" @click="displayAvailabilityList(item.id, item.availability)">В наличии</button>
                                                     <div class="product__residue">{{ item.availability.stock }}</div>
 
                                                     <button @click="displayCalc(item.id, 'stock')" :id="'add_stock_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
@@ -212,7 +235,7 @@ Vue.component('app-products', {
                                                     <button
                                                         class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'stock')"></button>
                                                     <div class="product-calc__value">
-                                                        <input type="number" @keyup.enter="inputCount(item.id, item.price, 'stock')" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
+                                                        <input type="number" v-on:input="inputCount(item.id, item.price, 'stock')" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
                                                         
                                                     </div>
                                                     
@@ -220,13 +243,16 @@ Vue.component('app-products', {
                                                         class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'stock')"></button>
                                                     </div>
                                                     <div class="product__size">{{ item.price }} ₽</div>
-                                                    <div class="product__size-all"> {{ order[item.id]['stock'].total }} ₽</div>
+                                                    <div class="product__size-all" style="color:gray;" v-if="order[item.id]['stock'].total == 0"> {{ order[item.id]['stock'].total }} ₽</div>
+                                                    <div class="product__size-all" v-else > {{ order[item.id]['stock'].total }} ₽</div>
+
+
                                                 </li>
                                             </ul>
 
                                             <ul class="list-reset product__right-list way" v-else-if="item.availability.way != 0 && item.availability.stock == 0">
                                                 <li class="product__right-item" v-if="item.availability.way != none && item.availability.way != 0">
-                                                <button class="btn-reset product__presence product__presence--blue" @click="displayAvailabilityList(item.id)">В пути</button>
+                                                <button :id="'availabilityListBtn_'+item.id" class="btn-reset product__presence product__presence--blue" @click="displayAvailabilityList(item.id, item.availability)">В пути</button>
                                                 <div class="product__residue">{{ item.availability.way }}</div>
                                                 <button @click="displayCalc(item.id, 'way')" :id="'add_way_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                 <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
@@ -238,7 +264,7 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
@@ -246,14 +272,15 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id]['way'].total }} ₽</div>
+                                                <div class="product__size-all" style="color:gray;" v-if="order[item.id]['way'].total == 0"> {{ order[item.id]['way'].total }} ₽</div>
+                                                <div class="product__size-all" v-else > {{ order[item.id]['way'].total }} ₽</div>
                                                 </li>
 
                                             </ul>
 
                                             <ul v-else-if="item.availability.remote != 0 && item.availability.stock == 0" class="list-reset product__right-list remote">
                                                 <li class="product__right-item" v-if="item.availability.remote != none && item.availability.remote != 0">
-                                                <button class="btn-reset product__presence product__presence--orange" @click="displayAvailabilityList(item.id)">Удаленный склад</button>
+                                                <button :id="'availabilityListBtn_'+item.id" class="btn-reset product__presence product__presence--orange" @click="displayAvailabilityList(item.id, item.availability)">Удаленный склад</button>
                                                 <div class="product__residue">{{ item.availability.remote }}</div>
                                                 <button @click="displayCalc(item.id, 'remote')" :id="'add_remote_'+item.id" class="btn-reset btn btn--product product__btn" style="display:">
                                                 <img loading="lazy" src="/static/main/img/path.svg" class="image" width="22" height="22" alt="path">
@@ -265,7 +292,7 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
@@ -273,7 +300,9 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id]['remote'].total }} ₽</div>
+
+                                                <div class="product__size-all" style="color:gray;" v-if="order[item.id]['remote'].total == 0"> {{ order[item.id]['remote'].total }} ₽</div>
+                                                <div class="product__size-all" v-else > {{ order[item.id]['remote'].total }} ₽</div>
                                                 </li>
                                             </ul>
 
@@ -295,7 +324,7 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
@@ -303,7 +332,9 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id]['way'].total }} ₽</div>
+
+                                                <div class="product__size-all" style="color:gray;" v-if="order[item.id]['way'].total == 0"> {{ order[item.id]['way'].total }} ₽</div>
+                                                <div class="product__size-all" v-else > {{ order[item.id]['way'].total }} ₽</div>
                                             </li>
                                             <li class="product__right-item remote" v-if="(item.availability.remote != none && item.availability.remote != 0) && (item.availability.stock != 0 || item.availability.way != 0)">
                                                 <div class="product__presence product__presence--orange">Удаленный склад
@@ -319,7 +350,7 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" @keyup.enter="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
                                                     
                                                 </div>
                                                 
@@ -327,7 +358,9 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
-                                                <div class="product__size-all"> {{ order[item.id]['remote'].total }} ₽</div>
+
+                                                <div class="product__size-all" style="color:gray;" v-if="order[item.id]['remote'].total == 0"> {{ order[item.id]['remote'].total }} ₽</div>
+                                                <div class="product__size-all" v-else > {{ order[item.id]['remote'].total }} ₽</div>
                                             </li>
                                         </ul>
                                     </div>
@@ -371,11 +404,11 @@ new Vue({
         // get product list by category
         getContent(id) {
             // GET REQUEST to /api/v1/productbycat/{id}
+
             axios
                 .get(`/api/v1/productbycat/${id}`)
                 .then(response => (this.contentController(response.data.products)));
         },
-
         redirectMenu(id) {
             console.log(id)
             localStorage.setItem('redirectItem', id);
@@ -393,6 +426,7 @@ new Vue({
 
         // adding products to the list for later display in app-products
         contentController(content) {
+
             var products = this.products;
             if (content.length > 0) {
                 var order = {};
@@ -415,16 +449,87 @@ new Vue({
                 console.log(list)
 
                 if (this.openedCategory.includes(categoryName) == false) {
-                    products.push({ 'category': categoryName, 'content': list, 'order': order, 'total': this.total });
+                    var color = document.getElementById('categoryBtn_' + categoryName).getAttribute('color')
+                    products.push({ 'category': categoryName, 'content': list, 'order': order, 'total': this.total, 'color': color });
                     this.products = products;
 
                     // check category is opened
                     this.openedCategory.push(categoryName);
+                    var color = document.getElementById('categoryBtn_' + categoryName).getAttribute('color')
+                    document.getElementById('categoryBtn_' + categoryName).className = `btn-reset sidebar__btn sidebar__btn--sub sidebar__btn--active sidebar__btn--active-${color}`
+
+                    document.getElementById('catalogCategory_' + categoryName).className = `btn-reset menu__link menu__link--active menu__link--active-${color}`
+                    
+
+                    var id = document.getElementById('catalogCategory_' + categoryName).getAttribute('category')
+                    
+
+                    el = document.getElementById('sidebar_' + id)
+
+                    
+
+                    if (!el.classList.contains('activate')) {
+                        // el.style.display = ''
+                        el.classList.add('activate')
+                        el.style.height = 'auto';
+                        let height = el.clientHeight + "px";
+                        el.style.height = '0px';
+
+                        setTimeout(function () {
+                            el.style.height = height;
+                        }, 0);
+
+                        document.getElementById('categoryTab_' + id).classList.add('ui-accordion-header-active')
+                        document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
+                    }
+                } else {
+
+                    var id = document.getElementById('catalogCategory_' + categoryName).getAttribute('category')
+                    el = document.getElementById('sidebar_' + id)
+                    
+                    var activeCount = 0
+                    for (var i in el.getElementsByTagName('button')) {
+                        var nameClass = el.getElementsByTagName('button')[i].className
+                            if (nameClass !== undefined) {
+                                if (nameClass.includes('active')) {
+                                    activeCount++;
+                                }
+                            }
+                             
+                    }
+                    console.log(activeCount)
+
+                    // del element from board
+                    for (var i = 0; i < this.products.length; i++) {
+                        if (this.products[i].category == categoryName) {
+                            this.products.splice(i, 1)
+                            const index = this.openedCategory.indexOf(categoryName);
+                            this.openedCategory.splice(index, 1)
+                            console.log(categoryName)
+                            document.getElementById('categoryBtn_' + categoryName).className = "btn-reset sidebar__btn sidebar__btn--sub"
+                            document.getElementById('catalogCategory_' + categoryName).className = "btn-reset menu__link"
+
+                            
+                        }
+                    }
+                    
+                    if (activeCount < 2) {
+                        document.getElementById('categoryTab_' + id).classList.remove('ui-accordion-header-active')
+                        document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
+                        el.style.height = '0px';
+
+                        el.addEventListener('transitionend', function () {
+                            el.classList.remove('activate');
+                        }, {
+                            once: true
+                        });
+                    }
+                    
+                    // console.log(this.products)
+                    
                 }
 
                 // console.log(products)
-
-
 
             }
         },
@@ -488,7 +593,7 @@ new Vue({
         minusCount: function (id, availability, price, category) {
 
             count = document.getElementById(`count_${id}_${availability}`)
-            count.innerHTML = Number(count.innerHTML) - 1
+            count.value = Number(count.value) - 1
 
             total = document.getElementById(`total_${id}_${availability}`)
             total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) - price) + ' ₽'
@@ -500,7 +605,7 @@ new Vue({
             this.editHead(availability, price, 'minus')
 
             // all data item
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.innerHTML)}`)
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
 
 
         },
@@ -510,7 +615,7 @@ new Vue({
 
             console.log(id, availability, price)
             count = document.getElementById(`count_${id}_${availability}`)
-            count.innerHTML = Number(count.innerHTML) + 1
+            count.value = Number(count.value) + 1
 
             total = document.getElementById(`total_${id}_${availability}`)
             total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) + price) + ' ₽'
@@ -522,7 +627,62 @@ new Vue({
 
             this.editHead(availability, price, 'plus')
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.innerHTML)}`)
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
+        },
+
+        inputCalc: function(id, availability, price, category){
+            count = document.getElementById(`count_${id}_${availability}`)
+            count.value = Number(count.value)
+            console.log(count.value)
+
+            total = document.getElementById(`total_${id}_${availability}`)
+            total.innerHTML = (price * count.value) + ' ₽'
+            console.log(category)
+            // categoryTotal = document.getElementById(`${category}`)
+            // console.log(categoryTotal)
+            // curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            // categoryTotal.innerHTML = "Итого: " + (price * count.value) + " ₽"
+
+            this.editHead(availability, price, 'plus')
+
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
+
+            total = 0
+            total_remote = 0
+            total_stock = 0
+            total_way = 0
+            category_total = 0
+            items = document.getElementsByClassName('product__size-all product__size-all--ordering')
+            for (var i in items) {
+                try {
+                    item = items[i].getAttribute('value').split('_')
+                    console.log(item)
+                    if (item[1] == 'remote') {
+                        total_remote += Number(item[2])
+                    } else if (item[1] == 'stock') {
+                        total_stock += Number(item[2])
+                    } else if (item[1] == 'way') {
+                        total_way += Number(item[2])
+                    }
+
+                    if (category == item[4]) {
+                        category_total += Number(item[2])
+                    }
+
+                    total += Number(item[2])
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+
+            document.getElementById(`total`).innerHTML = "Всего: " + total + " ₽"
+            document.getElementById(`total_stock`).innerHTML = total_stock + " ₽"
+            document.getElementById(`total_way`).innerHTML = total_way + " ₽"
+            document.getElementById(`total_remote`).innerHTML = total_remote + " ₽"
+
+            categoryTotal = document.getElementById(`${category}`)
+            categoryTotal.innerHTML = "Итого: " + (category_total) + " ₽"
+
         },
 
         // del product item on BASKET PAGE
@@ -542,6 +702,18 @@ new Vue({
             this.editHead(availability, currentTotalItem, 'del')
 
 
+            itemCollect = document.getElementById(`item_${id}`).getElementsByTagName('li')
+            console.log(itemCollect);
+            if (itemCollect.length == 0) {
+                itemCollect = document.getElementById(`item_${id}`).remove();
+            }
+
+            categoryCollect = document.getElementsByClassName('ordering__item')
+            for (var i in categoryCollect) {
+                if (categoryCollect[i].getElementsByClassName('product').length == 0){
+                    categoryCollect[i].remove();
+                }
+            }
         },
 
         // save the current state of the order and redirect to the payment page
@@ -606,6 +778,10 @@ new Vue({
 
 
             document.getElementById(`total`).innerHTML = "Всего: " + 0 + " ₽"
+            document.getElementById(`total_stock`).innerHTML = 0 + " ₽"
+            document.getElementById(`total_way`).innerHTML = 0 + " ₽"
+            document.getElementById(`total_remote`).innerHTML = 0 + " ₽"
+
         },
 
         // request to create USER ORDER 
@@ -714,22 +890,22 @@ new Vue({
             }
         },
         displayCategory: function (id) {
-            el = document.getElementById('sidebar_'+id)
+            el = document.getElementById('sidebar_' + id)
             if (!el.classList.contains('activate')) {
                 // el.style.display = ''
                 el.classList.add('activate')
                 el.style.height = 'auto';
                 let height = el.clientHeight + "px";
                 el.style.height = '0px';
-                
+
                 setTimeout(function () {
                     el.style.height = height;
                 }, 0);
 
-                document.getElementById('categoryTab_'+id).classList.add('ui-accordion-header-active')
+                document.getElementById('categoryTab_' + id).classList.add('ui-accordion-header-active')
                 document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-s')
             } else {
-                document.getElementById('categoryTab_'+id).classList.remove('ui-accordion-header-active')
+                document.getElementById('categoryTab_' + id).classList.remove('ui-accordion-header-active')
                 document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
                 el.style.height = '0px';
 
@@ -738,7 +914,7 @@ new Vue({
                 }, {
                     once: true
                 });
-                
+
 
             }
         }
@@ -746,8 +922,8 @@ new Vue({
     mounted() {
         // this.total = localStorage.total;
 
-        this.getContent(localStorage.getItem('redirectItem'))
-        localStorage.setItem('redirectItem', '')
+        // this.getContent(localStorage.getItem('redirectItem'))
+        // localStorage.setItem('redirectItem', '')
     },
     watch: {
         total(newName) {

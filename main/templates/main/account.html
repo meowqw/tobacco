@@ -10,15 +10,15 @@
         <ul class="tabs__nav account-tabs__nav">
           <li class="tabs__nav-item account-tabs__nav-item">
             <button class="btn-reset tabs__nav-btn account-tabs__nav-btn account-tabs__nav-btn--account"
-                    type="button">
+                    type="button"><span></span>
               Аккаунт
             </button>
           </li>
           <li class="tabs__nav-item account-tabs__nav-item">
-            <button class="btn-reset tabs__nav-btn account-tabs__nav-btn" type="button">Мои заказы</button>
+            <button class="btn-reset tabs__nav-btn account-tabs__nav-btn" type="button"><span></span>Мои заказы</button>
           </li>
           <li class="tabs__nav-item account-tabs__nav-item">
-            <button class="btn-reset tabs__nav-btn account-tabs__nav-btn" type="button">Мои адреса</button>
+            <button class="btn-reset tabs__nav-btn account-tabs__nav-btn" type="button"><span></span>Мои адреса</button>
           </li>
         </ul>
         <div class="tabs__content account-tabs__content">
@@ -72,6 +72,8 @@
                          width="22"
                          height="22"
                          alt="calendar">
+                    <img loading="lazy" src="{% static 'main/img/close-black.svg' %}" class="calendar__icon calendar__icon--close"
+                         width="22" height="22" alt="calendar">
                   </div>
                   <div class="account-filtr__item account-filtr__item--type filtr__dropdown">
                     <span class="notice">{{ deliveryAddresses|length }}</span>

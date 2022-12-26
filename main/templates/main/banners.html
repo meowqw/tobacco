@@ -1,9 +1,14 @@
 {% extends "main/base.html" %}
+{% load static %}
 {% block content %}
-<main class="main">
+<main class="main" id="banners" style="display">
   <div class="main__container container">
-    {% include 'main/menu.html' %}
+    <div class="sidebar" data-sidebar>
+      <ul class="list-reset sidebar__list">
+      </ul>
+    </div>
     <div class="main__content">
+      
       <section class="banners">
         <ul class="list-reset banners__list">
           {% for banner in banners%}
@@ -14,7 +19,4 @@
           {% endfor %}
         </ul>
       </section>
-    </div>
-  </div>
-</main>
 {% endblock %}
