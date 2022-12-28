@@ -47,15 +47,18 @@
                       <div class="product__residue">{{ item.rest }}</div>
                       <div class="product__calc product-calc">
                         <button class="btn-reset product-calc__btn product-calc__btn--minus" 
-                          v-on:click="minusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
+                          v-on:click="minusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}', {{product.item.list.carton}})"></button>
                         <div class="product-calc__value">
                           
-                          <input type="number" v-on:input="inputCalc({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')" id="count_{{ product.item.id }}_{{ availability }}" value={{ item.count }} class="input input--calc">
+                          <input type="number" v-on:input="inputCalc({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}', {{product.item.list.carton}})" id="count_{{ product.item.id }}_{{ availability }}" value={{ item.count }} class="input input--calc">
+
+                          <span><span id="carton_{{ product.item.id }}_{{ availability }}">{{ item.carton }}</span> блоков {{product.item.list.carton}} шт </span>
+                          
                         </div>
                         
 
                         <button class="btn-reset product-calc__btn product-calc__btn--plus" 
-                          v-on:click="plusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
+                          v-on:click="plusCount({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}', {{product.item.list.carton}})"></button>
                       </div>
                       <div class="product__size">{{ item.price }} ₽</div>
                       <div class="product__size-all product__size-all--ordering" id="total_{{ product.item.id }}_{{ availability }}"

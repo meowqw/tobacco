@@ -81,11 +81,16 @@ class Category(models.Model):
 class ProductList(models.Model):
     name = models.CharField('Название', max_length=30)
     time_create = models.DateTimeField(auto_now_add=True)
-    info = models.TextField('Информация', blank=True, null=True)
+    rrc = models.IntegerField('РРЦ', blank=True, null=True)
+    carton = models.IntegerField('Блок', blank=True, null=True)
     parent = models.ForeignKey('Subcategory', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return f"{self.parent} - {self.name}"
+
+    class Meta:
+        verbose_name = 'Список товаров'
+        verbose_name_plural = 'Списки товаров'
 
 class Subcategory(models.Model):
     """Subcategory of a product"""

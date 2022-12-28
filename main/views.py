@@ -117,7 +117,8 @@ def basket(request):
                 # clean
                 rest = eval(f"item_id.availability.{availability}")
                 price = item_id.price
-                clean_json_order[availability] = {'total': json_order[item][availability]['total'], 'count': json_order[item][availability]['count'], 'rest': rest, 'price': price}
+                clean_json_order[availability] = {'total': json_order[item][availability]['total'], 'count': json_order[item][availability]['count'], 'rest': rest, 'price': price,
+                                                'carton': json_order[item][availability]['carton']}
 
         
         item_ = {'item': item_id, 'availability': clean_json_order}

@@ -12,31 +12,39 @@ Vue.component('app-products', {
         }
     },
     methods: {
-        countPlus(id, price, availability) {
+        countPlus(id, price, availability, carton_count) {
             // + count product
 
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1 }
+            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1}
 
             // total in head
             document.getElementById('total').innerHTML = (current + price) + ' ₽'
             document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
 
+
+            this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+
             // localStorage.total = localStorage.total + this.order[id].total
             localStorage.setItem("order", JSON.stringify(this.order))
             console.log(this.order)
 
+
+            
+
         },
-        countMinus(id, price, availability) {
+        countMinus(id, price, availability, carton_count) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id][availability].count > 0) {
-                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1 }
+                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1}
 
                 document.getElementById('total').innerHTML = (current - price) + ' ₽'
                 document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
 
                 // localStorage.total = localStorage.total - this.order[id].total
+                this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+
                 localStorage.setItem("order", JSON.stringify(this.order))
             } else {
                 var calc = document.getElementById(`calc_${availability}_${id}`)
@@ -44,6 +52,8 @@ Vue.component('app-products', {
                 calc.style.display = "none"
                 add.style.display = ""
             }
+
+            
 
         },
         displayProductList(id) {
@@ -88,7 +98,7 @@ Vue.component('app-products', {
             calc.style.display = ""
         },
 
-        inputCount(id, price, availability) {
+        inputCount(id, price, availability, carton_count) {
             // control count, price and total by input
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             input = document.getElementById(`input_${availability}_${id}`)
@@ -111,6 +121,9 @@ Vue.component('app-products', {
             document.getElementById(`total_stock`).innerHTML = (total_stock) + ' ₽'
             document.getElementById(`total_remote`).innerHTML = (total_remote) + ' ₽'
             document.getElementById('total').innerHTML = (total) + ' ₽'
+
+            this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+
 
             localStorage.setItem("order", JSON.stringify(this.order))
 
@@ -182,13 +195,16 @@ Vue.component('app-products', {
                     <li class="main-body__subitem accordion-item">
                         <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(list)" :id="'subcategoryProduct_'+list">
                         <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+list"></span>
-                            {{list}}
-                            <div class="tooltip">
+                            {{list.split(';')[0]}}
+                            
+
+                            <div class="tooltip" v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">
                                 <img loading="lazy" src="/static/main/img/tooltip.svg" class="image" width="20" height="20"
                                     alt="tooltip">
                                 <span class="tooltip__text">
                                     <ul class="list-reset tooltip__list">
-                                        <li class="tooltip__item">РРЦ 100 ₽/шт.</li>
+                                        <li class="tooltip__item">Блок {{list.split(';')[2]}} шт.</li>
+                                        <li class="tooltip__item">РРЦ {{list.split(';')[1]}} ₽/шт.</li>
                                     </ul>
                                 </span>
                             </div>
@@ -233,14 +249,16 @@ Vue.component('app-products', {
                                                     <div class="product__calc product-calc" :id="'calc_stock_'+item.id" style="display:none">
                                                     
                                                     <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'stock')"></button>
+                                                        class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'stock', list.split(';')[2])"></button>
+
                                                     <div class="product-calc__value">
-                                                        <input type="number" v-on:input="inputCount(item.id, item.price, 'stock')" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
-                                                        
+                                                        <input type="number" v-on:input="inputCount(item.id, item.price, 'stock', list.split(';')[2])" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
+                                                      
+                                                        <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['stock'].carton }} блоков {{list.split(';')[2]}} шт</span>
                                                     </div>
                                                     
                                                     <button
-                                                        class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'stock')"></button>
+                                                        class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'stock', list.split(';')[2])"></button>
                                                     </div>
                                                     <div class="product__size">{{ item.price }} ₽</div>
                                                     <div class="product__size-all" style="color:gray;" v-if="order[item.id]['stock'].total == 0"> {{ order[item.id]['stock'].total }} ₽</div>
@@ -264,12 +282,12 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{list.split(';')[2]}} шт</span>
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way', list.split(';')[2])"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
                                                 <div class="product__size-all" style="color:gray;" v-if="order[item.id]['way'].total == 0"> {{ order[item.id]['way'].total }} ₽</div>
@@ -292,12 +310,12 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{list.split(';')[2]}} шт</span>
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote', list.split(';')[2])"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
 
@@ -324,12 +342,12 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way')" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{list.split(';')[2]}} шт</span>
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way')"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'way', list.split(';')[2])"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
 
@@ -350,12 +368,12 @@ Vue.component('app-products', {
                                                 <button
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
-                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote')" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    
+                                                    <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{list.split(';')[2]}} шт</span>
                                                 </div>
                                                 
                                                 <button
-                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote')"></button>
+                                                    class="btn-reset product-calc__btn product-calc__btn--plus" @click="countPlus(item.id, item.price, 'remote', list.split(';')[2])"></button>
                                                 </div>
                                                 <div class="product__size">{{ item.price }} ₽</div>
 
@@ -433,9 +451,9 @@ new Vue({
 
                 var list = {}
                 for (i = 0; i < content.length; i++) {
-                    order[content[i].id] = { 'stock': { 'total': 0, 'count': 0 }, 'way': { 'total': 0, 'count': 0 }, 'remote': { 'total': 0, 'count': 0 } }
+                    order[content[i].id] = { 'stock': { 'total': 0, 'count': 0, 'carton': 0}, 'way': { 'total': 0, 'count': 0, 'carton': 0}, 'remote': { 'total': 0, 'count': 0, 'carton': 0} }
 
-                    productList = content[i]['list']['name']
+                    productList = `${content[i]['list']['name']};${content[i]['list']['rrc']};${content[i]['list']['carton']}`
                     if (productList in list) {
                         list[productList].push(content[i])
                     } else {
@@ -592,7 +610,7 @@ new Vue({
 
         // - quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        minusCount: function (id, availability, price, category) {
+        minusCount: function (id, availability, price, category, carton_count) {
 
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value) - 1
@@ -606,6 +624,9 @@ new Vue({
 
             this.editHead(availability, price, 'minus')
 
+            carton = document.getElementById(`carton_${id}_${availability}`)
+            carton.innerHTML = Number(count.value) / carton_count | 0
+
             // all data item
             total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
 
@@ -613,7 +634,7 @@ new Vue({
         },
         // + quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
-        plusCount: function (id, availability, price, category) {
+        plusCount: function (id, availability, price, category, carton_count) {
 
             console.log(id, availability, price)
             count = document.getElementById(`count_${id}_${availability}`)
@@ -629,10 +650,13 @@ new Vue({
 
             this.editHead(availability, price, 'plus')
 
+            carton = document.getElementById(`carton_${id}_${availability}`)
+            carton.innerHTML = Number(count.value) / carton_count | 0
+
             total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
         },
 
-        inputCalc: function(id, availability, price, category){
+        inputCalc: function(id, availability, price, category, carton_count){
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value)
             console.log(count.value)
@@ -684,6 +708,9 @@ new Vue({
 
             categoryTotal = document.getElementById(`${category}`)
             categoryTotal.innerHTML = "Итого: " + (category_total) + " ₽"
+
+            carton = document.getElementById(`carton_${id}_${availability}`)
+            carton.innerHTML = Number(count.value) / carton_count | 0
 
         },
 
