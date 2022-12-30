@@ -287,68 +287,124 @@
     \***************************************/
   /***/ (() => {
   
-  var x, i, j, selElmnt, a, b, c;
-  x = document.getElementsByClassName("custom-select");
-  for (i = 0; i < x.length; i++) {
-    selElmnt = x[i].getElementsByTagName("select")[0];
-    a = document.createElement("DIV");
-    a.setAttribute("class", "select-selected");
-    a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-    x[i].appendChild(a);
-    b = document.createElement("DIV");
-    b.setAttribute("class", "select-items select-hide");
-    for (j = 1; j < selElmnt.length; j++) {
-      c = document.createElement("DIV");
-      c.innerHTML = selElmnt.options[j].innerHTML;
-      c.addEventListener("click", function (e) {
-        var y, i, k, s, h;
-        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-        h = this.parentNode.previousSibling;
-        for (i = 0; i < s.length; i++) {
-          if (s.options[i].innerHTML == this.innerHTML) {
-            s.selectedIndex = i;
-            h.innerHTML = this.innerHTML;
-            y = this.parentNode.getElementsByClassName("same-as-selected");
-            for (k = 0; k < y.length; k++) {
-              y[k].removeAttribute("class");
-            }
-            this.setAttribute("class", "same-as-selected");
-            break;
-          }
-        }
-        h.click();
-      });
-      b.appendChild(c);
-    }
-    x[i].appendChild(b);
-    a.addEventListener("click", function (e) {
-      e.stopPropagation();
-      closeAllSelect(this);
-      this.nextSibling.classList.toggle("select-hide");
-      this.classList.toggle("select-arrow-active");
-    });
-  }
-  function closeAllSelect(elmnt) {
-    var x,
-      y,
-      i,
-      arrNo = [];
-    x = document.getElementsByClassName("select-items");
-    y = document.getElementsByClassName("select-selected");
-    for (i = 0; i < y.length; i++) {
-      if (elmnt == y[i]) {
-        arrNo.push(i);
-      } else {
-        y[i].classList.remove("select-arrow-active");
-      }
-    }
-    for (i = 0; i < x.length; i++) {
-      if (arrNo.indexOf(i)) {
-        x[i].classList.add("select-hide");
-      }
-    }
-  }
-  document.addEventListener("click", closeAllSelect);
+  // var x, i, j, selElmnt, a, b, c;
+  
+  // x = document.getElementsByClassName("custom-select");
+  // for (i = 0; i < x.length; i++) {
+  //   selElmnt = x[i].getElementsByTagName("select")[0];
+  
+  //   a = document.createElement("DIV");
+  //   a.setAttribute("class", "select-selected");
+  //   a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  //   x[i].appendChild(a);
+  
+  //   b = document.createElement("DIV");
+  //   b.setAttribute("class", "select-items select-hide");
+  //   for (j = 1; j < selElmnt.length; j++) {
+  
+  //     c = document.createElement("DIV");
+  //     c.innerHTML = selElmnt.options[j].innerHTML;
+  //     c.addEventListener("click", function (e) {
+  
+  //       var y, i, k, s, h;
+  //       s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+  //       h = this.parentNode.previousSibling;
+  //       for (i = 0; i < s.length; i++) {
+  //         if (s.options[i].innerHTML == this.innerHTML) {
+  //           s.selectedIndex = i;
+  //           h.innerHTML = this.innerHTML;
+  //           y = this.parentNode.getElementsByClassName("same-as-selected");
+  //           for (k = 0; k < y.length; k++) {
+  //             y[k].removeAttribute("class");
+  //           }
+  //           this.setAttribute("class", "same-as-selected");
+  //           break;
+  //         }
+  //       }
+  //       h.click();
+  //     });
+  //     b.appendChild(c);
+  //   }
+  //   x[i].appendChild(b);
+  //   a.addEventListener("click", function (e) {
+  
+  //     e.stopPropagation();
+  //     closeAllSelect(this);
+  //     this.nextSibling.classList.toggle("select-hide");
+  //     this.classList.toggle("select-arrow-active");
+  //   });
+  // }
+  // function closeAllSelect(elmnt) {
+  
+  //   var x, y, i, arrNo = [];
+  //   x = document.getElementsByClassName("select-items");
+  //   y = document.getElementsByClassName("select-selected");
+  //   for (i = 0; i < y.length; i++) {
+  //     if (elmnt == y[i]) {
+  //       arrNo.push(i)
+  //     } else {
+  //       y[i].classList.remove("select-arrow-active");
+  //     }
+  //   }
+  //   for (i = 0; i < x.length; i++) {
+  //     if (arrNo.indexOf(i)) {
+  //       x[i].classList.add("select-hide");
+  //     }
+  //   }
+  // }
+  
+  // document.addEventListener("click", closeAllSelect);
+  
+  const searchSelectCombobo = new Combobo({
+    input: '.dropdown',
+    list: '.dropdown-list',
+    options: '.dropdown-option',
+    groups: null,
+    openClass: 'open',
+    activeClass: 'active',
+    selectedClass: 'selected',
+    useLiveRegion: true,
+    multiselect: true,
+    noResultsText: null,
+    selectionValue: selecteds => selecteds.map(s => s.innerText.trim()).join(' / '),
+    announcement: {
+      count: n => `${n} options available`,
+      selected: 'Selected.'
+    },
+    filter: 'contains' // 'starts-with', 'equals', or funk
+  });
+  
+  $('.category-page-faceted-search-select-toggle-arrow').on('click', event => {
+    event.stopPropagation();
+    searchSelectCombobo.isOpen ? searchSelectCombobo.closeList() : searchSelectCombobo.openList();
+  });
+
+  const searchSelectCombobo1 = new Combobo({
+    input: '.dropdown1',
+    list: '.dropdown-list1',
+    options: '.dropdown-option1',
+    groups: null,
+    openClass: 'open',
+    activeClass: 'active',
+    selectedClass: 'selected',
+    useLiveRegion: true,
+    multiselect: true,
+    noResultsText: null,
+    selectionValue: selecteds => selecteds.map(s => s.innerText.trim()).join(' / '),
+    announcement: {
+      count: n => `${n} options available`,
+      selected: 'Selected.'
+    },
+    filter: 'contains' // 'starts-with', 'equals', or funk
+  });
+  
+  $('.category-page-faceted-search-select-toggle-arrow').on('click', event => {
+    event.stopPropagation();
+    searchSelectCombobo1.isOpen ? searchSelectCombobo1.closeList() : searchSelectCombobo1.openList();
+  });
+
+
+
   
   /***/ }),
   
@@ -1207,46 +1263,6 @@
   
   /******/ })()
   ;
-
-
-  var getDaysArray = function(start, end) {
-    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
-        arr.push(new Date(dt));
-    }
-    return arr;
-  };
-  
-  function filterDate() {
-    from = document.getElementById('input').getAttribute('from')
-    to = document.getElementById('input').getAttribute('to')
-  
-    const items = document.getElementsByClassName('item')
-    for (item in items) {
-      if (items[item].className != undefined) {
-        item_date = items[item].getAttribute('date')
-        dates = getDaysArray(new Date(from), new Date(to))
-        if (dates.length > 0) {
-          dates = dates.map((v)=>v.toISOString().slice(0,10)).join("")
-          if (dates.includes(item_date)) {
-            items[item].style.display = ''
-          } else {
-            items[item].style.display = 'none'
-          }
-  
-        } else {
-          // console.log(item_date)
-          console.log(from)
-          console.log(item_date)
-          if (from.trim() == item_date.trim()) {
-            items[item].style.display = ''
-          } else {
-            items[item].style.display = 'none'
-          }
-        }
-  
-      }
-    }
-  }
   
   
   document.addEventListener('click', function (e) {
@@ -1282,3 +1298,5 @@
       location.href = '/main/'
     }
   })
+
+

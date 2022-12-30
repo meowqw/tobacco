@@ -9,52 +9,39 @@
         <section class="filtr">
           <h2 class="filtr__title">Фильтр</h2>
           <div class="filtr__content">
-            <div class="filtr__dropdown">
-              <div class="custom-select" @click="filterByProductStatus()">
-                <select v-model="availability">
-                  <option>
-                    Наличие
-                  </option>
-                  <option>
-                    Все
-                  </option>
-                  <option>
-                    В наличии
-                  </option>
-                  <option>
-                    Удаленный склад
-                  </option>
-                  <option >
-                    В пути
-                  </option>
-                </select>
-              </div>
-            </div> 
-            
-            <div class="filtr__dropdown">
-              <div class="custom-select">
-                <select v-model="weight">
-                  <option>
-                    Вес
-                  </option>
-                  <option>
-                    10
-                  </option>
-                  <option>
-                    100
-                  </option>
-                  <option>
-                    1000
-                  </option>
-                  <option>
-                    10000
-                  </option>
-                </select>
+            <div class="dropdown-container">
+              <div class="dropdown-wrap">
+                <input type="text" class="filtr__dropdown select-selected dropdown" id="plant_type" placeholder="Наличие">
+                <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
+                  <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height="" alt="">
+                </span>
+                <div class="select-items dropdown-list" >
+                  <div class="dropdown-option availability" value="all" v-on:click="newFilterAvailability('all')">Все</div>
+                  <div class="dropdown-option availability" value="stock" v-on:click="newFilterAvailability('stock')">В наличии</div>
+                  <div class="dropdown-option availability" value="remote" v-on:click="newFilterAvailability('remote')">Удаленный склад</div>
+                  <div class="dropdown-option availability" value="way" v-on:click="newFilterAvailability('way')">В пути</div>
+                </div>
               </div>
             </div>
+            <div class="dropdown-container">
+              <div class="dropdown-wrap">
+                <input type="text" class="filtr__dropdown select-selected dropdown1" id="plant_type" placeholder="Вес">
+                <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
+                  <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height="" alt="">
+                </span>
+                <div class="select-items dropdown-list1 ">
+                  <div class="dropdown-option1">10</div>
+                  <div class="dropdown-option1">100</div>
+                  <div class="dropdown-option1">1000</div>
+                  <div class="dropdown-option1">10000</div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="filtr__btns">
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='top' v-on:change="filterByProductStatus()">
+                <input type="checkbox" v-model="status" value='top' v-on:change="newFilterStatus()">
                 <span class="filtr__span filtr__span--orange">
                   <svg class="filtr__svg filtr__svg--top">
                     <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
@@ -63,7 +50,7 @@
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='new' v-on:change="filterByProductStatus()">
+                <input type="checkbox" v-model="status" value='new' v-on:change="newFilterStatus()">
                 <span class="filtr__span filtr__span--green">
                   <svg class="filtr__svg filtr__svg--new">
                     <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
@@ -72,7 +59,7 @@
                 </span>
               </label>
               <label class="btn-reset checkbox-btn filtr__btn" style="float:right">
-                <input type="checkbox" v-model="status" value='sale' v-on:change="filterByProductStatus()">
+                <input type="checkbox" v-model="status" value='sale' v-on:change="newFilterStatus()">
                 <span class="filtr__span filtr__span--red">
                   <svg class="filtr__svg filtr__svg--sale">
                     <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>

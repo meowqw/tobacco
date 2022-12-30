@@ -410,7 +410,7 @@ new Vue({
         totalTwo: 0,
         totalThree: 0,
 
-        availability: 'Наличие',
+        availability: [],
         weight: 'Вес',
 
         // current order list
@@ -946,6 +946,100 @@ new Vue({
 
 
             }
+        },
+
+        newFilter: function () {
+            for (var i in this.products) {
+                var category = this.products[i];
+                for (var j in category.content) {
+                    var list = category.content[j]
+                    for (var k in list) {
+                        var item = list[k]
+                        var itemAvailability = {'way': item.availability.way, 'remote': item.availability.remote, 'stock': item.availability.stock}
+                        var itemStatus = item.product_status.name
+
+                        if (this.status.length > 0) {
+                            if (!this.status.includes(itemStatus)) {
+                                document.getElementById(`product_${item.id}`).style.opacity = '0.3'
+                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '0.3'
+                            } else {
+                                document.getElementById(`product_${item.id}`).style.opacity = '1';
+                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
+                            }
+                        } else {
+                            document.getElementById(`product_${item.id}`).style.opacity = '1';
+                            document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
+                        }
+
+                        var availability = ['way', 'remote', 'stock']
+                        if (this.availability.length > 0) {
+
+
+                            for (var i in availability) {
+                                for (var a in document.getElementsByClassName(availability[i])) {
+                                    var element = document.getElementsByClassName(availability[i])[a]
+                                    if (element.tagName != undefined) {
+                                        element.style.opacity = '0.3'
+                                        document.getElementById(`availabilityList_${item.id}`).style.display = 'none'
+                                    }
+                                }
+                            }
+
+                            for (var i in this.availability) {
+                                for (var a in document.getElementsByClassName(this.availability[i])) {
+                                    var element = document.getElementsByClassName(this.availability[i])[a]
+                                    if (element.tagName != undefined) {
+                                        element.style.opacity = '1'
+                                        // console.log(item.id)
+                                        document.getElementById(`availabilityList_${item.id}`).style.display = ''
+                                    }
+                                }
+                            }
+                            
+                        } else {
+                            
+                            for (var i in availability) {
+                                for (var a in document.getElementsByClassName(availability[i])) {
+                                    var element = document.getElementsByClassName(availability[i])[a]
+                                    if (element.tagName != undefined) {
+                                        element.style.opacity = '1'
+                                        document.getElementById(`availabilityList_${item.id}`).style.display = 'none'
+                                    }
+                                }
+                            }
+                        }
+
+                        if (this.availability.includes('all')) {
+                            for (var i in availability) {
+                                for (var a in document.getElementsByClassName(availability[i])) {
+                                    var element = document.getElementsByClassName(availability[i])[a]
+                                    if (element.tagName != undefined) {
+                                        element.style.opacity = '1'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        newFilterAvailability: function(availability) {
+            
+            if (!this.availability.includes(availability)) {
+                this.availability.push(availability)
+            } else {
+                console.log(availability)
+                this.availability = this.availability.filter(function(f) { return f !== availability });
+            }
+
+            // console.log(this.filter);
+            this.newFilter()
+        },
+
+        newFilterStatus: function() {
+            // console.log(this.availability, this.status)
+            this.newFilter()
         }
     },
     mounted() {
