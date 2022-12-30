@@ -16,7 +16,7 @@ Vue.component('app-products', {
             // + count product
 
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1}
+            this.order[id][availability] = { 'total': this.order[id][availability].total + price, 'count': this.order[id][availability].count + 1 }
 
             // total in head
             document.getElementById('total').innerHTML = (current + price) + ' ₽'
@@ -30,14 +30,14 @@ Vue.component('app-products', {
             console.log(this.order)
 
 
-            
+
 
         },
         countMinus(id, price, availability, carton_count) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             if (this.order[id][availability].count > 0) {
-                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1}
+                this.order[id][availability] = { 'total': this.order[id][availability].total - price, 'count': this.order[id][availability].count - 1 }
 
                 document.getElementById('total').innerHTML = (current - price) + ' ₽'
                 document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
@@ -53,7 +53,7 @@ Vue.component('app-products', {
                 add.style.display = ""
             }
 
-            
+
 
         },
         displayProductList(id) {
@@ -451,7 +451,7 @@ new Vue({
 
                 var list = {}
                 for (i = 0; i < content.length; i++) {
-                    order[content[i].id] = { 'stock': { 'total': 0, 'count': 0, 'carton': 0}, 'way': { 'total': 0, 'count': 0, 'carton': 0}, 'remote': { 'total': 0, 'count': 0, 'carton': 0} }
+                    order[content[i].id] = { 'stock': { 'total': 0, 'count': 0, 'carton': 0 }, 'way': { 'total': 0, 'count': 0, 'carton': 0 }, 'remote': { 'total': 0, 'count': 0, 'carton': 0 } }
 
                     productList = `${content[i]['list']['name']};${content[i]['list']['rrc']};${content[i]['list']['carton']}`
                     if (productList in list) {
@@ -479,14 +479,14 @@ new Vue({
                     document.getElementById('categoryBtn_' + categoryId).className = `btn-reset sidebar__btn sidebar__btn--sub sidebar__btn--active sidebar__btn--active-${color}`
 
                     document.getElementById('catalogCategory_' + categoryId).className = `btn-reset menu__link menu__link--active menu__link--active-${color}`
-                    
+
 
                     var id = document.getElementById('catalogCategory_' + categoryId).getAttribute('category')
-                    
+
 
                     el = document.getElementById('sidebar_' + id)
 
-                    
+
 
                     if (!el.classList.contains('activate')) {
                         // el.style.display = ''
@@ -506,16 +506,16 @@ new Vue({
 
                     var id = document.getElementById('catalogCategory_' + categoryId).getAttribute('category')
                     el = document.getElementById('sidebar_' + id)
-                    
+
                     var activeCount = 0
                     for (var i in el.getElementsByTagName('button')) {
                         var nameClass = el.getElementsByTagName('button')[i].className
-                            if (nameClass !== undefined) {
-                                if (nameClass.includes('active')) {
-                                    activeCount++;
-                                }
+                        if (nameClass !== undefined) {
+                            if (nameClass.includes('active')) {
+                                activeCount++;
                             }
-                             
+                        }
+
                     }
                     console.log(activeCount)
 
@@ -529,10 +529,10 @@ new Vue({
                             document.getElementById('categoryBtn_' + categoryId).className = "btn-reset sidebar__btn sidebar__btn--sub"
                             document.getElementById('catalogCategory_' + categoryId).className = "btn-reset menu__link"
 
-                            
+
                         }
                     }
-                    
+
                     if (activeCount < 2) {
                         document.getElementById('categoryTab_' + id).classList.remove('ui-accordion-header-active')
                         document.getElementById('categoryTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
@@ -544,9 +544,9 @@ new Vue({
                             once: true
                         });
                     }
-                    
+
                     // console.log(this.products)
-                    
+
                 }
 
                 // console.log(products)
@@ -656,7 +656,7 @@ new Vue({
             total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
         },
 
-        inputCalc: function(id, availability, price, category, carton_count){
+        inputCalc: function (id, availability, price, category, carton_count) {
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value)
             console.log(count.value)
@@ -739,7 +739,7 @@ new Vue({
 
             categoryCollect = document.getElementsByClassName('ordering__item')
             for (var i in categoryCollect) {
-                if (categoryCollect[i].getElementsByClassName('product').length == 0){
+                if (categoryCollect[i].getElementsByClassName('product').length == 0) {
                     categoryCollect[i].remove();
                 }
             }
@@ -955,7 +955,7 @@ new Vue({
                     var list = category.content[j]
                     for (var k in list) {
                         var item = list[k]
-                        var itemAvailability = {'way': item.availability.way, 'remote': item.availability.remote, 'stock': item.availability.stock}
+                        var itemAvailability = { 'way': item.availability.way, 'remote': item.availability.remote, 'stock': item.availability.stock }
                         var itemStatus = item.product_status.name
 
                         if (this.status.length > 0) {
@@ -1001,9 +1001,9 @@ new Vue({
                                     }
                                 }
                             }
-                            
+
                         } else {
-                            
+
                             for (var i in availability) {
                                 for (var a in document.getElementsByClassName(availability[i])) {
                                     var element = document.getElementsByClassName(availability[i])[a]
@@ -1030,22 +1030,31 @@ new Vue({
             }
         },
 
-        newFilterAvailability: function(availability) {
-            
+        newFilterAvailability: function (availability) {
+
             if (!this.availability.includes(availability)) {
                 this.availability.push(availability)
             } else {
                 console.log(availability)
-                this.availability = this.availability.filter(function(f) { return f !== availability });
+                this.availability = this.availability.filter(function (f) { return f !== availability });
             }
 
             // console.log(this.filter);
             this.newFilter()
         },
 
-        newFilterStatus: function() {
+        newFilterStatus: function () {
             // console.log(this.availability, this.status)
             this.newFilter()
+        },
+        redirect: function () {
+
+            console.log(1)
+            if (location.pathname != '/main/') {
+                location.href = '/main/'
+
+            }
+            console.log(location.pathname);
         }
     },
     mounted() {
@@ -1060,3 +1069,4 @@ new Vue({
         }
     }
 });
+
