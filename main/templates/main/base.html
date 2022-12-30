@@ -32,7 +32,7 @@
             <img loading="lazy" src="{% static 'main/img/tobacco.svg' %}" class="image" width="156" height="22"
               alt="Tobacco">
           </div>
-          <button class="btn-reset btn header__btn" data-graph-path="menu" data-btn-open id="catalogBtn">
+          <button class="btn-reset btn header__btn" data-graph-path="menu" data-btn-open id="catalogBtn" @click="redirect()">
             <img loading="lazy" src="{% static 'main/img/hamburger.svg' %}" class="image" width="28" height="28"
               alt="path" />
             <span>Каталог</span>
@@ -233,6 +233,8 @@
       </div>
     </div>
   </div>
+
+  
   <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -241,7 +243,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script src="{% static 'main/js/app.js' %}"></script>
-
+  
 </body>
 
 </html>
