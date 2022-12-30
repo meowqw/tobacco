@@ -980,7 +980,10 @@ new Vue({
                                     var element = document.getElementsByClassName(availability[i])[a]
                                     if (element.tagName != undefined) {
                                         element.style.opacity = '0.3'
-                                        document.getElementById(`availabilityList_${item.id}`).style.display = 'none'
+                                        ul = document.getElementById(`availabilityList_${item.id}`)
+                                        if (ul.getElementsByTagName('li').length > 0) {
+                                            ul.style.display = ''
+                                        }
                                     }
                                 }
                             }
@@ -991,7 +994,10 @@ new Vue({
                                     if (element.tagName != undefined) {
                                         element.style.opacity = '1'
                                         // console.log(item.id)
-                                        document.getElementById(`availabilityList_${item.id}`).style.display = ''
+                                        ul = document.getElementById(`availabilityList_${item.id}`)
+                                        if (ul.getElementsByTagName('li').length > 0) {
+                                            ul.style.display = ''
+                                        }
                                     }
                                 }
                             }
