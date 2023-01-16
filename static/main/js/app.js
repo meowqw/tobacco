@@ -627,8 +627,10 @@ new Vue({
             carton = document.getElementById(`carton_${id}_${availability}`)
             carton.innerHTML = Number(count.value) / carton_count | 0
 
+            carton_num = Number(count.value) / carton_count | 0
+
             // all data item
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}`)
 
 
         },
@@ -653,7 +655,9 @@ new Vue({
             carton = document.getElementById(`carton_${id}_${availability}`)
             carton.innerHTML = Number(count.value) / carton_count | 0
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
+            carton_num = Number(count.value) / carton_count | 0
+
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}`)
         },
 
         inputCalc: function (id, availability, price, category, carton_count) {
@@ -671,7 +675,7 @@ new Vue({
 
             this.editHead(availability, price, 'plus')
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}`)
+            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(count.value) / carton_count | 0}`)
 
             total = 0
             total_remote = 0
@@ -760,11 +764,12 @@ new Vue({
                 var availability = values[1]
                 total = values[2]
                 count = values[3]
+                carton = values[5]
                 if (id in order) {
-                    order[id][availability] = { 'total': Number(total), 'count': Number(count) }
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton) }
                 } else {
                     order[id] = {}
-                    order[id][availability] = { 'total': Number(total), 'count': Number(count) }
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton) }
                 }
 
             }
