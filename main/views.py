@@ -145,6 +145,7 @@ def account(request):
     deliveryAddresses = DeliveryAddresses.objects.all()
     orders_ = UserOrder.objects.filter(user=request.user).all().order_by('id')
 
+    total = {'total': 0, 'way': 0, 'stock': 0, 'remote': 0}
     all_orders = []
     for orders in orders_:
         order = {}
