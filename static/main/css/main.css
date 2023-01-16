@@ -2890,9 +2890,9 @@ a {
   pointer-events: none;
 }
 .dropdown-list.open {
-  visibility: visible;
-  opacity: 1;
   z-index: 1;
+  opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 .dropdown-option {
@@ -2916,54 +2916,6 @@ a {
   width: 24px;
   height: 24px;
 }
-
-
-.dropdown-list1 {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 4px);
-  z-index: -1;
-  overflow-y: auto;
-  padding: 8px 12px;
-  width: 250px;
-  max-height: 250px;
-  text-align: left;
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
-  -o-transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
-  transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
-  pointer-events: none;
-}
-.dropdown-list1.open {
-  visibility: visible;
-  opacity: 1;
-  z-index: 1;
-  pointer-events: auto;
-}
-.dropdown-option1 {
-  position: relative;
-}
-.dropdown-option1.active {
-  border: none;
-  background-color: inherit;
-}
-.dropdown-option1.active::after {
-  display: none;
-}
-.dropdown-option1.selected::before {
-  content: url("../img/check.svg");
-  position: absolute;
-  left: -20px;
-  top: 9px;
-  float: right;
-  margin-right: 12px;
-  margin-left: 13px;
-  width: 24px;
-  height: 24px;
-}
-
-
 
 .tooltip {
   position: relative;
@@ -3102,6 +3054,7 @@ a {
 }
 .custom-checkbox__content::after {
   content: "";
+  position: absolute;
   display: none;
   border-radius: 4px;
   width: 12px;
@@ -3241,6 +3194,54 @@ a {
   border-radius: 5px;
   background-color: var(--gray-color);
 }
+/*# sourceMappingURL=main.css.map */
+
+
+.dropdown-list1 {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  z-index: -1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  width: 250px;
+  max-height: 250px;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
+  -o-transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
+  transition: all 0.3s cubic-bezier(0.42, 0, 0.38, 1.34);
+  pointer-events: none;
+}
+.dropdown-list1.open {
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
+}
+.dropdown-option1 {
+  position: relative;
+}
+.dropdown-option1.active {
+  border: none;
+  background-color: inherit;
+}
+.dropdown-option1.active::after {
+  display: none;
+}
+.dropdown-option1.selected::before {
+  content: url("../img/check.svg");
+  position: absolute;
+  left: -20px;
+  top: 9px;
+  float: right;
+  margin-right: 12px;
+  margin-left: 13px;
+  width: 24px;
+  height: 24px;
+}
+
 
 .toggleMe {
   transition: height .25s ease;

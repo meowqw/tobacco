@@ -12,78 +12,78 @@
         /***/
 }),
 
-  /***/ "./node_modules/air-datepicker/index.es.js":
-  /*!*************************************************!*\
-    !*** ./node_modules/air-datepicker/index.es.js ***!
-    \*************************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/air-datepicker/index.es.js":
+/*!*************************************************!*\
+  !*** ./node_modules/air-datepicker/index.es.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-  /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
           /* harmony export */
 });
-  /* harmony import */ var _air_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./air-datepicker */ "./node_modules/air-datepicker/air-datepicker.js");
-  /* harmony import */ var _air_datepicker__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_air_datepicker__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _air_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./air-datepicker */ "./node_modules/air-datepicker/air-datepicker.js");
+/* harmony import */ var _air_datepicker__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_air_datepicker__WEBPACK_IMPORTED_MODULE_0__);
 
-  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_air_datepicker__WEBPACK_IMPORTED_MODULE_0___default()));
-
-
-        /***/
-}),
-
-  /***/ "./src/js/_components.js":
-  /*!*******************************!*\
-    !*** ./src/js/_components.js ***!
-    \*******************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-        "use strict";
-        __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var _components_popup_payment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/popup-payment */ "./src/js/components/popup-payment.js");
-  /* harmony import */ var _components_popup_payment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_popup_payment__WEBPACK_IMPORTED_MODULE_0__);
-  /* harmony import */ var _components_catalog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/catalog */ "./src/js/components/catalog.js");
-  /* harmony import */ var _components_catalog__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_catalog__WEBPACK_IMPORTED_MODULE_1__);
-  /* harmony import */ var _components_show_hide_password__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/show-hide-password */ "./src/js/components/show-hide-password.js");
-  /* harmony import */ var _components_show_hide_password__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_components_show_hide_password__WEBPACK_IMPORTED_MODULE_2__);
-  /* harmony import */ var _components_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/modal */ "./src/js/components/modal.js");
-  /* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/accordion */ "./src/js/components/accordion.js");
-  /* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_components_accordion__WEBPACK_IMPORTED_MODULE_4__);
-  /* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/dropdown */ "./src/js/components/dropdown.js");
-  /* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_components_dropdown__WEBPACK_IMPORTED_MODULE_5__);
-  /* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/sidebar */ "./src/js/components/sidebar.js");
-  /* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_components_sidebar__WEBPACK_IMPORTED_MODULE_6__);
-  /* harmony import */ var _components_product__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/product */ "./src/js/components/product.js");
-  /* harmony import */ var _components_product__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_components_product__WEBPACK_IMPORTED_MODULE_7__);
-  /* harmony import */ var _components_calendar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/calendar */ "./src/js/components/calendar.js");
-  /* harmony import */ var _components_img_zoom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/img-zoom */ "./src/js/components/img-zoom.js");
-  /* harmony import */ var _components_img_zoom__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_components_img_zoom__WEBPACK_IMPORTED_MODULE_9__);
-
-
-
-
-
-
-
-
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_air_datepicker__WEBPACK_IMPORTED_MODULE_0___default()));
 
 
         /***/
 }),
 
-  /***/ "./src/js/_functions.js":
-  /*!******************************!*\
-    !*** ./src/js/_functions.js ***!
-    \******************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/_components.js":
+/*!*******************************!*\
+  !*** ./src/js/_components.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var _functions_mobile_check__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions/mobile-check */ "./src/js/functions/mobile-check.js");
-  /* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
-  /* harmony import */ var graph_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! graph-tabs */ "./node_modules/graph-tabs/src/graph-tabs.js");
+/* harmony import */ var _components_calendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/calendar */ "./src/js/components/calendar.js");
+/* harmony import */ var _components_popup_payment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/popup-payment */ "./src/js/components/popup-payment.js");
+/* harmony import */ var _components_popup_payment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_popup_payment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_catalog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/catalog */ "./src/js/components/catalog.js");
+/* harmony import */ var _components_catalog__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_components_catalog__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_show_hide_password__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/show-hide-password */ "./src/js/components/show-hide-password.js");
+/* harmony import */ var _components_show_hide_password__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_components_show_hide_password__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _components_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/modal */ "./src/js/components/modal.js");
+/* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/accordion */ "./src/js/components/accordion.js");
+/* harmony import */ var _components_accordion__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_components_accordion__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/dropdown */ "./src/js/components/dropdown.js");
+/* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_components_dropdown__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/sidebar */ "./src/js/components/sidebar.js");
+/* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_components_sidebar__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_product__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/product */ "./src/js/components/product.js");
+/* harmony import */ var _components_product__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_components_product__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_img_zoom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/img-zoom */ "./src/js/components/img-zoom.js");
+/* harmony import */ var _components_img_zoom__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_components_img_zoom__WEBPACK_IMPORTED_MODULE_9__);
+
+
+
+
+
+
+
+
+
+
+
+        /***/
+}),
+
+/***/ "./src/js/_functions.js":
+/*!******************************!*\
+  !*** ./src/js/_functions.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _functions_mobile_check__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions/mobile-check */ "./src/js/functions/mobile-check.js");
+/* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
+/* harmony import */ var graph_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! graph-tabs */ "./node_modules/graph-tabs/src/graph-tabs.js");
         // Данный файл - лишь собрание подключений готовых компонентов.
         // Рекомендуется создавать отдельный файл в папке components и подключать все там
 
@@ -173,19 +173,19 @@
         /***/
 }),
 
-  /***/ "./src/js/_vars.js":
-  /*!*************************!*\
-    !*** ./src/js/_vars.js ***!
-    \*************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/_vars.js":
+/*!*************************!*\
+  !*** ./src/js/_vars.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-  /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
           /* harmony export */
 });
-  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
           windowEl: window,
           documentEl: document,
           htmlEl: document.documentElement,
@@ -195,26 +195,26 @@
         /***/
 }),
 
-  /***/ "./src/js/_vendor.js":
-  /*!***************************!*\
-    !*** ./src/js/_vendor.js ***!
-    \***************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/_vendor.js":
+/*!***************************!*\
+  !*** ./src/js/_vendor.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var _vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vendor/focus-visible.js */ "./src/js/vendor/focus-visible.js");
-  /* harmony import */ var _vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vendor/focus-visible.js */ "./src/js/vendor/focus-visible.js");
+/* harmony import */ var _vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_vendor_focus_visible_js__WEBPACK_IMPORTED_MODULE_0__);
 
 
         /***/
 }),
 
-  /***/ "./src/js/components/accordion.js":
-  /*!****************************************!*\
-    !*** ./src/js/components/accordion.js ***!
-    \****************************************/
-  /***/ (() => {
+/***/ "./src/js/components/accordion.js":
+/*!****************************************!*\
+  !*** ./src/js/components/accordion.js ***!
+  \****************************************/
+/***/ (() => {
 
         var acc = document.getElementsByClassName("product-accordion");
         var i;
@@ -246,15 +246,15 @@
         /***/
 }),
 
-  /***/ "./src/js/components/calendar.js":
-  /*!***************************************!*\
-    !*** ./src/js/components/calendar.js ***!
-    \***************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/components/calendar.js":
+/*!***************************************!*\
+  !*** ./src/js/components/calendar.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var air_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! air-datepicker */ "./node_modules/air-datepicker/index.es.js");
+/* harmony import */ var air_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! air-datepicker */ "./node_modules/air-datepicker/index.es.js");
 
         new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]('#input', {
           range: true,
@@ -264,11 +264,11 @@
         /***/
 }),
 
-  /***/ "./src/js/components/catalog.js":
-  /*!**************************************!*\
-    !*** ./src/js/components/catalog.js ***!
-    \**************************************/
-  /***/ (() => {
+/***/ "./src/js/components/catalog.js":
+/*!**************************************!*\
+  !*** ./src/js/components/catalog.js ***!
+  \**************************************/
+/***/ (() => {
 
         // const btnOpen = document?.querySelector('[data-btn-open]');
         // const btnClose = document?.querySelector('[data-btn-close]');
@@ -292,11 +292,11 @@
         /***/
 }),
 
-  /***/ "./src/js/components/dropdown.js":
-  /*!***************************************!*\
-    !*** ./src/js/components/dropdown.js ***!
-    \***************************************/
-  /***/ (() => {
+/***/ "./src/js/components/dropdown.js":
+/*!***************************************!*\
+  !*** ./src/js/components/dropdown.js ***!
+  \***************************************/
+/***/ (() => {
 
         // var x, i, j, selElmnt, a, b, c;
 
@@ -415,16 +415,14 @@
         });
 
 
-
-
         /***/
 }),
 
-  /***/ "./src/js/components/img-zoom.js":
-  /*!***************************************!*\
-    !*** ./src/js/components/img-zoom.js ***!
-    \***************************************/
-  /***/ (() => {
+/***/ "./src/js/components/img-zoom.js":
+/*!***************************************!*\
+  !*** ./src/js/components/img-zoom.js ***!
+  \***************************************/
+/***/ (() => {
 
         // $(function () {
         //   $('.minimized').click(function (event) {
@@ -450,26 +448,26 @@
         /***/
 }),
 
-  /***/ "./src/js/components/modal.js":
-  /*!************************************!*\
-    !*** ./src/js/components/modal.js ***!
-    \************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/components/modal.js":
+/*!************************************!*\
+  !*** ./src/js/components/modal.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
+/* harmony import */ var graph_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graph-modal */ "./node_modules/graph-modal/src/graph-modal.js");
 
         const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
         /***/
 }),
 
-  /***/ "./src/js/components/popup-payment.js":
-  /*!********************************************!*\
-    !*** ./src/js/components/popup-payment.js ***!
-    \********************************************/
-  /***/ (() => {
+/***/ "./src/js/components/popup-payment.js":
+/*!********************************************!*\
+  !*** ./src/js/components/popup-payment.js ***!
+  \********************************************/
+/***/ (() => {
 
         var _document, _document2, _document3, _document4, _document5;
         const popupBtn = (_document = document) === null || _document === void 0 ? void 0 : _document.querySelector('[data-btn-popup]');
@@ -494,11 +492,11 @@
         /***/
 }),
 
-  /***/ "./src/js/components/product.js":
-  /*!**************************************!*\
-    !*** ./src/js/components/product.js ***!
-    \**************************************/
-  /***/ (() => {
+/***/ "./src/js/components/product.js":
+/*!**************************************!*\
+  !*** ./src/js/components/product.js ***!
+  \**************************************/
+/***/ (() => {
 
         var _document, _document2;
         const btnProductOpen = (_document = document) === null || _document === void 0 ? void 0 : _document.querySelector('.product__presence');
@@ -511,11 +509,11 @@
         /***/
 }),
 
-  /***/ "./src/js/components/show-hide-password.js":
-  /*!*************************************************!*\
-    !*** ./src/js/components/show-hide-password.js ***!
-    \*************************************************/
-  /***/ (() => {
+/***/ "./src/js/components/show-hide-password.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/show-hide-password.js ***!
+  \*************************************************/
+/***/ (() => {
 
         $('body').on('click', '.password__control', function () {
           if ($('#password-input').attr('type') == 'password') {
@@ -531,11 +529,11 @@
         /***/
 }),
 
-  /***/ "./src/js/components/sidebar.js":
-  /*!**************************************!*\
-    !*** ./src/js/components/sidebar.js ***!
-    \**************************************/
-  /***/ (() => {
+/***/ "./src/js/components/sidebar.js":
+/*!**************************************!*\
+  !*** ./src/js/components/sidebar.js ***!
+  \**************************************/
+/***/ (() => {
 
         var _document, _document2;
         const sidebar = (_document = document) === null || _document === void 0 ? void 0 : _document.querySelector('[data-sidebar]');
@@ -548,19 +546,19 @@
         /***/
 }),
 
-  /***/ "./src/js/functions/mobile-check.js":
-  /*!******************************************!*\
-    !*** ./src/js/functions/mobile-check.js ***!
-    \******************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/js/functions/mobile-check.js":
+/*!******************************************!*\
+  !*** ./src/js/functions/mobile-check.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-  /* harmony export */   "mobileCheck": () => (/* binding */ mobileCheck)
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "mobileCheck": () => (/* binding */ mobileCheck)
           /* harmony export */
 });
-  /* harmony import */ var _vars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_vars */ "./src/js/_vars.js");
+/* harmony import */ var _vars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_vars */ "./src/js/_vars.js");
 
         const mobileCheck = () => {
           const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -578,11 +576,11 @@
         /***/
 }),
 
-  /***/ "./src/js/vendor/focus-visible.js":
-  /*!****************************************!*\
-    !*** ./src/js/vendor/focus-visible.js ***!
-    \****************************************/
-  /***/ (() => {
+/***/ "./src/js/vendor/focus-visible.js":
+/*!****************************************!*\
+  !*** ./src/js/vendor/focus-visible.js ***!
+  \****************************************/
+/***/ (() => {
 
         /**
          * Applies the :focus-visible polyfill at the given scope.
@@ -867,16 +865,16 @@
         /***/
 }),
 
-  /***/ "./node_modules/graph-modal/src/graph-modal.js":
-  /*!*****************************************************!*\
-    !*** ./node_modules/graph-modal/src/graph-modal.js ***!
-    \*****************************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/graph-modal/src/graph-modal.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/graph-modal/src/graph-modal.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-  /* harmony export */   "default": () => (/* binding */ GraphModal)
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GraphModal)
           /* harmony export */
 });
         class GraphModal {
@@ -1071,16 +1069,16 @@
         /***/
 }),
 
-  /***/ "./node_modules/graph-tabs/src/graph-tabs.js":
-  /*!***************************************************!*\
-    !*** ./node_modules/graph-tabs/src/graph-tabs.js ***!
-    \***************************************************/
-  /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/graph-tabs/src/graph-tabs.js":
+/*!***************************************************!*\
+  !*** ./node_modules/graph-tabs/src/graph-tabs.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
         "use strict";
         __webpack_require__.r(__webpack_exports__);
-  /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-  /* harmony export */   "default": () => (/* binding */ GraphTabs)
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GraphTabs)
           /* harmony export */
 });
         class GraphTabs {
@@ -1202,56 +1200,56 @@
 
     /******/
 });
-  /************************************************************************/
-  /******/ 	// The module cache
-  /******/ 	var __webpack_module_cache__ = {};
-  /******/
-  /******/ 	// The require function
-  /******/ 	function __webpack_require__(moduleId) {
-  /******/ 		// Check if module is in cache
-  /******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-  /******/ 		if (cachedModule !== undefined) {
-  /******/ 			return cachedModule.exports;
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
       /******/
 }
-  /******/ 		// Create a new module (and put it into the cache)
-  /******/ 		var module = __webpack_module_cache__[moduleId] = {
-  /******/ 			// no module.id needed
-  /******/ 			// no module.loaded needed
-  /******/ 			exports: {}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
       /******/
 };
-  /******/
-  /******/ 		// Execute the module function
-  /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-  /******/
-  /******/ 		// Return the exports of the module
-  /******/ 		return module.exports;
+/******/
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
     /******/
 }
-  /******/
-  /************************************************************************/
-  /******/ 	/* webpack/runtime/compat get default export */
-  /******/ 	(() => {
-  /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-  /******/ 		__webpack_require__.n = (module) => {
-  /******/ 			var getter = module && module.__esModule ?
-  /******/ 				() => (module['default']) :
-  /******/ 				() => (module);
-  /******/ 			__webpack_require__.d(getter, { a: getter });
-  /******/ 			return getter;
+/******/
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
       /******/
 };
     /******/
 })();
-  /******/
-  /******/ 	/* webpack/runtime/define property getters */
-  /******/ 	(() => {
-  /******/ 		// define getter functions for harmony exports
-  /******/ 		__webpack_require__.d = (exports, definition) => {
-  /******/ 			for (var key in definition) {
-  /******/ 				if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-  /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for (var key in definition) {
+/******/ 				if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
           /******/
 }
         /******/
@@ -1260,22 +1258,22 @@
 };
     /******/
 })();
-  /******/
-  /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-  /******/ 	(() => {
-  /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
     /******/
 })();
-  /******/
-  /******/ 	/* webpack/runtime/make namespace object */
-  /******/ 	(() => {
-  /******/ 		// define __esModule on exports
-  /******/ 		__webpack_require__.r = (exports) => {
-  /******/ 			if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-  /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
         /******/
 }
-  /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
       /******/
 };
     /******/
@@ -1290,10 +1288,10 @@
       !*** ./src/js/main.js ***!
       \************************/
     __webpack_require__.r(__webpack_exports__);
-  /* harmony import */ var _vendor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_vendor */ "./src/js/_vendor.js");
-  /* harmony import */ var _vars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_vars */ "./src/js/_vars.js");
-  /* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_functions */ "./src/js/_functions.js");
-  /* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_components */ "./src/js/_components.js");
+/* harmony import */ var _vendor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_vendor */ "./src/js/_vendor.js");
+/* harmony import */ var _vars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_vars */ "./src/js/_vars.js");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_functions */ "./src/js/_functions.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_components */ "./src/js/_components.js");
 
 
 
@@ -1304,38 +1302,72 @@
 })()
   ;
 
+  var getDaysArray = function(start, end) {
+    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+        arr.push(new Date(dt));
+    }
+    return arr;
+  };
+  
+  function filterDate() {
+    from = document.getElementById('input').getAttribute('from')
+    to = document.getElementById('input').getAttribute('to')
+  
+    const items = document.getElementsByClassName('item')
+    for (item in items) {
+      if (items[item].className != undefined) {
+        item_date = items[item].getAttribute('date')
+        dates = getDaysArray(new Date(from), new Date(to))
+        if (dates.length > 0) {
+          dates = dates.map((v)=>v.toISOString().slice(0,10)).join("")
+          if (dates.includes(item_date)) {
+            items[item].style.display = ''
+          } else {
+            items[item].style.display = 'none'
+          }
+  
+        } else {
+          // console.log(item_date)
+          console.log(from)
+          console.log(item_date)
+          if (from.trim() == item_date.trim()) {
+            items[item].style.display = ''
+          } else {
+            items[item].style.display = 'none'
+          }
+        }
+  
+      }
+    }
+  }
+  
+  
 
-
-// document.addEventListener('click', function (e) {
-//   console.log(e.target.className)
-//   if (e.target.className == 'air-datepicker-cell -day- -focus- -selected- -range-from-' ||
-//     e.target.className == 'air-datepicker-cell -day- -weekend- -focus- -selected- -range-from-') {
-//     year = e.target.getAttribute('data-year');
-//     day = e.target.getAttribute('data-date');
-//     month = e.target.getAttribute('data-month');
-//     // console.log(year, month, day)
-//     document.getElementById('input').setAttribute('from', `${year}-${(Number(month)+1)}-${day} `)
-
-//     filterDate()
-
-//   } else if (e.target.className == 'air-datepicker-cell -day- -focus- -selected- -range-to-'
-//     || e.target.className == 'air-datepicker-cell -day- -weekend- -focus- -selected- -range-to-' || e.target.className == "air-datepicker-cell -day- -current- -weekend- -focus- -selected- -range-to-") {
-//     year = e.target.getAttribute('data-year');
-//     day = e.target.getAttribute('data-date');
-//     month = e.target.getAttribute('data-month');
-//     // console.log(year, month, day)
-
-//     document.getElementById('input').setAttribute('to', `${year}-${(Number(month)+1)}-${day} `)
-
-//     filterDate()
-//   } else if (e.target.className == "calendar__input datepicker-here calendar focus-visible") {
-//     document.getElementById('input').setAttribute('from', "none")
-//     document.getElementById('input').setAttribute('to', "none")
-//   }
-// });
-
-
-
-
-
-
+  document.addEventListener('click', function (e) {
+    console.log(e.target.className)
+    if (e.target.className == 'air-datepicker-cell -day- -focus- -selected- -range-from-' ||
+      e.target.className == 'air-datepicker-cell -day- -weekend- -focus- -selected- -range-from-') {
+      year = e.target.getAttribute('data-year');
+      day = e.target.getAttribute('data-date');
+      month = e.target.getAttribute('data-month');
+      // console.log(year, month, day)
+      document.getElementById('input').setAttribute('from', `${year}-${(Number(month)+1)}-${day} `)
+  
+      filterDate()
+  
+    } else if (e.target.className == 'air-datepicker-cell -day- -focus- -selected- -range-to-'
+      || e.target.className == 'air-datepicker-cell -day- -weekend- -focus- -selected- -range-to-' || e.target.className == "air-datepicker-cell -day- -current- -weekend- -focus- -selected- -range-to-") {
+      year = e.target.getAttribute('data-year');
+      day = e.target.getAttribute('data-date');
+      month = e.target.getAttribute('data-month');
+      // console.log(year, month, day)
+  
+      document.getElementById('input').setAttribute('to', `${year}-${(Number(month)+1)}-${day} `)
+  
+      filterDate()
+    } else if (e.target.className == "calendar__input datepicker-here calendar focus-visible") {
+      document.getElementById('input').setAttribute('from', "none")
+      document.getElementById('input').setAttribute('to', "none")
+    }
+  });
+  

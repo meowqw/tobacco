@@ -1,4 +1,3 @@
-
 {% extends 'main/base.html' %}
 {% load static%}
 {% block content %}
@@ -10,7 +9,7 @@
         <ul class="tabs__nav account-tabs__nav">
           <li class="tabs__nav-item account-tabs__nav-item">
             <button class="btn-reset tabs__nav-btn account-tabs__nav-btn account-tabs__nav-btn--account"
-                    type="button"><span></span>
+              type="button"><span></span>
               Аккаунт
             </button>
           </li>
@@ -42,12 +41,14 @@
                   </li>
                 </ul>
                 <div class="my-data__bottom">
-                  <button class="btn-reset btn-red btn-red--exit" onclick="location.href='/logout'">Выйти из аккаунта</button>
+                  <button class="btn-reset btn-red btn-red--exit" onclick="location.href='/logout'">Выйти
+                    из аккаунта</button>
                 </div>
               </div>
               <div class="tabs-section-footer">
                 <div class="tabs-section-footer__info">Для изменений данных вашего аккаунта обратитесь к менеджеру</div>
-                <div class="tabs-section-footer__connection">Александр Иванов / +7921 123 45 67 / а.tobacco@info.ru</div>
+                <div class="tabs-section-footer__connection">Александр Иванов / +7921 123 45 67 / а.tobacco@info.ru
+                </div>
               </div>
             </section>
           </div>
@@ -58,148 +59,210 @@
                 <div class="my-orders__filtr account-filtr">
                   <h3 class="my-orders__subtitle account-filtr__title">Фильтр</h3>
                   <div class="account-filtr__item account-filtr__calendar calendar">
-                    <input type="text"
-                           id="input"
-                           class="calendar__input datepicker-here calendar"
-                           placeholder="Календарь"
-                           to=none
-                           from=none
-                           value=''
-                           data-position="right top">
-                    <img loading="lazy"
-                         src="{% static 'main/img/calendar.svg' %}"
-                         class="calendar__icon"
-                         width="22"
-                         height="22"
-                         alt="calendar">
-                    <img loading="lazy" src="{% static 'main/img/close-black.svg' %}" class="calendar__icon calendar__icon--close"
-                         width="22" height="22" alt="calendar">
+                    <input type="text" id="input" class="calendar__input datepicker-here calendar" autocomplete="off"
+                      placeholder="Календарь" to=none from=none value='' data-position="right top">
+                    <img loading="lazy" src="{% static 'main/img/calendar.svg' %}" class="calendar__icon" width="22"
+                      height="22" alt="calendar">
+                    <img loading="lazy" src="{% static 'main/img/close-black.svg' %}"
+                      class="calendar__icon calendar__icon--close" width="22" height="22" alt="calendar">
                   </div>
-                  <div class="account-filtr__item account-filtr__item--type filtr__dropdown">
-                    <span class="notice">{{ deliveryAddresses|length }}</span>
-                    <div class="custom-select" @click="filterAccount()">
-                      
-                      <select>
-                        <option value="0">Адрес</option>
-                        <option value="0">Все</option>
-                        {% for address in deliveryAddresses %}
-                        <option>
-                          {{ address.address }}
-                        </option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </div>
-                  <div class="account-filtr__item account-filtr__item--payment filtr__dropdown">
-                    <div class="custom-select" @click="filterAccount()">
-                      <select>
-                        <option value="0">
-                          Оплата
-                        </option>
-                        <option value="0">
-                          Все
-                        </option>
-                        <option value="1">
-                          Оплачен
-                        </option>
-                        <option value="2">
-                          Не оплачен
-                        </option>
-                        <option value="3">
-                          Частично
-                        </option>
-                      </select>
+                  <div class="dropdown-container"><div class="dropdown-wrap"><input type="text" id="plant_type"
+                      placeholder="Адрес" class="filtr__dropdown select-selected dropdown1" role="combobox"
+                      aria-owns="gWXxJ1Ce" aria-autocomplete="list" aria-expanded="false"> <span aria-hidden="true"
+                      data-trigger="plant_type" class="dropdown-trigger"><img loading="lazy"
+                        src="/static/main/img/arrow-down.svg" width="" height="" alt="" class="image"></span>
+                    <div class="select-items dropdown-list1" id="gWXxJ1Ce" role="listbox">
+                      {% for address in deliveryAddresses %}
+                      <div class="dropdown-option1" role="option" id="vcO7gBvx">{{address}}</div>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
-                <table class="my-orders__table table">
-                  <thead class="table__thead">
-                    <tr class="table__tr">
-                      <th class="table__th">Номер заказа</th>
-                      <th class="table__th">Дата заказа</th>
-                      <th class="table__th">Точка заказа</th>
-                      <th class="table__th">Сумма заказа</th>
-                      <th class="table__th">Статус оплаты</th>
-                      <th class="table__th">Статус заказа</th>
-                      <th class="table__th"></th>
-                    </tr>
-                  </thead>
-                  <tbody class="table__tbody">
-                    <!-- item -->
-                    {% for order in orders %}
-                    <tr class="table__tr item {{order.payment_status.name}} {{order.address}}" date="{{ order.time_create|date:"Y-m-d" }}" style="display:">
-                      <td class="table__td">
-                        <div class="my-orders__number">{{order.number}}</div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__data">
-                          {{ order.time_create|date:"d.m.Y" }}
-                          {% comment %} <span>12:57:28</span> {% endcomment %}
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__point">{{order.address}}</div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__sum">{{order.total}} ₽</div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__pay-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--{% if order.payment_status.name == 'Не оплачен' %}red{% elif order.payment_status.name == 'Оплачен' %}green{% elif order.payment_status.name == 'Частично' %}orange{% endif %}">
-                            {{order.payment_status.name}}
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__order-state">
-                          <button class="btn-reset my-orders__btn my-orders__btn--{% if order.order_status.name == 'Доставлен' %}gray{% elif order.order_status.name == 'В процессе отгрузки' %}blue{% elif order.order_status.name == 'В обработке' %}pink{% endif %}">
-                            {{order.order_status.name}}
-                          </button>
-                        </div>
-                      </td>
-                      <td class="table__td">
-                        <div class="my-orders__hide">
-                          <button class="btn-reset btn-hide">
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <div class="my-orders__footer">
-                <div class="my-orders__footer-content">
-                  Общая задолжность: 0 ₽
+                <div class="dropdown-container">
+                  <div class="dropdown-wrap"><input type="text" id="plant_type" placeholder="Оплата"
+                      class="filtr__dropdown select-selected dropdown" role="combobox" aria-owns="jKRehGdA"
+                      aria-autocomplete="list" aria-expanded="false" data-active-option="COQPGEpv"
+                      aria-activedescendant="COQPGEpv"> <span aria-hidden="true" data-trigger="plant_type"
+                      class="dropdown-trigger"><img loading="lazy" src="/static/main/img/arrow-down.svg" width=""
+                        height="" alt="" class="image"></span>
+                    <div class="select-items dropdown-list" id="jKRehGdA" role="listbox">
+                      <div value="all" class="dropdown-option availability" role="option" id="COQPGEpv">Все</div>
+                      <div value="all" class="dropdown-option availability" role="option" id="COQPGEpv">Оплачен</div>
+                      <div value="stock" class="dropdown-option availability" role="option" id="uSYazmDu">Не отплачен
+                      </div>
+                      <div value="remote" class="dropdown-option availability" role="option" id="sJyQbJzA">Частично</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </section>
+              <table class="my-orders__table table">
+                <thead class="table__thead">
+                  <tr class="table__tr">
+                    <th class="table__th">Номер заказа</th>
+                    <th class="table__th">Дата заказа</th>
+                    <th class="table__th">Точка заказа</th>
+                    <th class="table__th">Сумма заказа</th>
+                    <th class="table__th">Статус оплаты</th>
+                    <th class="table__th">Статус заказа</th>
+                    <th class="table__th"></th>
+                  </tr>
+                </thead>
+                <tbody class="table__tbody">
+                  <!-- item -->
+                  {% for order in orders %}
+                  <tr class="table__tr item {{order.payment_status.name}} {{order.address}}"
+                    date="{{ order.time_create|date:" Y-m-d" }}" style="display:">
+                    <td class="table__td">
+                      <div class="my-orders__number">{{order.number}}</div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__data">
+                        {{ order.time_create|date:"d.m.Y" }}
+                        {% comment %} <span>12:57:28</span> {% endcomment %}
+                      </div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__point">{{order.address}}</div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__sum">{{order.total}} ₽</div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__pay-state">
+                        <button
+                          class="btn-reset my-orders__btn my-orders__btn--{% if order.payment_status.name == 'Не оплачен' %}red{% elif order.payment_status.name == 'Оплачен' %}green{% elif order.payment_status.name == 'Частично' %}orange{% endif %}">
+                          {{order.payment_status.name}}
+                        </button>
+                      </div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__order-state">
+                        <button
+                          class="btn-reset my-orders__btn my-orders__btn--{% if order.order_status.name == 'Доставлен' %}gray{% elif order.order_status.name == 'В процессе отгрузки' %}blue{% elif order.order_status.name == 'В обработке' %}pink{% endif %}">
+                          {{order.order_status.name}}
+                        </button>
+                      </div>
+                    </td>
+                    <td class="table__td">
+                      <div class="my-orders__hide">
+                        <button class="btn-reset btn-hide" data-graph-path="order{{forloop.counter}}">
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
           </div>
-          <div class="tabs__panel account-tabs__panel">
-            <section class="my-addresses">
-              <div class="my-addresses__body tabs-section-body">
-                <h2 class="visually-hidden">
-                  Мои адресса
-                </h2>
-                <ul class="list-reset my-addresses__list">
-                  <li class="my-addresses__item">
-                    {{account.address}}
-                  </li>
-                </ul>
-              </div>
-              <div class="tabs-section-footer">
-                <div class="tabs-section-footer__info">
-                  Для изменений данных вашего аккаунта обратитесь к менеджеру
-                </div>
-                <div class="tabs-section-footer__connection">
-                  Александр Иванов / +7921 123 45 67 / а.tobacco@info.ru
-                </div>
-              </div>
-            </section>
+          <div class="my-orders__footer">
+            <div class="my-orders__footer-content">
+              Общая задолжность: 0 ₽
+            </div>
           </div>
+          </section>
+        </div>
+        <div class="tabs__panel account-tabs__panel">
+          <section class="my-addresses">
+            <div class="my-addresses__body tabs-section-body">
+              <h2 class="visually-hidden">
+                Мои адресса
+              </h2>
+              <ul class="list-reset my-addresses__list">
+                <li class="my-addresses__item">
+                  {{account.address}}
+                </li>
+              </ul>
+            </div>
+            <div class="tabs-section-footer">
+              <div class="tabs-section-footer__info">
+                Для изменений данных вашего аккаунта обратитесь к менеджеру
+              </div>
+              <div class="tabs-section-footer__connection">
+                Александр Иванов / +7921 123 45 67 / а.tobacco@info.ru
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
   </div>
+  </div>
 </main>
+
+<div class="graph-modal" id="modal">
+  {% for order in all_orders %}
+  <div class="graph-modal__container graph-modal__container--light" role="dialog" aria-modal="true"
+    data-graph-target="order{{forloop.counter}}">
+    <button class="btn-reset js-modal-close graph-modal__close" aria-label="Закрыть модальное окно"></button>
+    <div class="ordering__content">
+      {% for cat, products in order.items %}
+      <div class="ordering__item ordering-item ordering-item--{% if cat == 'Аксессуары для кальяна'%}green
+          {% elif cat == 'Кальяны'%}orange
+          {% elif cat == 'Лимонады'%}yellow
+          {% elif cat == 'Мерч'%}light-pink
+          {% elif cat == 'Табак для кальяна'%}blue
+          {% elif cat == 'Уголь'%}purple
+          {% elif cat == 'Pod-системы'%}red
+          {% elif cat == 'Жидкости'%}pink{% endif %}">
+        <div class="ordering-item__head">
+          <h2 class="ordering-item__title">{{ cat }}</h2>
+          <ul class="list-reset ordering-item__head-list">
+            <!-- <div class="ordering-item__head-item"></div> -->
+            <div class="ordering-item__head-item">Колличество</div>
+            <div class="ordering-item__head-item">Цена шт.</div>
+            <div class="ordering-item__head-item">Цена итого</div>
+          </ul>
+        </div>
+        <div class="ordering-item__body">
+          {% for product in products.items %}
+
+            <div class="product ordering-item__product" id="item_{{product.item.id}}">
+              <div class="product__items product__items--ordering">
+                <div class="product__left">
+                  <img src="/media/{{ product.item.img }}" alt="product" class="image product__img">
+                  <h3 class="product__title">{{ product.item.name }}</h3>
+                </div>
+                <ul class="list-reset product__right-list" id="item_{{product.item.id}}">
+                  {% for availability, item in product.availability.items %}
+                  <li class="product__right-item" id="item_{{ product.item.id }}_{{ availability }}">
+                    {% if availability == 'stock' %}
+                    <div class="product__presence product__presence--ordering">В наличии</div>
+                    {% elif availability == 'way' %}
+                    <div class="product__presence product__presence--blue">В пути</div>
+                    {% elif availability == 'remote' %}
+                    <div class="product__presence product__presence--orange">Удаленный склад</div>
+                    {% endif %}
+                    <!-- <div class="product__residue">{{ item.rest }}</div> -->
+                    <div class="product__calc product-calc">
+                      <div class="product-calc__value">
+                        {{ item.count }}
+                        <span><span id="carton_{{ product.item.id }}_{{ availability }}">{{ item.carton }}</span> блоков
+                          {{product.item.list.carton}} шт </span>
+                      </div>
+                    </div>
+                    <div class="product__size">{{ item.price }} ₽</div>
+                    <div class="product__size-all product__size-all--ordering"
+                      id="total_{{ product.item.id }}_{{ availability }}"
+                      value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}_{{cat}}_{{item.carton}}">
+                      {{item.total }} ₽</div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="ordering-item__bottom">
+            <div class="ordering-item__total" id="{{ cat }}">Итого: {{ products.total }} ₽
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- --- -->
+    {% endfor %}
+  </div>
+
+</div>
 {% endblock %}
