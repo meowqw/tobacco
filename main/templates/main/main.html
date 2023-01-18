@@ -30,10 +30,10 @@
                   <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height="" alt="">
                 </span>
                 <div class="select-items dropdown-list1 ">
-                  <div class="dropdown-option1">10</div>
-                  <div class="dropdown-option1">100</div>
-                  <div class="dropdown-option1">1000</div>
-                  <div class="dropdown-option1">10000</div>
+                  <div class="dropdown-option1" v-on:click="newFilterWeight(10)">10</div>
+                  <div class="dropdown-option1" v-on:click="newFilterWeight(100)">100</div>
+                  <div class="dropdown-option1" v-on:click="newFilterWeight(1000)">1000</div>
+                  <div class="dropdown-option1" v-on:click="newFilterWeight(10000)">10000</div>
                 </div>
               </div>
             </div>

@@ -73,7 +73,7 @@
                         src="/static/main/img/arrow-down.svg" width="" height="" alt="" class="image"></span>
                     <div class="select-items dropdown-list1" id="gWXxJ1Ce" role="listbox">
                       {% for address in deliveryAddresses %}
-                      <div class="dropdown-option1" role="option" id="vcO7gBvx">{{address}}</div>
+                      <div class="dropdown-option1" v-on:click="newFilterAddress('{{address}}')" role="option" id="vcO7gBvx">{{address}}</div>
                       {% endfor %}
                     </div>
                   </div>
@@ -86,11 +86,10 @@
                       class="dropdown-trigger"><img loading="lazy" src="/static/main/img/arrow-down.svg" width=""
                         height="" alt="" class="image"></span>
                     <div class="select-items dropdown-list" id="jKRehGdA" role="listbox">
-                      <div value="all" class="dropdown-option availability" role="option" id="COQPGEpv">Все</div>
-                      <div value="all" class="dropdown-option availability" role="option" id="COQPGEpv">Оплачен</div>
-                      <div value="stock" class="dropdown-option availability" role="option" id="uSYazmDu">Не отплачен
+                      <div value="all" class="dropdown-option availability" role="option" v-on:click="newFilterPaymentStatus('Оплачен')" id="COQPGEpv">Оплачен</div>
+                      <div value="stock" class="dropdown-option availability" role="option" v-on:click="newFilterPaymentStatus('Не оплачен')" id="uSYazmDu">Не оплачен
                       </div>
-                      <div value="remote" class="dropdown-option availability" role="option" id="sJyQbJzA">Частично</div>
+                      <div value="remote" class="dropdown-option availability" role="option" v-on:click="newFilterPaymentStatus('Частично')" id="sJyQbJzA">Частично</div>
                     </div>
                   </div>
                 </div>
@@ -110,15 +109,14 @@
                 <tbody class="table__tbody">
                   <!-- item -->
                   {% for order in orders %}
-                  <tr class="table__tr item {{order.payment_status.name}} {{order.address}}"
-                    date="{{ order.time_create|date:" Y-m-d" }}" style="display:">
+                  <tr name='order_item' payment="{{order.payment_status.name}}" address="{{order.address}}" class="table__tr item {{order.payment_status.name}} {{order.address}}"
+                    date="{{ order.time_create|date:"Y-m-d" }}" style="display:">
                     <td class="table__td">
                       <div class="my-orders__number">{{order.number}}</div>
                     </td>
                     <td class="table__td">
                       <div class="my-orders__data">
                         {{ order.time_create|date:"d.m.Y" }}
-                        {% comment %} <span>12:57:28</span> {% endcomment %}
                       </div>
                     </td>
                     <td class="table__td">

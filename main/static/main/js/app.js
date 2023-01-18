@@ -193,7 +193,7 @@ Vue.component('app-products', {
             <div class="main-body__panel" :id="product.category" style="display:none">
                 <ul class="list-reset main-body__sublist accordion accordion-child" v-for="(content, list) in product.content" style="margin-top: 10px;">
                     <li class="main-body__subitem accordion-item">
-                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(list)" :id="'subcategoryProduct_'+list">
+                        <button class="btn-reset btn--accordion main-body__accordion accordion-header" @click="displayProducts(list)" :name="'subcategoryProduct_'+product.category" :id="'subcategoryProduct_'+list">
                         <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e" :id="'subCatTriagle_'+list"></span>
                             {{list.split(';')[0]}}
                             
@@ -209,7 +209,7 @@ Vue.component('app-products', {
                                 </span>
                             </div>
                         </button>
-                        <div class="main-body__panel" :id="list + '_products'" style="display:none">
+                        <div class="main-body__panel" :id="list + '_products'" :name="product.category" style="display:none">
                             <ul class="list-reset main-body__sublist" v-for="item in content" style="margin-top:10px;">
                                 <li class="main-body__subitem" >
                                     <div class="product product--main accordion" style="display:" :id="'product_'+item.id">
@@ -404,6 +404,8 @@ new Vue({
         products: [],
         openedCategory: [],
 
+        weight: [],
+
         // totals 
         total: 0,
         totalOne: 0,
@@ -411,11 +413,13 @@ new Vue({
         totalThree: 0,
 
         availability: [],
-        weight: 'Вес',
 
         // current order list
         currentOrderId: '',
         status: [],
+
+        paymentStatus: [],
+        address: []
     },
     methods: {
 
@@ -956,6 +960,7 @@ new Vue({
         newFilter: function () {
             for (var i in this.products) {
                 var category = this.products[i];
+                console.log(category)
                 for (var j in category.content) {
                     var list = category.content[j]
                     for (var k in list) {
@@ -986,8 +991,14 @@ new Vue({
                                     if (element.tagName != undefined) {
                                         element.style.opacity = '0.3'
                                         ul = document.getElementById(`availabilityList_${item.id}`)
+
+                                        // document.getElementById(category['category']).style.display = ''
+
+
                                         if (ul.getElementsByTagName('li').length > 0) {
-                                            ul.style.display = ''
+                                            if (ul != undefined) {
+                                                ul.style.display = ''
+                                            }
                                         }
                                     }
                                 }
@@ -998,14 +1009,34 @@ new Vue({
                                     var element = document.getElementsByClassName(this.availability[i])[a]
                                     if (element.tagName != undefined) {
                                         element.style.opacity = '1'
-                                        // console.log(item.id)
+       
                                         ul = document.getElementById(`availabilityList_${item.id}`)
                                         if (ul.getElementsByTagName('li').length > 0) {
-                                            ul.style.display = ''
+                                            if (ul != undefined) {
+                                                ul.style.display = ''
+                                            }
                                         }
                                     }
                                 }
                             }
+                            ////////////////////////////////
+                            // document.getElementById(category['category']).style.display = ''
+                            // document.getElementById('categoryProduct_'+category['category']).classList.add('ui-accordion-header-active')
+
+                            // lists = document.getElementsByName(category['category'])
+                            // for (productList in lists) {
+                            //     if (lists[productList] != undefined) {
+                            //         lists[productList].style.display = ''
+                            //     }
+                            // }
+
+                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
+                            // for (listsSubcatItem in listsSubcat) {
+                            //     if (listsSubcat[listsSubcatItem] != undefined) {
+                            //         listsSubcat[listsSubcatItem].classList.add('ui-accordion-header-active')
+                            //     }
+                            // }
+                            ////////////////////////////////
 
                         } else {
 
@@ -1013,22 +1044,54 @@ new Vue({
                                 for (var a in document.getElementsByClassName(availability[i])) {
                                     var element = document.getElementsByClassName(availability[i])[a]
                                     if (element.tagName != undefined) {
-                                        element.style.opacity = '1'
+                                        element.style.opacity = '1'       
+
                                         document.getElementById(`availabilityList_${item.id}`).style.display = 'none'
                                     }
                                 }
                             }
+
+                            ////////////////////////////////
+                            // document.getElementById(category['category']).style.display = 'none';
+                            // document.getElementById('categoryProduct_'+category['category']).classList.remove('ui-accordion-header-active')
+
+                            // lists = document.getElementsByName(category['category']);
+                            // for (productList in lists) {
+                            //     lists[productList].style.display = 'none'
+                            // }
+
+
+                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
+                            // for (listsSubcatItem in listsSubcat) {
+                            //     listsSubcat[listsSubcatItem].classList.remove('ui-accordion-header-active')
+                            // }
+                            ////////////////////////////////
                         }
 
                         if (this.availability.includes('all')) {
                             for (var i in availability) {
                                 for (var a in document.getElementsByClassName(availability[i])) {
                                     var element = document.getElementsByClassName(availability[i])[a]
+
                                     if (element.tagName != undefined) {
                                         element.style.opacity = '1'
                                     }
                                 }
                             }
+                            ////////////////////////////////
+                            // document.getElementById(category['category']).style.display = ''
+                            // document.getElementById('categoryProduct_'+category['category']).classList.add('ui-accordion-header-active')
+                            
+
+                            // lists = document.getElementsByName(category['category'])
+                            // for (productList in lists) {
+                            //     lists[productList].style.display = ''
+                            // }
+                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
+                            // for (listsSubcatItem in listsSubcat) {
+                            //     listsSubcat[listsSubcatItem].classList.add('ui-accordion-header-active')
+                            // }
+                            ////////////////////////////////
                         }
                     }
                 }
@@ -1052,6 +1115,80 @@ new Vue({
             // console.log(this.availability, this.status)
             this.newFilter()
         },
+
+        newFilterWeight: function (weight) {
+            // console.log(this.availability, this.status)
+            if (!this.weight.includes(weight)) {
+                this.weight.push(weight)
+            } else {
+                this.weight = this.weight.filter(function (f) { return f !== weight });
+            }
+        },
+
+        newAccountFilter: function () {
+            orders = document.getElementsByName('order_item')
+            
+            for (var i in orders) {
+                {
+                    if (orders[i].tagName == 'TR') {
+                        payment = orders[i].getAttribute('payment')
+                        address = orders[i].getAttribute('address')
+
+                        if (this.address.length > 0 && this.paymentStatus.length == 0) {
+                            if (this.address.includes(address)) {
+                                orders[i].style.display = ''
+                            } else {
+                                orders[i].style.display = 'none' 
+                            }
+                        } else if (this.address.length == 0 && this.paymentStatus.length > 0) {
+
+                            if (this.paymentStatus.includes(payment)) {
+                                orders[i].style.display = ''
+                            } else {
+                                orders[i].style.display = 'none' 
+                            }
+                            //
+                        } else if (this.address.length > 0 && this.paymentStatus.length > 0) {
+
+                            if (this.paymentStatus.includes(payment) && this.address.includes(address)) {
+                                orders[i].style.display = ''
+                            } else {
+                                orders[i].style.display = 'none' 
+                            }
+
+                        } else {
+                            orders[i].style.display = ''
+                        }
+
+                        
+                    }
+                    // console.log(orders[i])
+                }
+            }
+        },
+
+        newFilterPaymentStatus: function (status) {
+            if (!this.paymentStatus.includes(status)) {
+                this.paymentStatus.push(status)
+            } else {
+                this.paymentStatus = this.paymentStatus.filter(function (f) { return f !== status });
+            }
+
+            this.newAccountFilter();
+
+        },
+
+        newFilterAddress: function (address) {
+            if (!this.address.includes(address)) {
+                this.address.push(address)
+            } else {
+                this.address = this.address.filter(function (f) { return f !== address });
+            }
+
+            this.newAccountFilter();
+
+        },
+
         redirect: function () {
 
             console.log(1)
