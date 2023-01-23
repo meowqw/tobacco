@@ -1344,7 +1344,7 @@
   
 
   document.addEventListener('click', function (e) {
-    console.log(e.target.className)
+    // console.log(e.target.className)
     if (e.target.className == 'air-datepicker-cell -day- -focus- -selected- -range-from-' ||
       e.target.className == 'air-datepicker-cell -day- -weekend- -focus- -selected- -range-from-') {
       year = e.target.getAttribute('data-year');

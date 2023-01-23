@@ -967,6 +967,7 @@ new Vue({
                         var item = list[k]
                         var itemAvailability = { 'way': item.availability.way, 'remote': item.availability.remote, 'stock': item.availability.stock }
                         var itemStatus = item.product_status.name
+                        var itemWeight = item.weight
 
                         if (this.status.length > 0) {
                             if (!this.status.includes(itemStatus)) {
@@ -979,6 +980,19 @@ new Vue({
                         } else {
                             document.getElementById(`product_${item.id}`).style.opacity = '1';
                             document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
+                        }
+
+                        if (this.weight.length > 0) {
+                                if (!this.weight.includes(itemWeight)) {
+                                    document.getElementById(`product_${item.id}`).style.opacity = '0.3'
+                                    document.getElementById(`availabilityList_${item.id}`).style.opacity = '0.3'
+                                } else {
+                                    document.getElementById(`product_${item.id}`).style.opacity = '1';
+                                    document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
+                                }
+                            } else {
+                                document.getElementById(`product_${item.id}`).style.opacity = '1';
+                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
                         }
 
                         var availability = ['way', 'remote', 'stock']
@@ -1123,6 +1137,8 @@ new Vue({
             } else {
                 this.weight = this.weight.filter(function (f) { return f !== weight });
             }
+
+            this.newFilter();
         },
 
         newAccountFilter: function () {
