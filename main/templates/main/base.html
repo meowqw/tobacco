@@ -101,15 +101,17 @@
               <h2 class="menu__title">Аксессуары для кальяна</h2>
               {% for subcategory in subcategories %}
               {% if subcategory.parent_category.name == "Аксессуары для кальяна" %}
-              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-              {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-green">Кадило
+              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
 
-                 <span>
+                <span>
                   <svg class="menu__link-icon">
-                    <use xlink:href="img/sprite.svg#close"></use>
+                    <use xlink:href="/static/main/img/sprite.svg#close"></use>
                   </svg>
                 </span> 
-              </button> {% endcomment %}
+
+              </button>
+             
+                 
               {% endif %}
               {% endfor %}
             </li>
@@ -118,14 +120,17 @@
                 <h2 class="menu__title">Кальяны</h2>
                 {% for subcategory in subcategories %}
                 {% if subcategory.parent_category.name == "Кальяны" %}
-                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-                {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-orange">Кальян 2
-                   <span>
+                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+
+
+                  <span>
                     <svg class="menu__link-icon">
-                      <use xlink:href="img/sprite.svg#close"></use>
+                      <use xlink:href="/static/main/img/sprite.svg#close"></use>
                     </svg>
                   </span> 
-                </button> {% endcomment %}
+
+                </button>
+           
                 {% endif %}
                 {% endfor %}
               </li>
@@ -133,15 +138,16 @@
                 <h2 class="menu__title">Лимонады</h2>
                 {% for subcategory in subcategories %}
                 {% if subcategory.parent_category.name == "Лимонады" %}
-                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-                {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-yellow">
-                  Лимонад 2
+                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+
                   <span>
                     <svg class="menu__link-icon">
-                      <use xlink:href="img/sprite.svg#close"></use>
+                      <use xlink:href="/static/main/img/sprite.svg#close"></use>
                     </svg>
                   </span>
-                </button> {% endcomment %}
+
+                </button>
+
                 {% endif %}
                 {% endfor %}
               </li>
@@ -149,15 +155,15 @@
                 <h2 class="menu__title">Мерч</h2>
                 {% for subcategory in subcategories %}
                 {% if subcategory.parent_category.name == "Мерч" %}
-                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-                {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-light-pink">
-                  Мерч 2
-                   <span>
+                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+                  <span>
                     <svg class="menu__link-icon">
-                      <use xlink:href="img/sprite.svg#close"></use>
+                      <use xlink:href="/static/main/img/sprite.svg#close"></use>
                     </svg>
                   </span>
-                </button> {% endcomment %}
+
+                </button>
+             
                 {% endif %}
                 {% endfor %}
               </li>
@@ -166,15 +172,16 @@
               <h2 class="menu__title">Табак для кальяна </h2>
               {% for subcategory in subcategories %}
               {% if subcategory.parent_category.name == "Табак для кальяна" %}
-              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-              {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-blue">
-                B3
+              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+
                 <span>
                   <svg class="menu__link-icon">
-                    <use xlink:href="{% static '/main/img/sprite.svg#close' %}"></use>
+                    <use xlink:href="/static/main/img/sprite.svg#close"></use>
                   </svg>
                 </span>
-              </button>  {% endcomment %}
+
+              </button>
+           
               {% endif %}
               {% endfor %}
             </li>
@@ -183,15 +190,14 @@
                 <h2 class="menu__title">Уголь</h2>
                 {% for subcategory in subcategories %}
                 {% if subcategory.parent_category.name == "Уголь" %}
-                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-                {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-purple">
-                  Уголь 2
-                   <span>
+                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+                  <span>
                     <svg class="menu__link-icon">
-                      <use xlink:href="img/sprite.svg#close"></use>
+                      <use xlink:href="/static/main/img/sprite.svg#close"></use>
                     </svg>
                   </span>
-                </button> {% endcomment %}
+                </button>
+              
                 {% endif %}
                 {% endfor %}
               </li>
@@ -199,15 +205,15 @@
                 <h2 class="menu__title">Pod-системы</h2>
                 {% for subcategory in subcategories %}
                 {% if subcategory.parent_category.name == "Pod-системы" %}
-                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}</button>
-                {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-red">
-                  Element Pod
+                <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }}
+
                   <span>
                     <svg class="menu__link-icon">
-                      <use xlink:href="img/sprite.svg#close"></use>
+                      <use xlink:href="/static/main/img/sprite.svg#close"></use>
                     </svg>
                   </span> 
-                </button> {% endcomment %}
+                </button>
+
                 {% endif %}
                 {% endfor %}
               </li>
@@ -216,15 +222,15 @@
               <h2 class="menu__title">Жидкости</h2>
               {% for subcategory in subcategories %}
               {% if subcategory.parent_category.name == "Жидкости" %}
-              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }} </button>
-              {% comment %} <button class="btn-reset menu__link menu__link--active menu__link--active-pink">
-                BRUSKO Salt
+              <button class="btn-reset menu__link" category="{{subcategory.parent_category.id}}" :id=`catalogCategory_{{subcategory.id}}` @click="getContent({{subcategory.id}})">{{ subcategory.name }} 
+
                 <span>
                   <svg class="menu__link-icon">
-                    <use xlink:href="img/sprite.svg#close"></use>
+                    <use xlink:href="/static/main/img/sprite.svg#close"></use>
                   </svg>
                 </span>
-              </button> {% endcomment %}
+              </button>
+
               {% endif %}
               {% endfor %}
             </li>

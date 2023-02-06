@@ -9,6 +9,7 @@ Vue.component('app-products', {
     data: function () {
         return {
             order: {},
+            
         }
     },
     methods: {
@@ -24,15 +25,14 @@ Vue.component('app-products', {
 
 
             this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+            console.log(this.order[id][availability]['count'] - (this.order[id][availability]['carton'] * carton_count))
 
             // localStorage.total = localStorage.total + this.order[id].total
             localStorage.setItem("order", JSON.stringify(this.order))
-            console.log(this.order)
-
-
 
 
         },
+        
         countMinus(id, price, availability, carton_count) {
             // - count product
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
@@ -44,6 +44,7 @@ Vue.component('app-products', {
 
                 // localStorage.total = localStorage.total - this.order[id].total
                 this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+
 
                 localStorage.setItem("order", JSON.stringify(this.order))
             } else {
@@ -68,6 +69,8 @@ Vue.component('app-products', {
                 document.getElementById('categoryProduct_' + id).classList.remove('ui-accordion-header-active')
                 document.getElementById('catTriagle_' + id).setAttribute('class', 'ui-accordion-header-icon ui-icon ui-icon-triangle-1-e')
             }
+
+            this.rerenderProducts();
         },
         displayProducts(id) {
 
@@ -123,6 +126,7 @@ Vue.component('app-products', {
             document.getElementById('total').innerHTML = (total) + ' ₽'
 
             this.order[id][availability]['carton'] = this.order[id][availability]['count'] / carton_count | 0
+            console.log(carton_count - this.order[id][availability]['count'])
 
 
             localStorage.setItem("order", JSON.stringify(this.order))
@@ -155,6 +159,26 @@ Vue.component('app-products', {
             }
 
 
+        },
+        // удалить стрелки у товаров которые етсь только в одном наличии 
+        rerenderProducts: function () {
+            for (var i in this.products) {
+                product = this.products[i];
+                for (var j in product.content) {
+                    lists = product.content[j]
+                    for (list in lists) {
+                        item = lists[list];
+                        availabilitys = [item.availability.way, item.availability.remote, item.availability.stock]
+                        max = Math.max(...availabilitys);
+                        let result = availabilitys.reduce(function(sum, elem) {
+                            return sum + elem;
+                        }, 0);
+                        if (max == result) {
+                            //
+                        }
+                    }
+                }
+            }
         }
 
     },
@@ -179,7 +203,6 @@ Vue.component('app-products', {
             this.order = order
         }
     },
-
 
     template: `
     <div class="main-content__body main-body">
@@ -254,7 +277,7 @@ Vue.component('app-products', {
                                                     <div class="product-calc__value">
                                                         <input type="number" v-on:input="inputCount(item.id, item.price, 'stock', list.split(';')[2])" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
                                                       
-                                                        <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['stock'].carton }} блоков {{list.split(';')[2]}} шт</span>
+                                                        <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['stock'].carton }} блоков {{order[item.id]['stock'].count - (list.split(';')[2] * order[item.id]['stock'].carton)}} шт</span>
                                                     </div>
                                                     
                                                     <button
@@ -283,7 +306,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{list.split(';')[2]}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -311,7 +334,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{list.split(';')[2]}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -343,7 +366,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{list.split(';')[2]}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -369,7 +392,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{list.split(';')[2]}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -419,7 +442,9 @@ new Vue({
         status: [],
 
         paymentStatus: [],
-        address: []
+        address: [],
+
+        noneProduct: [],
     },
     methods: {
 
@@ -428,7 +453,7 @@ new Vue({
             // GET REQUEST to /api/v1/productbycat/{id}
 
             axios
-                .get(`/api/v1/productbycat/${id}`)
+                .get(`/api/v1/productbycat/${id}?availability=${this.availability.join(',')}&weight=${this.weight.join(',')}&status=${this.status.join(',')}`)
                 .then(response => (this.contentController(response.data.products)));
         },
         redirectMenu(id) {
@@ -549,13 +574,18 @@ new Vue({
                         });
                     }
 
+
+                    
+
                     // console.log(this.products)
 
                 }
+                
 
                 // console.log(products)
-
             }
+
+            
         },
         // now working
         filterAvailability(id) {
@@ -957,158 +987,27 @@ new Vue({
             }
         },
 
+        getContentFilter(id) {
+            // GET REQUEST to /api/v1/productbycat/{id}/
+
+            axios
+                .get(`/api/v1/productbycat/${id}?availability=${this.availability.join(',')}&weight=${this.weight.join(',')}&status=${this.status.join(',')}`)
+                .then(response => (this.contentController(response.data.products)));
+        },
+
         newFilter: function () {
-            for (var i in this.products) {
-                var category = this.products[i];
-                console.log(category)
-                for (var j in category.content) {
-                    var list = category.content[j]
-                    for (var k in list) {
-                        var item = list[k]
-                        var itemAvailability = { 'way': item.availability.way, 'remote': item.availability.remote, 'stock': item.availability.stock }
-                        var itemStatus = item.product_status.name
-                        var itemWeight = item.weight
+            availability = this.availability.join(',')
+            weight = this.weight.join(',')
+            status = this.status.join(',')
 
-                        if (this.status.length > 0) {
-                            if (!this.status.includes(itemStatus)) {
-                                document.getElementById(`product_${item.id}`).style.opacity = '0.3'
-                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '0.3'
-                            } else {
-                                document.getElementById(`product_${item.id}`).style.opacity = '1';
-                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
-                            }
-                        } else {
-                            document.getElementById(`product_${item.id}`).style.opacity = '1';
-                            document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
-                        }
-
-                        if (this.weight.length > 0) {
-                                if (!this.weight.includes(itemWeight)) {
-                                    document.getElementById(`product_${item.id}`).style.opacity = '0.3'
-                                    document.getElementById(`availabilityList_${item.id}`).style.opacity = '0.3'
-                                } else {
-                                    document.getElementById(`product_${item.id}`).style.opacity = '1';
-                                    document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
-                                }
-                            } else {
-                                document.getElementById(`product_${item.id}`).style.opacity = '1';
-                                document.getElementById(`availabilityList_${item.id}`).style.opacity = '1';
-                        }
-
-                        var availability = ['way', 'remote', 'stock']
-                        if (this.availability.length > 0) {
-
-
-                            for (var i in availability) {
-                                for (var a in document.getElementsByClassName(availability[i])) {
-                                    var element = document.getElementsByClassName(availability[i])[a]
-                                    if (element.tagName != undefined) {
-                                        element.style.opacity = '0.3'
-                                        ul = document.getElementById(`availabilityList_${item.id}`)
-
-                                        // document.getElementById(category['category']).style.display = ''
-
-
-                                        if (ul.getElementsByTagName('li').length > 0) {
-                                            if (ul != undefined) {
-                                                ul.style.display = ''
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            for (var i in this.availability) {
-                                for (var a in document.getElementsByClassName(this.availability[i])) {
-                                    var element = document.getElementsByClassName(this.availability[i])[a]
-                                    if (element.tagName != undefined) {
-                                        element.style.opacity = '1'
-       
-                                        ul = document.getElementById(`availabilityList_${item.id}`)
-                                        if (ul.getElementsByTagName('li').length > 0) {
-                                            if (ul != undefined) {
-                                                ul.style.display = ''
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            ////////////////////////////////
-                            // document.getElementById(category['category']).style.display = ''
-                            // document.getElementById('categoryProduct_'+category['category']).classList.add('ui-accordion-header-active')
-
-                            // lists = document.getElementsByName(category['category'])
-                            // for (productList in lists) {
-                            //     if (lists[productList] != undefined) {
-                            //         lists[productList].style.display = ''
-                            //     }
-                            // }
-
-                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
-                            // for (listsSubcatItem in listsSubcat) {
-                            //     if (listsSubcat[listsSubcatItem] != undefined) {
-                            //         listsSubcat[listsSubcatItem].classList.add('ui-accordion-header-active')
-                            //     }
-                            // }
-                            ////////////////////////////////
-
-                        } else {
-
-                            for (var i in availability) {
-                                for (var a in document.getElementsByClassName(availability[i])) {
-                                    var element = document.getElementsByClassName(availability[i])[a]
-                                    if (element.tagName != undefined) {
-                                        element.style.opacity = '1'       
-
-                                        document.getElementById(`availabilityList_${item.id}`).style.display = 'none'
-                                    }
-                                }
-                            }
-
-                            ////////////////////////////////
-                            // document.getElementById(category['category']).style.display = 'none';
-                            // document.getElementById('categoryProduct_'+category['category']).classList.remove('ui-accordion-header-active')
-
-                            // lists = document.getElementsByName(category['category']);
-                            // for (productList in lists) {
-                            //     lists[productList].style.display = 'none'
-                            // }
-
-
-                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
-                            // for (listsSubcatItem in listsSubcat) {
-                            //     listsSubcat[listsSubcatItem].classList.remove('ui-accordion-header-active')
-                            // }
-                            ////////////////////////////////
-                        }
-
-                        if (this.availability.includes('all')) {
-                            for (var i in availability) {
-                                for (var a in document.getElementsByClassName(availability[i])) {
-                                    var element = document.getElementsByClassName(availability[i])[a]
-
-                                    if (element.tagName != undefined) {
-                                        element.style.opacity = '1'
-                                    }
-                                }
-                            }
-                            ////////////////////////////////
-                            // document.getElementById(category['category']).style.display = ''
-                            // document.getElementById('categoryProduct_'+category['category']).classList.add('ui-accordion-header-active')
-                            
-
-                            // lists = document.getElementsByName(category['category'])
-                            // for (productList in lists) {
-                            //     lists[productList].style.display = ''
-                            // }
-                            // listsSubcat = document.getElementsByName('subcategoryProduct_'+category['category'])
-                            // for (listsSubcatItem in listsSubcat) {
-                            //     listsSubcat[listsSubcatItem].classList.add('ui-accordion-header-active')
-                            // }
-                            ////////////////////////////////
-                        }
-                    }
-                }
+            categoryID = this.openedCategory
+            console.log(categoryID)
+            this.products = [];
+            this.openedCategory = [];
+            for (var i in categoryID) {
+                document.getElementById('categoryBtn_' + categoryID[i]).className = "btn-reset sidebar__btn sidebar__btn--sub"
+                document.getElementById('catalogCategory_' + categoryID[i]).className = "btn-reset menu__link"
+                this.getContentFilter(categoryID[i], availability, weight, status)
             }
         },
 
@@ -1213,7 +1112,9 @@ new Vue({
 
             }
             console.log(location.pathname);
-        }
+        },
+
+        
     },
     mounted() {
         // this.total = localStorage.total;
