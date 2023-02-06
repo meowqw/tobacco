@@ -8,13 +8,14 @@ from django.contrib.auth.models import User
 import json
 
 
-@login_required
+@login_required(login_url='/auth/')
 def main(request):
     """Main page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
     categories = Category.objects.all()
+    banners = Banners.objects.all()
 
-    return render(request, 'main/main.html', {'categories': categories, 'subcategories': subcategories})
+    return render(request, 'main/main.html', {'categories': categories, 'subcategories': subcategories, 'banners': banners})
 
 
 def auth(request):
@@ -28,24 +29,14 @@ def auth(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('banners')
+            return redirect('main')
         else:
             return redirect('auth')
 
     return render(request, 'main/auth.html')
 
 
-@login_required
-def banners(request):
-    """Banners page"""
-    subcategories = Subcategory.objects.all().order_by('parent_category_id')
-    categories = Category.objects.all()
-    banners = Banners.objects.all()
-
-    return render(request, 'main/banners.html', {'categories': categories, 'subcategories': subcategories, 'banners': banners})
-
-
-@login_required
+@login_required(login_url='/auth/')
 def payment(request):
     """Payment page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
@@ -69,22 +60,24 @@ def payment(request):
         pay = request.POST.get('radiopay')
 
         UserOrder.objects.create(user=request.user,
-                                 address=DeliveryAddresses.objects.filter(id=address).first(),
+                                 address=DeliveryAddresses.objects.filter(
+                                     id=address).first(),
                                  comment=comment,
                                  number=orders.id,
-                                 payment_status=PaymentStatus.objects.filter(name='Не оплачен').first(),
-                                 order_status=OrderStatus.objects.filter(name='В обработке').first(),
+                                 payment_status=PaymentStatus.objects.filter(
+                                     name='Не оплачен').first(),
+                                 order_status=OrderStatus.objects.filter(
+                                     name='В обработке').first(),
                                  total=total,
                                  items=orders.order,
                                  payment_method=pay,
                                  way_get=delivery
                                  )
-        
 
     return render(request, 'main/payment.html', {'total': total, 'order_id': orders.id, 'account': account, 'deliveryAddresses': deliveryAddresses, 'subcategories': subcategories})
 
 
-@login_required
+@login_required(login_url='/auth/')
 def basket(request):
     """Basket page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
@@ -98,7 +91,6 @@ def basket(request):
     json_order = json.loads(orders.order)
     availability_list = ['stock', 'remote', 'way']
 
-    
     for item in json_order:
         item_id = Product.objects.get(id=item)
         category = item_id.category.parent_category.name
@@ -118,10 +110,9 @@ def basket(request):
                 rest = eval(f"item_id.availability.{availability}")
                 price = item_id.price
                 clean_json_order[availability] = {'total': json_order[item][availability]['total'], 'count': json_order[item][availability]['count'], 'rest': rest, 'price': price,
-                                                'carton': json_order[item][availability]['carton']
-                                                }
+                                                  'carton': json_order[item][availability]['carton'], 'remainder': json_order[item][availability]['remainder']
+                                                  }
 
-        
         item_ = {'item': item_id, 'availability': clean_json_order}
 
         if item_['availability'] != {}:
@@ -130,13 +121,11 @@ def basket(request):
             else:
                 order[category]['items'].append(item_)
                 order[category]['total'] += category_total
-        
 
-    print(order)
     return render(request, 'main/basket.html', {'order': order, 'total': total, 'subcategories': subcategories})
 
 
-@login_required
+@login_required(login_url='/auth/')
 def account(request):
     """Account page"""
     subcategories = Subcategory.objects.all().order_by('parent_category_id')
@@ -149,21 +138,16 @@ def account(request):
     all_orders = []
     for orders in orders_:
         order = {}
-        # orders = Order.objects.filter(user=request.user).first()
-        # print(orders)
 
         total = {'total': 0, 'way': 0, 'stock': 0, 'remote': 0}
 
         # get current state of order
         json_order = json.loads(orders.items)
-        # print(orders.order)
         availability_list = ['stock', 'remote', 'way']
 
-        
         for item in json_order:
             item_id = Product.objects.get(id=item)
             category = item_id.category.parent_category.name
-            # print(category, item_id, json_order[item])
 
             clean_json_order = {}  # order list without empty fields
             category_total = 0
@@ -179,15 +163,21 @@ def account(request):
                         # clean
                         rest = eval(f"item_id.availability.{availability}")
                         price = item_id.price
+                        
+                        if 'remainder' in json_order[item][availability]:
+                            remainder = json_order[item][availability]['remainder']
+                        else:
+                            remainder = None
+                        
                         clean_json_order[availability] = {'total': json_order[item][availability]['total'], 'count': json_order[item][availability]['count'], 'rest': rest, 'price': price,
-                                                        'carton': json_order[item][availability]['carton']}
+                                                          'carton': json_order[item][availability]['carton'], 'remainder': remainder}
 
-            
             item_ = {'item': item_id, 'availability': clean_json_order}
 
             if item_['availability'] != {}:
                 if category not in order:
-                    order[category] = {'total': category_total, 'items': [item_]}
+                    order[category] = {
+                        'total': category_total, 'items': [item_]}
                 else:
                     order[category]['items'].append(item_)
                     order[category]['total'] += category_total

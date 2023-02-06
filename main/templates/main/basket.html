@@ -52,7 +52,7 @@
                           
                           <input type="number" v-on:input="inputCalc({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}', {{product.item.list.carton}})" id="count_{{ product.item.id }}_{{ availability }}" value={{ item.count }} class="input input--calc">
 
-                          <span><span id="carton_{{ product.item.id }}_{{ availability }}">{{ item.carton }}</span> блоков {{product.item.list.carton}} шт </span>
+                          <span><span id="carton_{{ product.item.id }}_{{ availability }}">{{ item.carton }}</span> блоков <span id="remainder_{{ product.item.id }}_{{ availability }}">{{item.remainder }}</span> шт </span>
                           
                         </div>
                         
@@ -62,7 +62,7 @@
                       </div>
                       <div class="product__size">{{ item.price }} ₽</div>
                       <div class="product__size-all product__size-all--ordering" id="total_{{ product.item.id }}_{{ availability }}"
-                        value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}_{{cat}}_{{item.carton}}">{{ item.total }} ₽</div>
+                        value="{{ product.item.id }}_{{ availability }}_{{ item.total }}_{{ item.count }}_{{cat}}_{{item.carton}}_{{item.remainder}}">{{ item.total }} ₽</div>
                       <button class="btn-reset product__btn product__btn--close" v-on:click="del({{ product.item.id }}, '{{ availability }}', {{ item.price }}, '{{ cat }}')"></button>
                     </li>
                     {% endfor %}

@@ -69,15 +69,19 @@ class ProductByCategoryAPIView(APIView):
                     for availability in availability_:
                         if availability == 'stock':
                             if i.availability.stock > 0:
-                                arr.append(i)
+                                if i not in arr:
+                                    arr.append(i)
                         elif availability == 'way':
                             if i.availability.way > 0:
-                                arr.append(i)
+                                if i not in arr:
+                                    arr.append(i)
                         elif availability == 'remote':
                             if i.availability.remote > 0:
-                                arr.append(i)
+                                if i not in arr:
+                                    arr.append(i)
                         elif availability == 'all':
-                            arr.append(i)
+                            if i not in arr:
+                                arr.append(i)
                                 
                 product = arr
 

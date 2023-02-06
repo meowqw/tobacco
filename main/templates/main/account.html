@@ -224,18 +224,18 @@
                   {% for availability, item in product.availability.items %}
                   <li class="product__right-item" id="item_{{ product.item.id }}_{{ availability }}">
                     {% if availability == 'stock' %}
-                    <div class="product__presence product__presence--ordering">В наличии</div>
+                    <div class="product__presence product__presence--ordering product__presence--not-arrow">В наличии</div>
                     {% elif availability == 'way' %}
-                    <div class="product__presence product__presence--blue">В пути</div>
+                    <div class="product__presence product__presence--blue product__presence--not-arrow">В пути</div>
                     {% elif availability == 'remote' %}
-                    <div class="product__presence product__presence--orange">Удаленный склад</div>
+                    <div class="product__presence product__presence--orange product__presence--not-arrow">Удаленный склад</div>
                     {% endif %}
                     <!-- <div class="product__residue">{{ item.rest }}</div> -->
                     <div class="product__calc product-calc">
                       <div class="product-calc__value">
                         {{ item.count }}
                         <span><span id="carton_{{ product.item.id }}_{{ availability }}">{{ item.carton }}</span> блоков
-                          {{product.item.list.carton}} шт </span>
+                          {{item.remainder}} шт </span>
                       </div>
                     </div>
                     <div class="product__size">{{ item.price }} ₽</div>

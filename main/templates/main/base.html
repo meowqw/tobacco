@@ -28,11 +28,11 @@
     <header class="header">
       <div class="container header__container">
         <div class="header__left">
-          <div class="header__logo" onclick="location.href='/banners'">
+          <div class="header__logo" @click="changeContent()">
             <img loading="lazy" src="{% static 'main/img/tobacco.svg' %}" class="image" width="156" height="22"
               alt="Tobacco">
           </div>
-          <button class="btn-reset btn header__btn" data-graph-path="menu" data-btn-open id="catalogBtn" @click="redirect()">
+          <button class="btn-reset btn header__btn" data-graph-path="menu" data-btn-open id="catalogBtn" @click="changeContentOnCatalog()">
             <img loading="lazy" src="{% static 'main/img/hamburger.svg' %}" class="image" width="28" height="28"
               alt="path" />
             <span>Каталог</span>
@@ -79,7 +79,6 @@
               </div>
             </li>
           </ul>
-          {% comment %} {% csrf_token %} {% endcomment %}
           <button class="btn-reset btn header__btn header__btn--path" v-on:click="createOrder()">
             <img loading="lazy" src="{% static 'main/img/path.svg' %}" class="image" width="28" height="28" alt="path">
             <div class="header__info">
