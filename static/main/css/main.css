@@ -1401,6 +1401,9 @@ a {
     font-size: 12px;
   }
 }
+.product__presence--not-arrow::after {
+  display: none;
+}
 .product__size {
   width: 70px;
   font-weight: 600;
