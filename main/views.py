@@ -6,6 +6,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 import json
+from django.http import JsonResponse
+from django.core import serializers
+from django.forms.models import model_to_dict
+from django.db.models.fields.files import ImageFieldFile
+from django.forms import model_to_dict
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Model
+
+
+class ExtendedEncoder(DjangoJSONEncoder):
+
+    def default(self, o):
+
+        def default(self, o):
+            if isinstance(o, ImageFieldFile):
+                return str(o)
+            else:
+                return super().default(o)
 
 
 @login_required(login_url='/auth/')
@@ -113,7 +131,11 @@ def basket(request):
                                                   'carton': json_order[item][availability]['carton'], 'remainder': json_order[item][availability]['remainder']
                                                   }
 
-        item_ = {'item': item_id, 'availability': clean_json_order}
+        item_ = {'item': {'img': str(item_id.img),
+                          'name': str(item_id.name),
+                          'id': str(item_id.id),
+                          'list': {'carton': str(item_id.list.carton)},
+                          }, 'availability': clean_json_order}
 
         if item_['availability'] != {}:
             if category not in order:
@@ -122,7 +144,8 @@ def basket(request):
                 order[category]['items'].append(item_)
                 order[category]['total'] += category_total
 
-    return render(request, 'main/basket.html', {'order': order, 'total': total, 'subcategories': subcategories})
+    print(order)
+    return JsonResponse({'order': order, 'total': total},  encoder=ExtendedEncoder)
 
 
 @login_required(login_url='/auth/')
@@ -163,12 +186,12 @@ def account(request):
                         # clean
                         rest = eval(f"item_id.availability.{availability}")
                         price = item_id.price
-                        
+
                         if 'remainder' in json_order[item][availability]:
                             remainder = json_order[item][availability]['remainder']
                         else:
                             remainder = None
-                        
+
                         clean_json_order[availability] = {'total': json_order[item][availability]['total'], 'count': json_order[item][availability]['count'], 'rest': rest, 'price': price,
                                                           'carton': json_order[item][availability]['carton'], 'remainder': remainder}
 

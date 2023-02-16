@@ -443,6 +443,9 @@ new Vue({
         noneProduct: [],
 
         content: 'banners',
+
+        order: null,
+        orderTotal: null,
     },
     methods: {
 
@@ -458,6 +461,21 @@ new Vue({
             console.log(id)
             localStorage.setItem('redirectItem', id);
             location.href = '/main/'
+        },
+
+        getOrder: async function () {
+            token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+            const response = await fetch(`/basket`, {
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFTOKEN": token,
+                },
+                // body: JSON.stringify({'is_executor': type}),
+                method: "GET",
+            });
+
+            return response.json();
         },
 
         // get order id by user id (user id from backend)
@@ -602,14 +620,27 @@ new Vue({
                     body: JSON.stringify({ 'order': JSON.stringify(order), 'status': true, 'total': localStorage.total }),
                 });
 
-                location.href = '/basket'
+                // this.order = { 'order': order, 'status': true, 'total': localStorage.total }
+
+                order = await this.getOrder();
+                this.order = order.order;
+                this.orderTotal = order.total;
+
+                this.content = 'basket';
+                document.getElementById("basketScreen").style.display = "";
+                document.getElementById("mainScreen").style.display = "none";
+                document.getElementById("headerRight").style.display = "none";
+
+                
+
+
             }
         },
         editHead: function (availability, price, action) {
-            var total = document.getElementById('total')
+            var total = document.getElementById('total_basket')
             currentTotal = Number(total.innerHTML.replace(' ₽', '').replace('Всего: ', ''))
 
-            totalAvailability = document.getElementById(`total_${availability}`)
+            totalAvailability = document.getElementById(`total_${availability}_basket`)
             currentTotalAvailability = Number(totalAvailability.innerHTML.replace(' ₽', ''))
 
             switch (action) {
@@ -736,10 +767,10 @@ new Vue({
                 }
             }
 
-            document.getElementById(`total`).innerHTML = "Всего: " + total + " ₽"
-            document.getElementById(`total_stock`).innerHTML = total_stock + " ₽"
-            document.getElementById(`total_way`).innerHTML = total_way + " ₽"
-            document.getElementById(`total_remote`).innerHTML = total_remote + " ₽"
+            document.getElementById(`total_basket`).innerHTML = "Всего: " + total + " ₽"
+            document.getElementById(`total_stock_basket`).innerHTML = total_stock + " ₽"
+            document.getElementById(`total_way_basket`).innerHTML = total_way + " ₽"
+            document.getElementById(`total_remote_basket`).innerHTML = total_remote + " ₽"
 
             categoryTotal = document.getElementById(`${category}`)
             categoryTotal.innerHTML = "Итого: " + (category_total) + " ₽"
@@ -796,7 +827,7 @@ new Vue({
 
             allItemValues = document.getElementsByClassName("product__size-all product__size-all--ordering")
             order = {}
-            var allTotal = document.getElementById('total')
+            var allTotal = document.getElementById('total_basket')
             currentAllTotal = Number(allTotal.innerHTML.replace(' ₽', '').replace('Всего: ', ''))
             for (var i = 0; i < allItemValues.length; i++) {
                 values = allItemValues[i].getAttribute("value").split("_")
@@ -852,10 +883,12 @@ new Vue({
             });
 
 
-            document.getElementById(`total`).innerHTML = "Всего: " + 0 + " ₽"
-            document.getElementById(`total_stock`).innerHTML = 0 + " ₽"
-            document.getElementById(`total_way`).innerHTML = 0 + " ₽"
-            document.getElementById(`total_remote`).innerHTML = 0 + " ₽"
+            document.getElementById(`total_basket`).innerHTML = "Всего: " + 0 + " ₽"
+            document.getElementById(`total_stock_basket`).innerHTML = 0 + " ₽"
+            document.getElementById(`total_way_basket`).innerHTML = 0 + " ₽"
+            document.getElementById(`total_remote_basket`).innerHTML = 0 + " ₽"
+
+            location.reload();
 
         },
 
@@ -1076,12 +1109,18 @@ new Vue({
                     this.content = 'banners';
 
                     localStorage.content = this.content;
-                } else {
+                } else if (this.content == 'banners') {
                     document.getElementById('catalogContent').style.display = '';
                     document.getElementById('bannersContent').style.display = 'none';
                     this.content = 'catalog';
 
                     localStorage.content = this.content;
+                } else if (this.content == 'basket') {
+                    document.getElementById('mainScreen').style.display = '';
+                    document.getElementById('basketScreen').style.display = 'none';
+                    document.getElementById("headerRight").style.display = "";
+
+                    this.content = 'catalog';
                 }
             } else {
                 location.href = '/';
@@ -1096,7 +1135,13 @@ new Vue({
                     this.content = 'catalog';
 
                     localStorage.content = this.content;
-                } 
+                } else if (this.content == 'basket') {
+                    document.getElementById('mainScreen').style.display = '';
+                    document.getElementById('basketScreen').style.display = 'none';
+                    document.getElementById("headerRight").style.display = "";
+
+                    this.content = 'catalog';
+                }
             } else {
                 location.href = '/';
             }
@@ -1111,7 +1156,29 @@ new Vue({
                 document.getElementById('bannersContent').style.display = 'none';
                 this.content = 'catalog';
             }
-        }
+        },
+
+        getClassColor: function(cat) {
+            if (cat == 'Аксессуары для кальяна') {
+                color = 'green';
+            } else if (cat == 'Кальяны') {
+                color = 'orange';
+            } else if (cat == 'Лимонады') {
+                color = 'yellow';
+            } else if (cat == 'Мерч') {
+                color = 'light-pink';
+            } else if (cat == 'Табак для кальяна') {
+                color = 'blue';
+            } else if (cat == 'Уголь') {
+                color = 'purple';
+            } else if (cat == 'Pod-системы') {
+                color = 'red';
+            } else if (cat == 'Жидкости') {
+                color = 'pink';
+            }
+
+            return 'ordering__item ordering-item ordering-item--' + color;
+        },
 
 
     },

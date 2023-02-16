@@ -2,109 +2,244 @@
 
 {% load static %}
 {% block content %}
-  <main class="main">
-    <div class="main__container container">
-      {% include "main/menu.html" %}
-
-      
-
-
-      <div class="main__content" id="catalogContent" style="display:none">
-        <section class="filtr">
-          <h2 class="filtr__title">Фильтр</h2>
-          <div class="filtr__content">
-            <div class="dropdown-container">
-              <div class="dropdown-wrap">
-                <input type="text" class="filtr__dropdown select-selected dropdown" id="plant_type" placeholder="Наличие">
-                <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
-                  <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height="" alt="">
-                </span>
-                <div class="select-items dropdown-list" >
-                  <div class="dropdown-option availability" value="all" v-on:click="newFilterAvailability('all')">Все</div>
-                  <div class="dropdown-option availability" value="stock" v-on:click="newFilterAvailability('stock')">В наличии</div>
-                  <div class="dropdown-option availability" value="remote" v-on:click="newFilterAvailability('remote')">Удаленный склад</div>
-                  <div class="dropdown-option availability" value="way" v-on:click="newFilterAvailability('way')">В пути</div>
+<main class="main" id="mainScreen">
+  <div class="main__container container">
+    {% include "main/menu.html" %}
+    <div class="main__content" id="catalogContent" style="display:none">
+      <section class="filtr">
+        <h2 class="filtr__title">Фильтр</h2>
+        <div class="filtr__content">
+          <div class="dropdown-container">
+            <div class="dropdown-wrap">
+              <input type="text" class="filtr__dropdown select-selected dropdown" id="plant_type" placeholder="Наличие">
+              <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
+                <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height=""
+                  alt="">
+              </span>
+              <div class="select-items dropdown-list">
+                <div class="dropdown-option availability" value="all" v-on:click="newFilterAvailability('all')">Все
+                </div>
+                <div class="dropdown-option availability" value="stock" v-on:click="newFilterAvailability('stock')">В
+                  наличии</div>
+                <div class="dropdown-option availability" value="remote" v-on:click="newFilterAvailability('remote')">
+                  Удаленный склад</div>
+                <div class="dropdown-option availability" value="way" v-on:click="newFilterAvailability('way')">В пути
                 </div>
               </div>
-            </div>
-            <div class="dropdown-container">
-              <div class="dropdown-wrap">
-                <input type="text" class="filtr__dropdown select-selected dropdown1" id="plant_type" placeholder="Вес">
-                <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
-                  <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height="" alt="">
-                </span>
-                <div class="select-items dropdown-list1 ">
-                  <div class="dropdown-option1" v-on:click="newFilterWeight(10)">10</div>
-                  <div class="dropdown-option1" v-on:click="newFilterWeight(100)">100</div>
-                  <div class="dropdown-option1" v-on:click="newFilterWeight(1000)">1000</div>
-                  <div class="dropdown-option1" v-on:click="newFilterWeight(10000)">10000</div>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="filtr__btns">
-              <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='top' v-on:change="newFilterStatus()">
-                <span class="filtr__span filtr__span--orange">
-                  <svg class="filtr__svg filtr__svg--top">
-                    <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
-                    <img style='margin-right: 33%;' src="{% static 'main/img/top.svg' %}"/>
-                  </svg>
-                </span>
-              </label>
-              <label class="btn-reset checkbox-btn filtr__btn">
-                <input type="checkbox" v-model="status" value='new' v-on:change="newFilterStatus()">
-                <span class="filtr__span filtr__span--green">
-                  <svg class="filtr__svg filtr__svg--new">
-                    <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
-                    <img style='margin-right: 33%;' src="{% static 'main/img/new.svg' %}"/>
-                  </svg>
-                </span>
-              </label>
-              <label class="btn-reset checkbox-btn filtr__btn" style="float:right">
-                <input type="checkbox" v-model="status" value='sale' v-on:change="newFilterStatus()">
-                <span class="filtr__span filtr__span--red">
-                  <svg class="filtr__svg filtr__svg--sale">
-                    <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>
-                    <img style='margin-right: 33%;' src="{% static 'main/img/sale.svg' %}"/>
-                  </svg>
-                </span>
-              </label>
             </div>
           </div>
-        </section>
-        <section class="main-content">
-          <h2 class="visually-hidden title">Каталог</h2>
-          <div class="main-content__head main-head">
-            <ul class="list-reset main-head__list">
-              <li class="main-head__item">Наименование</li>
-              <li class="main-head__item">Выбор склада</li>
-              <li class="main-head__item">Остаток</li>
-              <li class="main-head__item">Цена шт.</li>
-              <li class="main-head__item">Цена итого</li>
+          <div class="dropdown-container">
+            <div class="dropdown-wrap">
+              <input type="text" class="filtr__dropdown select-selected dropdown1" id="plant_type" placeholder="Вес">
+              <span class="dropdown-trigger" aria-hidden="true" data-trigger="plant_type">
+                <img loading="lazy" src="{% static 'main/img/arrow-down.svg' %}" class="image" width="" height=""
+                  alt="">
+              </span>
+              <div class="select-items dropdown-list1 ">
+                <div class="dropdown-option1" v-on:click="newFilterWeight(10)">10</div>
+                <div class="dropdown-option1" v-on:click="newFilterWeight(100)">100</div>
+                <div class="dropdown-option1" v-on:click="newFilterWeight(1000)">1000</div>
+                <div class="dropdown-option1" v-on:click="newFilterWeight(10000)">10000</div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="filtr__btns">
+            <label class="btn-reset checkbox-btn filtr__btn">
+              <input type="checkbox" v-model="status" value='top' v-on:change="newFilterStatus()">
+              <span class="filtr__span filtr__span--orange">
+                <svg class="filtr__svg filtr__svg--top">
+                  <use xlink:href="{% static 'main/img/sprite.svg#top' %}"></use>
+                  <img style='margin-right: 33%;' src="{% static 'main/img/top.svg' %}" />
+                </svg>
+              </span>
+            </label>
+            <label class="btn-reset checkbox-btn filtr__btn">
+              <input type="checkbox" v-model="status" value='new' v-on:change="newFilterStatus()">
+              <span class="filtr__span filtr__span--green">
+                <svg class="filtr__svg filtr__svg--new">
+                  <use xlink:href="{% static 'main/img/sprite.svg#new' %}"></use>
+                  <img style='margin-right: 33%;' src="{% static 'main/img/new.svg' %}" />
+                </svg>
+              </span>
+            </label>
+            <label class="btn-reset checkbox-btn filtr__btn" style="float:right">
+              <input type="checkbox" v-model="status" value='sale' v-on:change="newFilterStatus()">
+              <span class="filtr__span filtr__span--red">
+                <svg class="filtr__svg filtr__svg--sale">
+                  <use xlink:href="{% static 'main/img/sprite.svg#sale' %}"></use>
+                  <img style='margin-right: 33%;' src="{% static 'main/img/sale.svg' %}" />
+                </svg>
+              </span>
+            </label>
+          </div>
+        </div>
+      </section>
+      <section class="main-content">
+        <h2 class="visually-hidden title">Каталог</h2>
+        <div class="main-content__head main-head">
+          <ul class="list-reset main-head__list">
+            <li class="main-head__item">Наименование</li>
+            <li class="main-head__item">Выбор склада</li>
+            <li class="main-head__item">Остаток</li>
+            <li class="main-head__item">Цена шт.</li>
+            <li class="main-head__item">Цена итого</li>
+          </ul>
+        </div>
+        <app-products :products="products">
+
+        </app-products>
+
+      </section>
+    </div>
+
+    <div class="main__content" id="bannersContent" style="display;">
+      <section class="banners">
+        <ul class="list-reset banners__list">
+          {% for banner in banners%}
+          <li class="banners__item">
+            <div class="banner">
+              <img src="/media/{{banner.img}}">
+            </div>
+            {% endfor %}
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<main class="main" id="basketScreen" style="display: none;">
+  <section class="ordering" v-if="order != null">
+    <div class="ordering__container container">
+      <h1 class="ordering__title">Оформление заказа</h1>
+      <div class="ordering__content" v-for="(products, cat) in order" >
+        <div :class="getClassColor(cat)">
+
+          <div class="ordering-item__head">
+            <h2 class="ordering-item__title">{* cat *}</h2>
+            <ul class="list-reset ordering-item__head-list">
+              <div class="ordering-item__head-item">Остаток</div>
+              <div class="ordering-item__head-item">Цена шт.</div>
+              <div class="ordering-item__head-item">Цена итого</div>
             </ul>
           </div>
-          <app-products :products="products">
-            
-          </app-products>
-          
-        </section>
-      </div>
+          <div class="ordering-item__body">
 
-      <div class="main__content" id="bannersContent" style="display;">
-        <section class="banners">
-          <ul class="list-reset banners__list">
-            {% for banner in banners%}
-            <li class="banners__item">
-              <div class="banner">
-                <img src="/media/{{banner.img}}">
+              <div v-for="product in products.items" class="product ordering-item__product" :id="'item_' + product.item.id">
+                <div class="product__items product__items--ordering">
+                  <div class="product__left">
+                    <img :src="'/media/'+product.item.img" alt="product" class="image product__img">
+                    <h3 class="product__title">{* product.item.name *}</h3>
+                  </div>
+                  <ul class="list-reset product__right-list" :id="'item_' + product.item.id">
+                    <li v-for="(item, availability) in product.availability" class="product__right-item" :id="'item_' + product.item.id +'_'+availability">
+                        <div v-if="availability == 'stock'" class="product__presence product__presence--ordering">В наличии</div>
+                        <div v-else-if="availability == 'way'" class="product__presence product__presence--blue">В пути</div>
+                        <div v-else-if="availability == 'remote'" class="product__presence product__presence--orange">Удаленный склад</div>
+                      <div class="product__residue">{* item.rest *}</div>
+                      <div class="product__calc product-calc">
+                        <button class="btn-reset product-calc__btn product-calc__btn--minus" 
+                          v-on:click="minusCount(product.item.id, availability,item.price, cat, product.item.list.carton)"></button>
+                        <div class="product-calc__value">
+                          
+                          <input type="number" v-on:input="inputCalc(product.item.id, availability, item.price, cat, product.item.list.carton)" :id="'count_'+product.item.id+'_'+availability" :value="item.count" class="input input--calc">
+
+                          <span><span :id="'carton_'+product.item.id+'_'+availability">{*item.carton*}</span> блоков <span :id="'remainder_'+product.item.id+'_'+availability">{*item.remainder*}</span> шт </span>
+                          
+                        </div>
+                        
+
+                        <button class="btn-reset product-calc__btn product-calc__btn--plus" 
+                          v-on:click="plusCount(product.item.id, availability, item.price, cat,product.item.list.carton)"></button>
+                      </div>
+                      <div class="product__size">{*item.price*} ₽</div>
+                      <div class="product__size-all product__size-all--ordering" :id="'total_'+product.item.id+'_'+availability"
+                        :value="product.item.id+'_'+availability+'_'+item.total+'_'+item.count+'_'+cat+'_'+item.carton+'_'+item.remainder">{*item.total*} ₽</div>
+                      <button class="btn-reset product__btn product__btn--close" v-on:click="del(product.item.id, availability,item.price, cat)"></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            {% endfor %}
+          </div>
+          <div class="ordering-item__bottom">
+            <div class="ordering-item__total" :id="cat">Итого: {*products.total*} ₽
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ordering__footer ordering-footer">
+        <div class="header__right ordering-footer__item">
+          <ul class="list-reset header__list">
+            <li class="header__item">
+              <div class="header__icon">
+                <img loading="lazy"
+                     src="{% static 'main/img/path-green.svg' %}"
+                     class="image"
+                     width="22"
+                     height="22"
+                     alt="path">
+              </div>
+              <div class="header__info">
+                <div class="header__crit">
+                  В наличии
+                </div>
+                <div class="header__value" id="total_stock_basket">
+                  {* orderTotal.stock *} ₽
+                </div>
+              </div>
+            </li>
+            <li class="header__item">
+              <div class="header__icon">
+                <img loading="lazy"
+                     src="{% static 'main/img/path-orange.svg' %}"
+                     class="image"
+                     width="22"
+                     height="22"
+                     alt="path">
+              </div>
+              <div class="header__info">
+                <div class="header__crit">
+                  Удаленный склад
+                </div>
+                <div class="header__value" id="total_remote_basket">
+                  {* orderTotal.remote *}  ₽
+                </div>
+              </div>
+            </li>
+            <li class="header__item">
+              <div class="header__icon">
+                <img loading="lazy"
+                     src="{% static 'main/img/path-blue.svg' %}"
+                     class="image"
+                     width="22"
+                     height="22"
+                     alt="path">
+              </div>
+              <div class="header__info">
+                <div class="header__crit">
+                  В пути
+                </div>
+                <div class="header__value" id="total_way_basket">
+                  {* orderTotal.way *}  ₽
+                </div>
+              </div>
+            </li>
           </ul>
-        </section>
+          <div class="ordering__total" :value="total" id="total_basket">
+            Всего: {* orderTotal.total *} ₽
+          </div>
+        </div>
+        <div class="ordering-footer__item">
+          <button class="btn-reset btn-red btn-red--clear" v-on:click="busketClear()">
+            Очистить корзину
+          </button>
+          <button class="btn-reset btn ordering-footer__btn" v-on:click="busketNext()">
+            Далее
+          </button>
+        </div>
       </div>
     </div>
-  </main>
-  
+  </section>
+</main>
 {% endblock %}
