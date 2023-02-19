@@ -626,14 +626,11 @@ new Vue({
                 this.order = order.order;
                 this.orderTotal = order.total;
 
+                console.log(order)
                 this.content = 'basket';
                 document.getElementById("basketScreen").style.display = "";
                 document.getElementById("mainScreen").style.display = "none";
                 document.getElementById("headerRight").style.display = "none";
-
-                
-
-
             }
         },
         editHead: function (availability, price, action) {
@@ -643,14 +640,24 @@ new Vue({
             totalAvailability = document.getElementById(`total_${availability}_basket`)
             currentTotalAvailability = Number(totalAvailability.innerHTML.replace(' ₽', ''))
 
+            console.log(price)
             switch (action) {
                 case 'minus':
+                    // this.orderTotal['total'] -= price
+                    // this.orderTotal[availability] -= price
                     total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
                     totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
+                    
+
                     break;
                 case 'plus':
+                    // this.orderTotal['total'] += price
+                    // this.orderTotal[availability] += price
                     total.innerHTML = 'Всего: ' + (currentTotal + price) + ' ₽'
                     totalAvailability.innerHTML = (currentTotalAvailability + price) + ' ₽'
+
+                    
+
                     break;
                 case 'del':
                     total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
@@ -689,13 +696,25 @@ new Vue({
             // all data item
             total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
 
+            // пересчет в каталоге
+            // for (var i in this.products) {
+            //     Orders = this.products[i].order
+            //     Orders[id][availability]['count'] -= 1
+            //     Orders[id][availability]['total'] -= price 
+            // }
+
+            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+          
+            // document.getElementById('total').innerHTML = (current - price) + ' ₽'
+            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
+
 
         },
         // + quantity of goods on BASKET PAGE (changing variables on the page by id)
         // needs optimization !!
         plusCount: function (id, availability, price, category, carton_count) {
 
-            console.log(id, availability, price)
+            console.log(id, availability, price, category)
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value) + 1
 
@@ -720,6 +739,21 @@ new Vue({
             remainder_num = Number(Number(count.value) - (carton_num * carton_count))
 
             total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
+
+            // пересчет в каталоге
+            // console.log(this.products)
+            // for (var i in this.products) {
+            //     Orders = this.products[i].order
+            //     Orders[id][availability]['count'] += 1
+            //     Orders[id][availability]['total'] += price 
+            // }
+
+            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+
+            // // total in head
+            // document.getElementById('total').innerHTML = (current + price) + ' ₽'
+            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
+
         },
 
         inputCalc: function (id, availability, price, category, carton_count) {
@@ -801,7 +835,7 @@ new Vue({
             currentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
             categoryTotal.innerHTML = "Итого: " + (currentCategoryTotal - currentTotalItem) + " ₽"
 
-            console.log(id, availability, price)
+            // console.log(id, availability, price)
 
             this.editHead(availability, currentTotalItem, 'del')
 
@@ -812,12 +846,27 @@ new Vue({
                 itemCollect = document.getElementById(`item_${id}`).remove();
             }
 
+            // console.log(price)
+            // for (var i in this.products) {
+            //     Orders = this.products[i].order
+            //     Orders[id][availability]['count'] = 0
+            //     Orders[id][availability]['total'] = 0
+            // }
+
+            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            // // total in head
+            // document.getElementById('total').innerHTML = (current - currentTotalItem) + ' ₽'
+            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - currentTotalItem) + ' ₽'
+
+
             categoryCollect = document.getElementsByClassName('ordering__item')
             for (var i in categoryCollect) {
                 if (categoryCollect[i].getElementsByClassName('product').length == 0) {
                     categoryCollect[i].remove();
                 }
             }
+
+            
         },
 
         // save the current state of the order and redirect to the payment page
