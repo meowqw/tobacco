@@ -640,28 +640,29 @@ new Vue({
             totalAvailability = document.getElementById(`total_${availability}_basket`)
             currentTotalAvailability = Number(totalAvailability.innerHTML.replace(' ₽', ''))
 
-            console.log(price)
             switch (action) {
                 case 'minus':
-                    // this.orderTotal['total'] -= price
-                    // this.orderTotal[availability] -= price
-                    total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
-                    totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
+                    this.orderTotal['total'] = currentTotal - price
+                    this.orderTotal[availability] = currentTotalAvailability - price
+                    // total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
+                    // totalAvailability.innerHTML = () + ' ₽'
                     
 
                     break;
                 case 'plus':
                     // this.orderTotal['total'] += price
                     // this.orderTotal[availability] += price
-                    total.innerHTML = 'Всего: ' + (currentTotal + price) + ' ₽'
-                    totalAvailability.innerHTML = (currentTotalAvailability + price) + ' ₽'
+                    this.orderTotal['total'] = currentTotal + price
+                    this.orderTotal[availability] = currentTotalAvailability + price
 
                     
 
                     break;
                 case 'del':
-                    total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
-                    totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
+                    // total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
+                    // totalAvailability.innerHTML = (currentTotalAvailability - price) + ' ₽'
+                    this.orderTotal['total'] = currentTotal - price
+                    this.orderTotal[availability] = currentTotalAvailability - price
                     break;
             }
 
@@ -674,39 +675,51 @@ new Vue({
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value) - 1
 
-            total = document.getElementById(`total_${id}_${availability}`)
-            total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) - price) + ' ₽'
+            // total = document.getElementById(`total_${id}_${availability}`)
+            // total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) - price) + ' ₽'
 
-            categoryTotal = document.getElementById(`${category}`)
-            curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal - price) + " ₽"
+            // categoryTotal = document.getElementById(`${category}`)
+            // curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            // categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal - price) + " ₽"
 
             this.editHead(availability, price, 'minus')
 
             carton = document.getElementById(`carton_${id}_${availability}`)
-            carton.innerHTML = Number(count.value) / carton_count | 0
+            // carton.innerHTML = Number(count.value) / carton_count | 0
 
             carton_num = Number(count.value) / carton_count | 0
 
             remainder = document.getElementById(`remainder_${id}_${availability}`)
-            remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
+            // remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
 
             remainder_num = Number(Number(count.value) - (carton_num * carton_count))
 
             // all data item
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
+            // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
 
             // пересчет в каталоге
-            // for (var i in this.products) {
-            //     Orders = this.products[i].order
-            //     Orders[id][availability]['count'] -= 1
-            //     Orders[id][availability]['total'] -= price 
-            // }
+            for (var i in this.products) {
+                Orders = this.products[i].order
+                Orders[id][availability]['count'] -= 1
+                Orders[id][availability]['total'] -= price 
+            }
 
-            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            // новый кальк
+            for (var i in this.order[category].items) {
+                if (this.order[category].items[i].item.id == id) {
+                    this.order[category].items[i]['availability'][availability].total -= price
+                    this.order[category].items[i]['availability'][availability].count -= 1
+                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                }
+            }
+
+            this.order[category].total -= price 
+            
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
           
-            // document.getElementById('total').innerHTML = (current - price) + ' ₽'
-            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
+            document.getElementById('total').innerHTML = (current - price) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
 
 
         },
@@ -714,112 +727,179 @@ new Vue({
         // needs optimization !!
         plusCount: function (id, availability, price, category, carton_count) {
 
-            console.log(id, availability, price, category)
+            // console.log(id, availability, price, category)
             count = document.getElementById(`count_${id}_${availability}`)
             count.value = Number(count.value) + 1
 
-            total = document.getElementById(`total_${id}_${availability}`)
-            total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) + price) + ' ₽'
+            // total = document.getElementById(`total_${id}_${availability}`)
+            // total.innerHTML = (Number(total.innerHTML.replace(' ₽', '')) + price) + ' ₽'
 
-            categoryTotal = document.getElementById(`${category}`)
-            console.log(categoryTotal)
-            curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal + price) + " ₽"
+            // categoryTotal = document.getElementById(`${category}`)
+            // console.log(categoryTotal)
+            // curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
+            // categoryTotal.innerHTML = "Итого: " + (curentCategoryTotal + price) + " ₽"
 
             this.editHead(availability, price, 'plus')
 
             carton = document.getElementById(`carton_${id}_${availability}`)
-            carton.innerHTML = Number(count.value) / carton_count | 0
+            // carton.innerHTML = Number(count.value) / carton_count | 0
 
             carton_num = Number(count.value) / carton_count | 0
 
             remainder = document.getElementById(`remainder_${id}_${availability}`)
-            remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
+            // remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
 
             remainder_num = Number(Number(count.value) - (carton_num * carton_count))
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
+            // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
 
             // пересчет в каталоге
-            // console.log(this.products)
-            // for (var i in this.products) {
-            //     Orders = this.products[i].order
-            //     Orders[id][availability]['count'] += 1
-            //     Orders[id][availability]['total'] += price 
-            // }
+            for (var i in this.products) {
+                Orders = this.products[i].order
+                if (id in Orders) {
+                    Orders[id][availability]['count'] += 1
+                    Orders[id][availability]['total'] += price 
+                }
+            }
 
-            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            // новый кальк
+            for (var i in this.order[category].items) {
+                if (this.order[category].items[i].item.id == id) {
+                    this.order[category].items[i]['availability'][availability].total += price
+                    this.order[category].items[i]['availability'][availability].count += 1
+                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
 
-            // // total in head
-            // document.getElementById('total').innerHTML = (current + price) + ' ₽'
-            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
+
+                }
+            }
+
+            this.order[category].total += price 
+
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+
+            // total in head
+            document.getElementById('total').innerHTML = (current + price) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) + price) + ' ₽'
 
         },
 
         inputCalc: function (id, availability, price, category, carton_count) {
             count = document.getElementById(`count_${id}_${availability}`)
-            count.value = Number(count.value)
-            console.log(count.value)
+            // count.value = Number(count.value)
+            // console.log(count.value)
 
             total = document.getElementById(`total_${id}_${availability}`)
-            total.innerHTML = (price * count.value) + ' ₽'
+            // total.innerHTML = (price * count.value) + ' ₽'
             console.log(category)
             // categoryTotal = document.getElementById(`${category}`)
             // console.log(categoryTotal)
             // curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
             // categoryTotal.innerHTML = "Итого: " + (price * count.value) + " ₽"
 
-            this.editHead(availability, price, 'plus')
+            
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(count.value) / carton_count | 0}`)
+            // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(count.value) / carton_count | 0}`)
+            // this.editHead(availability, price, 'plus')
+            
 
-            total = 0
-            total_remote = 0
-            total_stock = 0
-            total_way = 0
-            category_total = 0
-            items = document.getElementsByClassName('product__size-all product__size-all--ordering')
-            for (var i in items) {
-                try {
-                    item = items[i].getAttribute('value').split('_')
-                    console.log(item)
-                    if (item[1] == 'remote') {
-                        total_remote += Number(item[2])
-                    } else if (item[1] == 'stock') {
-                        total_stock += Number(item[2])
-                    } else if (item[1] == 'way') {
-                        total_way += Number(item[2])
-                    }
-
-                    if (category == item[4]) {
-                        category_total += Number(item[2])
-                    }
-
-                    total += Number(item[2])
-                } catch (e) {
-                    console.log(e)
-                }
-            }
-
-            document.getElementById(`total_basket`).innerHTML = "Всего: " + total + " ₽"
-            document.getElementById(`total_stock_basket`).innerHTML = total_stock + " ₽"
-            document.getElementById(`total_way_basket`).innerHTML = total_way + " ₽"
-            document.getElementById(`total_remote_basket`).innerHTML = total_remote + " ₽"
+            // document.getElementById(`total_basket`).innerHTML = "Всего: " + total + " ₽"
+            // document.getElementById(`total_stock_basket`).innerHTML = total_stock + " ₽"
+            // document.getElementById(`total_way_basket`).innerHTML = total_way + " ₽"
+            // document.getElementById(`total_remote_basket`).innerHTML = total_remote + " ₽"
 
             categoryTotal = document.getElementById(`${category}`)
-            categoryTotal.innerHTML = "Итого: " + (category_total) + " ₽"
+            // categoryTotal.innerHTML = "Итого: " + (category_total) + " ₽"
 
             carton = document.getElementById(`carton_${id}_${availability}`)
-            carton.innerHTML = Number(count.value) / carton_count | 0
+            // carton.innerHTML = Number(count.value) / carton_count | 0
 
             carton_num = Number(count.value) / carton_count | 0
 
             remainder = document.getElementById(`remainder_${id}_${availability}`)
-            remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
+            // remainder.innerHTML = Number(count.value) - (carton_num * carton_count)
 
             remainder_num = Number(Number(count.value) - (carton_num * carton_count))
 
-            total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
+            // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
+            
+            for (var i in this.products) {
+                Orders = this.products[i].order
+                if (id in Orders) {
+                    Orders[id][availability]['count'] = Number(count.value)
+                    Orders[id][availability]['total'] = Number(count.value) * price
+                }
+            }
+            console.log(1)
+            // новый кальк
+            category_total = 0
+            for (var i in this.order[category].items) {
+                if (this.order[category].items[i].item.id == id) {
+                    console.log(this.order[category].items[i])
+                    console.log(availability)
+                    this.order[category].items[i]['availability'][availability].total = Number(count.value) * price
+                    this.order[category].items[i]['availability'][availability].count = Number(count.value)
+                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+
+
+                }
+                
+            }
+
+            category_total = 0
+            for (var i in this.order[category].items) {
+                if ('stock' in this.order[category].items[i]['availability']) {
+                    category_total += this.order[category].items[i]['availability']['stock'].total
+                }
+
+                if ('way' in this.order[category].items[i]['availability']) {
+                    category_total += this.order[category].items[i]['availability']['way'].total
+                }
+                if ('remote' in this.order[category].items[i]['availability']) {
+                    category_total += this.order[category].items[i]['availability']['remote'].total
+                }
+            }
+
+            console.log(2)
+            this.order[category].total = category_total
+            total = 0
+            total_remote = 0
+            total_stock = 0
+            total_way = 0
+            for (var i in this.order) {
+                total += this.order[i].total
+
+                for (var j in this.order[i].items) {
+                    availability_list = this.order[i].items[j]['availability']
+                    console.log(availability_list)
+                    if ('stock' in availability_list) {
+                        total_stock += availability_list['stock'].total
+                    }
+
+                    if ('way' in availability_list) {
+                        total_way += availability_list['way'].total
+                    }
+
+                    if ('remote' in availability_list) {
+                        total_remote += availability_list['remote'].total
+                    }
+                }
+            }
+
+            // this.order[category].total = total
+            console.log(3)
+            this.orderTotal['total'] = total
+            this.orderTotal['stock'] = total_stock
+            this.orderTotal['way'] = total_way
+            this.orderTotal['remote'] = total_remote
+
+
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+
+            // total in head
+            document.getElementById('total').innerHTML = (total) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML = (this.orderTotal[availability]) + ' ₽'
 
         },
 
@@ -829,11 +909,11 @@ new Vue({
             currentTotalItem = Number(document.getElementById(`total_${id}_${availability}`).innerHTML.replace(' ₽', ''))
 
             item = document.getElementById(`item_${id}_${availability}`)
-            item.remove();
+            // item.remove();
 
             categoryTotal = document.getElementById(`${category}`)
             currentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
-            categoryTotal.innerHTML = "Итого: " + (currentCategoryTotal - currentTotalItem) + " ₽"
+            // categoryTotal.innerHTML = "Итого: " + (currentCategoryTotal - currentTotalItem) + " ₽"
 
             // console.log(id, availability, price)
 
@@ -846,25 +926,27 @@ new Vue({
                 itemCollect = document.getElementById(`item_${id}`).remove();
             }
 
-            // console.log(price)
-            // for (var i in this.products) {
-            //     Orders = this.products[i].order
-            //     Orders[id][availability]['count'] = 0
-            //     Orders[id][availability]['total'] = 0
-            // }
+            for (var i in this.products) {
+                Orders = this.products[i].order
+                Orders[id][availability]['count'] = 0
+                Orders[id][availability]['total'] = 0
+            }
 
-            // current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-            // // total in head
-            // document.getElementById('total').innerHTML = (current - currentTotalItem) + ' ₽'
-            // document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - currentTotalItem) + ' ₽'
+            this.order[category].total = currentCategoryTotal - currentTotalItem
 
 
-            categoryCollect = document.getElementsByClassName('ordering__item')
-            for (var i in categoryCollect) {
-                if (categoryCollect[i].getElementsByClassName('product').length == 0) {
-                    categoryCollect[i].remove();
+            // новый кальк
+            for (var i in this.order[category].items) {
+                if (this.order[category].items[i].item.id == id) {
+                    this.order[category].items[i]['availability'][availability].total = 0
+                    this.order[category].items[i]['availability'][availability].count = 0
                 }
             }
+
+            current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
+            // total in head
+            document.getElementById('total').innerHTML = (current - currentTotalItem) + ' ₽'
+            document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - currentTotalItem) + ' ₽'
 
             
         },
