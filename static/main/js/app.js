@@ -595,7 +595,7 @@ new Vue({
                 }
                 localStorage.products = this.products
             }
-            
+
         },
 
         // request on create order (Intermediate) and redirect to basket
@@ -646,7 +646,7 @@ new Vue({
                     this.orderTotal[availability] = currentTotalAvailability - price
                     // total.innerHTML = 'Всего: ' + (currentTotal - price) + ' ₽'
                     // totalAvailability.innerHTML = () + ' ₽'
-                    
+
 
                     break;
                 case 'plus':
@@ -655,7 +655,7 @@ new Vue({
                     this.orderTotal['total'] = currentTotal + price
                     this.orderTotal[availability] = currentTotalAvailability + price
 
-                    
+
 
                     break;
                 case 'del':
@@ -701,7 +701,7 @@ new Vue({
             for (var i in this.products) {
                 Orders = this.products[i].order
                 Orders[id][availability]['count'] -= 1
-                Orders[id][availability]['total'] -= price 
+                Orders[id][availability]['total'] -= price
             }
 
             // новый кальк
@@ -709,15 +709,18 @@ new Vue({
                 if (this.order[category].items[i].item.id == id) {
                     this.order[category].items[i]['availability'][availability].total -= price
                     this.order[category].items[i]['availability'][availability].count -= 1
-                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
-                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+
+                    if (this.order[category].items[i]['availability'][availability].remainder != null) {
+                        this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                        this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                    }
                 }
             }
 
-            this.order[category].total -= price 
-            
+            this.order[category].total -= price
+
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
-          
+
             document.getElementById('total').innerHTML = (current - price) + ' ₽'
             document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - price) + ' ₽'
 
@@ -758,7 +761,7 @@ new Vue({
                 Orders = this.products[i].order
                 if (id in Orders) {
                     Orders[id][availability]['count'] += 1
-                    Orders[id][availability]['total'] += price 
+                    Orders[id][availability]['total'] += price
                 }
             }
 
@@ -767,14 +770,18 @@ new Vue({
                 if (this.order[category].items[i].item.id == id) {
                     this.order[category].items[i]['availability'][availability].total += price
                     this.order[category].items[i]['availability'][availability].count += 1
-                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
-                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                    if (this.order[category].items[i]['availability'][availability].remainder != null) {
+                        this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                        this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                    }
 
 
                 }
             }
 
-            this.order[category].total += price 
+            console.log(this.order[category].items)
+
+            this.order[category].total += price
 
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
 
@@ -797,11 +804,11 @@ new Vue({
             // curentCategoryTotal = Number(categoryTotal.innerHTML.replace(' ₽', '').replace('Итого: ', ''))
             // categoryTotal.innerHTML = "Итого: " + (price * count.value) + " ₽"
 
-            
+
 
             // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(count.value) / carton_count | 0}`)
             // this.editHead(availability, price, 'plus')
-            
+
 
             // document.getElementById(`total_basket`).innerHTML = "Всего: " + total + " ₽"
             // document.getElementById(`total_stock_basket`).innerHTML = total_stock + " ₽"
@@ -822,7 +829,7 @@ new Vue({
             remainder_num = Number(Number(count.value) - (carton_num * carton_count))
 
             // total.setAttribute('value', `${id}_${availability}_${Number(total.innerHTML.replace(' ₽', ''))}_${Number(count.value)}_${category}_${Number(carton_num)}_${Number(remainder_num)}`)
-            
+
             for (var i in this.products) {
                 Orders = this.products[i].order
                 if (id in Orders) {
@@ -839,12 +846,14 @@ new Vue({
                     console.log(availability)
                     this.order[category].items[i]['availability'][availability].total = Number(count.value) * price
                     this.order[category].items[i]['availability'][availability].count = Number(count.value)
-                    this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
-                    this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                    if (this.order[category].items[i]['availability'][availability].remainder != null) {
+                        this.order[category].items[i]['availability'][availability].carton = Number(count.value) / carton_count | 0
+                        this.order[category].items[i]['availability'][availability].remainder = Number(Number(count.value) - (carton_num * carton_count))
+                    }
 
 
                 }
-                
+
             }
 
             category_total = 0
@@ -919,43 +928,55 @@ new Vue({
 
             this.editHead(availability, currentTotalItem, 'del')
 
-
             itemCollect = document.getElementById(`item_${id}`).getElementsByTagName('li')
-            console.log(itemCollect);
+            // console.log(itemCollect);
             if (itemCollect.length == 0) {
                 itemCollect = document.getElementById(`item_${id}`).remove();
             }
-
+            
+            console.log(id)
             for (var i in this.products) {
                 Orders = this.products[i].order
-                Orders[id][availability]['count'] = 0
-                Orders[id][availability]['total'] = 0
-                Orders[id][availability]['carton'] = 0
-                Orders[id][availability]['remainder'] = 0
+                if (id in Orders) { 
+                    Orders[id][availability]['count'] = 0
+                    Orders[id][availability]['total'] = 0
+                    Orders[id][availability]['carton'] = 0
+                    Orders[id][availability]['remainder'] = 0
+                }
+    
 
             }
+            console.log(1)
 
             this.order[category].total = currentCategoryTotal - currentTotalItem
 
-
             // новый кальк
+            console.log(this.order[category].items)
+
             for (var i in this.order[category].items) {
                 if (this.order[category].items[i].item.id == id) {
+                    console.log(id)
                     this.order[category].items[i]['availability'][availability].total = 0
                     this.order[category].items[i]['availability'][availability].count = 0
-                    this.order[category].items[i]['availability'][availability].carton = 0
-                    this.order[category].items[i]['availability'][availability].remainder = 0
+
+                    if (this.order[category].items[i]['availability'][availability].remainder != null) {
+                        this.order[category].items[i]['availability'][availability].carton = 0
+                        this.order[category].items[i]['availability'][availability].remainder = 0
+                    }
+
                 }
             }
+
+            console.log(4)
 
             current = Number(document.getElementById('total').innerHTML.replace(' ₽', ''))
             // total in head
             document.getElementById('total').innerHTML = (current - currentTotalItem) + ' ₽'
             document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - currentTotalItem) + ' ₽'
 
-            
 
-            
+
+
         },
 
         // save the current state of the order and redirect to the payment page
@@ -976,10 +997,10 @@ new Vue({
                 carton = values[5]
                 remainder = values[6]
                 if (id in order) {
-                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton), 'remainder': Number(remainder)}
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton), 'remainder': Number(remainder) }
                 } else {
                     order[id] = {}
-                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton), 'remainder': Number(remainder)}
+                    order[id][availability] = { 'total': Number(total), 'count': Number(count), 'carton': Number(carton), 'remainder': Number(remainder) }
                 }
 
             }
@@ -1239,7 +1260,7 @@ new Vue({
         },
 
         // смена основной область с банер на каталог
-        changeContent: function() {
+        changeContent: function () {
             if (location.pathname == '/') {
                 if (this.content == 'catalog') {
                     document.getElementById('catalogContent').style.display = 'none';
@@ -1265,7 +1286,7 @@ new Vue({
             }
         },
         // смена рабочей области на каталог
-        changeContentOnCatalog: function() {
+        changeContentOnCatalog: function () {
             if (location.pathname == '/') {
                 if (this.content == 'banners') {
                     document.getElementById('catalogContent').style.display = '';
@@ -1284,7 +1305,7 @@ new Vue({
                 location.href = '/';
             }
         },
-        changeContentFromStorage: function() {
+        changeContentFromStorage: function () {
             if (this.content == 'banners') {
                 document.getElementById('catalogContent').style.display = 'none';
                 document.getElementById('bannersContent').style.display = '';
@@ -1296,7 +1317,7 @@ new Vue({
             }
         },
 
-        getClassColor: function(cat) {
+        getClassColor: function (cat) {
             if (cat == 'Аксессуары для кальяна') {
                 color = 'green';
             } else if (cat == 'Кальяны') {
@@ -1326,7 +1347,7 @@ new Vue({
                 this.content = localStorage.content
 
                 this.changeContentFromStorage();
-                
+
             }
         }
     },

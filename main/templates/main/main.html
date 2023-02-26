@@ -142,10 +142,9 @@
                         <button class="btn-reset product-calc__btn product-calc__btn--minus" 
                           v-on:click="minusCount(product.item.id, availability,item.price, cat, product.item.list.carton)"></button>
                         <div class="product-calc__value">
-                          {*item.remainder*}
                           <input type="number" v-on:input="inputCalc(product.item.id, availability, item.price, cat, product.item.list.carton)" :id="'count_'+product.item.id+'_'+availability" :value="item.count" class="input input--calc">
                           
-                          <span v-if="item.remainder != null && item.remainder != NaN"><span :id="'carton_'+product.item.id+'_'+availability">{*item.carton*}</span> блоков <br> <span :id="'remainder_'+product.item.id+'_'+availability">{*item.remainder*}</span> шт </span>
+                          <span v-if="item.remainder != null"><span :id="'carton_'+product.item.id+'_'+availability">{*item.carton*}</span> блоков <br> <span :id="'remainder_'+product.item.id+'_'+availability">{*item.remainder*}</span> шт </span>
                           
                         </div>
                         
