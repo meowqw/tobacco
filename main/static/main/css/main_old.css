@@ -622,11 +622,14 @@ a {
   border-radius: 18px;
   border-top-left-radius: 0;
   padding: 31px 35px;
-  gap: 20px;
 }
 @media (max-width: 1280px) {
   .filtr__content {
-    gap: 10px;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: (1fr)[3];
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
   }
 }
 .filtr__btns {
@@ -635,11 +638,6 @@ a {
   -ms-grid-columns: (1fr)[3];
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-}
-@media (max-width: 1024px) {
-  .filtr__btns {
-    gap: 10px;
-  }
 }
 .filtr__btn {
   width: 70px;
@@ -1170,9 +1168,6 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
@@ -1300,7 +1295,6 @@ a {
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
-  text-align: left;
 }
 .product__presence::before {
   content: "";
@@ -1433,10 +1427,10 @@ a {
 .product--main {
   border: 1px solid #bababa;
   border-radius: 12px;
-  padding: 6px;
+  padding: 2px;
   padding-right: 30px;
   padding-left: 11px;
-  min-height: 52px;
+  height: 52px;
 }
 @media (max-width: 1280px) {
   .product--main {
@@ -1462,15 +1456,15 @@ a {
 .product-calc {
   display: -ms-grid;
   display: grid;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -ms-grid-columns: (auto)[3];
   grid-template-columns: repeat(3, auto);
-  width: 125px;
+  width: 117px;
   gap: 5px;
 }
 .product-calc__btn {
@@ -1502,18 +1496,21 @@ a {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 100%;
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
-  text-align: center;
 }
 .product-calc__value span {
-  height: 100%;
   font-weight: 700;
-  font-size: 9px;
-  line-height: 9px;
+  font-size: 6px;
+  line-height: 7px;
 }
+@media (max-width: 1280px) {
+  .product-calc__value span {
+    display: none;
+  }
+}
+
 .product-accordion-content {
   position: relative;
   display: none;
@@ -2688,8 +2685,7 @@ a {
 }
 .input--calc {
   border-radius: 5px;
-  padding: 3px;
-  height: 100%;
+  padding: 2px;
   font-weight: 700;
   font-size: 12px;
   line-height: 17px;
@@ -2850,9 +2846,6 @@ a {
   width: 24px;
   height: 24px;
 }
-.select-selected:hover {
-  border: 1px solid var(--dark-gray-color);
-}
 
 .select-selected.select-arrow-active::after {
   content: url("../img/arrow-up.svg");
@@ -2860,9 +2853,7 @@ a {
 
 .select-items div,
 .select-selected {
-  z-index: 10;
   padding: 12px 35px 12px 21px;
-  width: 100%;
   color: rgb(0, 0, 0);
   cursor: pointer;
 }
@@ -2898,9 +2889,6 @@ a {
   height: 24px;
 }
 
-.dropdown-container {
-  width: 100%;
-}
 .dropdown-trigger {
   position: absolute;
   right: 10px;

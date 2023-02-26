@@ -273,7 +273,7 @@ Vue.component('app-products', {
                                                     <div class="product-calc__value">
                                                         <input type="number" v-on:input="inputCount(item.id, item.price, 'stock', list.split(';')[2])" :id="'input_stock_'+item.id" v-model="order[item.id]['stock'].count" class="input input--calc">
                                                       
-                                                        <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['stock'].carton }} блоков {{order[item.id]['stock'].count - (list.split(';')[2] * order[item.id]['stock'].carton)}} шт</span>
+                                                        <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['stock'].carton }} блоков <br> {{order[item.id]['stock'].count - (list.split(';')[2] * order[item.id]['stock'].carton)}} шт</span>
                                                     </div>
                                                     
                                                     <button
@@ -302,7 +302,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков <br> {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -330,7 +330,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков <br> {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -362,7 +362,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'way')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'way', list.split(';')[2])" :id="'input_way_'+item.id" v-model="order[item.id]['way'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['way'].carton }} блоков <br> {{order[item.id]['way'].count - (list.split(';')[2] * order[item.id]['way'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
@@ -388,7 +388,7 @@ Vue.component('app-products', {
                                                     class="btn-reset product-calc__btn product-calc__btn--minus" @click="countMinus(item.id, item.price, 'remote')"></button>
                                                 <div class="product-calc__value">
                                                     <input type="number" v-on:input="inputCount(item.id, item.price, 'remote', list.split(';')[2])" :id="'input_remote_'+item.id" v-model="order[item.id]['remote'].count" class="input input--calc">
-                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
+                                                    <span v-if="list.split(';')[1] != 'null' && list.split(';')[2] != 'null'">{{ order[item.id]['remote'].carton }} блоков <br> {{order[item.id]['remote'].count - (list.split(';')[2] * order[item.id]['remote'].carton)}} шт</span>
                                                 </div>
                                                 
                                                 <button
