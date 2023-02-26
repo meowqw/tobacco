@@ -930,6 +930,9 @@ new Vue({
                 Orders = this.products[i].order
                 Orders[id][availability]['count'] = 0
                 Orders[id][availability]['total'] = 0
+                Orders[id][availability]['carton'] = 0
+                Orders[id][availability]['remainder'] = 0
+
             }
 
             this.order[category].total = currentCategoryTotal - currentTotalItem
@@ -940,6 +943,8 @@ new Vue({
                 if (this.order[category].items[i].item.id == id) {
                     this.order[category].items[i]['availability'][availability].total = 0
                     this.order[category].items[i]['availability'][availability].count = 0
+                    this.order[category].items[i]['availability'][availability].carton = 0
+                    this.order[category].items[i]['availability'][availability].remainder = 0
                 }
             }
 
@@ -947,6 +952,8 @@ new Vue({
             // total in head
             document.getElementById('total').innerHTML = (current - currentTotalItem) + ' ₽'
             document.getElementById(`total_${availability}`).innerHTML = (Number(document.getElementById(`total_${availability}`).innerHTML.replace(' ₽', '')) - currentTotalItem) + ' ₽'
+
+            
 
             
         },
